@@ -13,5 +13,7 @@ Repast+SAJaS, Jadex
 
 ##Elementos do Grupo
 André Lago
+
 Guilherme Pinto
+
 Pedro Castro
