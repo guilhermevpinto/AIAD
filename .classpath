@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="repast"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="lib/asm.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/beanbowl.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/colt.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-collections.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/geotools_repast.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ibis.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jakarta-poi.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jep-2.24.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jgap.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jh.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jmf.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jode-1.1.2-pre1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/joone.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/JTS.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/OpenForecast-0.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openmap.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/plot.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ProActive.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/trove.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/violinstrings-1.0.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
