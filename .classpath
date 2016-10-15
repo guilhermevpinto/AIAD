@@ -26,5 +26,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/ProActive.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/trove.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/violinstrings-1.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/SAJaS.jar"/>
+	<classpathentry kind="lib" path="lib/jade-4.3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
