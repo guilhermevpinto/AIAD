@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrafficLights>
+	<TrafficLight id="p2">
+		<times>
+			<timeState>100</timeState>
+			<timeState>100</timeState>
+			<timeState>50</timeState>
+			<beginState>r</beginState>
+		</times>
+		<states>
+			<state>g</state>
+			<state>y</state>
+			<state>r</state>
+		</states>
+	</TrafficLight>
+	<TrafficLight id="p1">
+		<times>
+			<timeState>100</timeState>
+			<timeState>100</timeState>
+			<timeState>100</timeState>
+			<timeState>50</timeState>
+			<beginState>r</beginState>
+		</times>
+		<states>
+			<state>gr</state>
+			<state>yr</state>
+			<state>gg</state>
+			<state>rr</state>
+		</states>
+	</TrafficLight>
+</TrafficLights>
