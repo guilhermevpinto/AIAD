@@ -9,7 +9,9 @@ O objetivo deste trabalho é construir uma simulação cujo cenário é constitu
 Devem ser testadas diferentes configurações, tendo em conta zonas ou direções de maior tráfego, populações de automóveis com diferentes módulos de decisão, agentes BDI, etc. Deve ser equacionada a possibilidade de implementar agentes com aprendizagem, que aprendam quais os melhores trajetos para determinados destinos em determinadas horas do dia.
 
 ##Material
-Repast+SAJaS, Jadex
+TraSMAPI, SUMO, Jadex
+
+Requer o software SUMO (http://sumo.dlr.de/wiki/Main_Page) e requer que "sumo-gui.exe." seja acessível pela variável PATH.
 
 ##Elementos do Grupo
 André Lago
