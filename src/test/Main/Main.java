@@ -18,39 +18,39 @@ import trasmapi.sumo.Sumo;
 
 public class Main {
 	
-	static boolean JADE_GUI = true;
+	static boolean JADE_GUI = false;
 	private static ProfileImpl profile;
 	private static ContainerController mainContainer;
 	
-	//args[0] == 1 -> fixed behaviour
-	//args[0] == 2 -> intersection behaviour
-	//args[0] == 3 -> learning behaviour
-	//args[0] == 4 -> syncronized behaviour
+	private static enum Mode {
+		FIXED,
+		INTERSECTION,
+		LEARNING,
+		SYNCRONIZED
+	}
+	
+	private static Mode mode = Mode.FIXED;
 	
 	public static void main(String[] args) throws UnimplementedMethod, InterruptedException, IOException, TimeoutException {	
 		ArrayList<TrafficLightAgentInfo> tfai = null;
 		String type = null;
-		args = new String[] { "1" };
-		if ( args[0].equals("1")){
+		
+		switch(mode) {
+		case FIXED:
 			tfai = TFAgentInfoParser.parseTFAgentInfo("src\\test\\OtherMap\\trafficLightInfo.xml");
 			type = "FIXED";
+			break;
+		case INTERSECTION:
+			tfai = TFAgentInfoParser.parseTFAgentInfo("src\\test\\OtherMap\\trafficLightInfo.xml");
+			type = "INTERSECTION";
+			break;
+		case LEARNING:
+			type = "LEARNING";
+			break;
+		case SYNCRONIZED:
+			type = "SYNCRONIZED";
+			break;
 		}
-		else
-			if ( args[0].equals("2")){
-				tfai = TFAgentInfoParser.parseTFAgentInfo("src\\test\\OtherMap\\trafficLightInfo.xml");
-				type = "INTERSECTION";
-			}
-			else
-				if ( args[0].equals("3"))
-					type = "LEARNING";
-				else
-					if ( args[0].equals("4"))
-						type = "SYNCRONIZED";
-					else
-					{
-						System.out.println("Error in arg");
-						return;
-					}
 		
 		
 		//Init JADE platform w/ or w/out GUI		
