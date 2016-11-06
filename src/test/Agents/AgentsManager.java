@@ -30,7 +30,9 @@ public class AgentsManager extends Agent{
 	private Statistics statistics;
 	private String type;
 	
-	public AgentsManager(Sumo sumo, ContainerController mainController, String type/*, ArrayList<TrafficLightAgentInfo> tfai*/) {
+	private boolean statistics_enabled = false;
+	
+	public AgentsManager(Sumo sumo, ContainerController mainController, String type) {
 		//gets all traffic lights in the sumo simulation
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
 		ArrayList<String> vehicles = SumoCom.getAllVehiclesIds();
@@ -70,8 +72,9 @@ public class AgentsManager extends Agent{
 			}
 		}
 		
-		
-		new Thread(statistics).start();
+		if(statistics_enabled) {
+			new Thread(statistics).start();
+		}
 	}
 
 	
@@ -124,8 +127,9 @@ public class AgentsManager extends Agent{
 			}
 		}
 		
-		
-		new Thread(statistics).start();
+		if(statistics_enabled) {
+			new Thread(statistics).start();
+		}
 	}
 
 	

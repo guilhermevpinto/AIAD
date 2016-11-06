@@ -18,7 +18,6 @@ import trasmapi.sumo.Sumo;
 
 public class Main {
 	
-	static boolean JADE_GUI = false;
 	private static ProfileImpl profile;
 	private static ContainerController mainContainer;
 	
@@ -28,7 +27,9 @@ public class Main {
 		LEARNING,
 		SYNCRONIZED
 	}
-	
+
+	// Setup variables
+	private static boolean JADE_GUI = false;
 	private static Mode mode = Mode.FIXED;
 	
 	public static void main(String[] args) throws UnimplementedMethod, InterruptedException, IOException, TimeoutException {	
@@ -52,22 +53,17 @@ public class Main {
 			break;
 		}
 		
-		
-		//Init JADE platform w/ or w/out GUI		
+		// Maybe use JADE GUI
 		if(JADE_GUI){
-			List<String> params = new ArrayList<String>();
-			params.add("-gui");
-			profile = new BootProfileImpl(params.toArray(new String[0]));
-		} else
+			profile = new BootProfileImpl(new String[] {"-gui"});
+		} else {
 			profile = new ProfileImpl();
+		}
 
 		Runtime rt = Runtime.instance();
 		
-		//mainContainer - agents' container
+		// Agent container
 		mainContainer = rt.createMainContainer(profile);
-		
-		//"\uD83D\uDCA9"
-		TraSMAPI api = new TraSMAPI(); 
 
 		//Create SUMO
 		Sumo sumo = new Sumo("guisim");
@@ -76,38 +72,33 @@ public class Main {
 		sumo.addParameters(params);
 		sumo.addConnections("localhost", 8820);
 
-		//Add Sumo to TraSMAPI
-		api.addSimulator(sumo);
+		// Create TraSMAPI and add Sumo to it
+		TraSMAPI trasmapi_api = new TraSMAPI(); 
+		trasmapi_api.addSimulator(sumo);
 		
-		//Launch and Connect all the simulators added
-		api.launch();
+		// Start TraSMAPI
+		trasmapi_api.launch();
+		trasmapi_api.connect();
 
-		api.connect();
-
-		
-		//
 		AgentsManager manager = null;
-		if  (type.equals("FIXED") || type.equals("INTERSECTION"))
-				manager = new AgentsManager(sumo,mainContainer, tfai);
-		else
+		if (type.equals("FIXED") || type.equals("INTERSECTION")) {
+			manager = new AgentsManager(sumo,mainContainer, tfai);
+		} else {
 			manager  = new AgentsManager(sumo, mainContainer, type);
-		
-		
+		}
 		manager.startupAgents(mainContainer);
 		
-		api.start();
+		trasmapi_api.start();
 		
 		manager.setBehaviour();
 
 		//simulation loop
 		while(true) {
 			Thread.sleep(100);
-			if(!api.simulationStep(0))
+			if(!trasmapi_api.simulationStep(0))
 				break;
 		}
 		
-		
-
 	}	
 		
 }
