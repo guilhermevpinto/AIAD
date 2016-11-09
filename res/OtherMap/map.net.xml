@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 12/05/15 20:22:09 by SUMO netconvert Version 0.24.0
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="C:\Users\Liliana\workspace\AIADProj\src\OtherMap\nos.nod.xml"/>
+        <edge-files value="C:\Users\Liliana\workspace\AIADProj\src\OtherMap\edge.edg.xml"/>
+    </input>
+
+    <output>
+        <output-file value="C:\Users\Liliana\workspace\AIADProj\src\OtherMap\map.net.xml"/>
+    </output>
+
+</configuration>
+-->
+
+<net version="0.13" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,100.00,50.00" origBoundary="0.00,0.00,100.00,50.00" projParameter="!"/>
+
+    <edge id=":0/0_0" function="internal">
+        <lane id=":0/0_0_0" index="0" speed="13.90" length="11.61" shape="3.11,5.44 0.55,2.34 -0.04,0.12 1.33,-1.21 4.68,-1.65"/>
+    </edge>
+    <edge id=":0/0_1" function="internal">
+        <lane id=":0/0_1_0" index="0" speed="13.90" length="2.22" shape="4.68,1.65 3.44,0.83 3.11,0.17"/>
+    </edge>
+    <edge id=":0/0_2" function="internal">
+        <lane id=":0/0_2_0" index="0" speed="13.90" length="2.60" shape="3.11,0.17 3.03,0.00 3.44,-0.82 4.68,-1.65"/>
+    </edge>
+    <edge id=":0/1_0" function="internal">
+        <lane id=":0/1_0_0" index="0" speed="13.90" length="4.82" shape="100.00,-1.65 101.24,-0.83 101.65,-0.00 101.24,0.82 100.00,1.65"/>
+    </edge>
+
+    <edge id="0/0to0/1" from="0/0" to="0/1" priority="-1">
+        <lane id="0/0to0/1_0" index="0" speed="13.90" length="95.32" shape="4.68,-1.65 100.00,-1.65"/>
+    </edge>
+    <edge id="0/1to0/0" from="0/1" to="0/0" priority="-1">
+        <lane id="0/1to0/0_0" index="0" speed="13.90" length="95.32" shape="100.00,1.65 4.68,1.65"/>
+    </edge>
+    <edge id="0/2to0/0" from="0/2" to="0/0" priority="-1">
+        <lane id="0/2to0/0_0" index="0" speed="13.90" length="64.66" shape="48.83,51.17 3.11,5.44"/>
+    </edge>
+
+    <tlLogic id="0/0" type="static" programID="0" offset="0">
+        <phase duration="31" state="Gr"/>
+        <phase duration="4" state="yr"/>
+        <phase duration="31" state="Gg"/>
+        <phase duration="4" state="yy"/>
+    </tlLogic>
+    <tlLogic id="0/1" type="static" programID="0" offset="0">
+        <phase duration="31" state="G"/>
+        <phase duration="4" state="y"/>
+    </tlLogic>
+
+    <junction id="0/0" type="traffic_light" x="0.00" y="0.00" incLanes="0/2to0/0_0 0/1to0/0_0" intLanes=":0/0_0_0 :0/0_2_0" shape="1.98,6.57 4.24,4.31 4.68,3.25 4.68,-3.25">
+        <request index="0" response="00" foes="10" cont="0"/>
+        <request index="1" response="01" foes="01" cont="1"/>
+    </junction>
+    <junction id="0/1" type="traffic_light" x="100.00" y="0.00" incLanes="0/0to0/1_0" intLanes=":0/1_0_0" shape="100.00,0.05 100.00,3.25 100.00,-3.25 100.00,-0.05">
+        <request index="0" response="0" foes="0" cont="0"/>
+    </junction>
+    <junction id="0/2" type="unregulated" x="50.00" y="50.00" incLanes="" intLanes="" shape="49.96,50.04 47.70,52.30"/>
+
+    <junction id=":0/0_2_0" type="internal" x="3.11" y="0.17" incLanes=":0/0_1_0 0/2to0/0_0" intLanes=":0/0_0_0"/>
+
+    <connection from="0/0to0/1" to="0/1to0/0" fromLane="0" toLane="0" via=":0/1_0_0" tl="0/1" linkIndex="0" dir="t" state="o"/>
+    <connection from="0/1to0/0" to="0/0to0/1" fromLane="0" toLane="0" via=":0/0_1_0" tl="0/0" linkIndex="1" dir="t" state="o"/>
+    <connection from="0/2to0/0" to="0/0to0/1" fromLane="0" toLane="0" via=":0/0_0_0" tl="0/0" linkIndex="0" dir="l" state="o"/>
+
+    <connection from=":0/0_0" to="0/0to0/1" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":0/0_1" to="0/0to0/1" fromLane="0" toLane="0" via=":0/0_2_0" dir="s" state="m"/>
+    <connection from=":0/0_2" to="0/0to0/1" fromLane="0" toLane="0" dir="s" state="M"/>
+    <connection from=":0/1_0" to="0/1to0/0" fromLane="0" toLane="0" dir="s" state="M"/>
+
+</net>
