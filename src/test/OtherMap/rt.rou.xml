@@ -1,5 +1,0 @@
-<routes>
-  <vType accel="2" decel="4" maxSpeed="20" id="Car" length="5" />
-  <vType accel="2" decel="4" maxSpeed="20" id="Taxi" sigma="1" length="5" color="1,0,0" />
-  <vType accel="1" decel="3" maxSpeed="16" id="Bus" length="10" />
- </routes>
