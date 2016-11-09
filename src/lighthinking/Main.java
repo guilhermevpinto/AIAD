@@ -21,19 +21,25 @@ public class Main {
 
 	private static final String SUMO_ADDRESS = "localhost";
 	private static final int SUMO_PORT = 8820;
-	private static final String SUMO_CFG = "src\\test\\mapaLearning\\file.sumocfg";
+	private static final String SUMO_CFG = "res\\mapaLearning\\file.sumocfg";
+	
+	private static final String TRAFFIC_LIGHT_INFO_XML = "res\\OtherMap\\trafficLightInfo.xml";
+	
+	private static final int SIMULATION_TICK = 100;
+	
+	// Enables or disables the JADE GUI
+	private static boolean JADE_GUI = false;
 	
 	private static ProfileImpl profile;
 	private static ContainerController mainContainer;
-
-	// Setup variables
-	private static boolean JADE_GUI = false;
+	
+	// TODO se for para ter outros modos vai ser necessário um enum algures e mudar os construtores
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, TimeoutException, UnimplementedMethod, InterruptedException {
-		ArrayList<TrafficLightAgentInfo> tfai = TFAgentInfoParser.parseTFAgentInfo("res\\OtherMap\\trafficLightInfo.xml");
-		String type = "FIXED";
+
+		ArrayList<TrafficLightAgentInfo> tfai = TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
 		
-		// Maybe use JADE GUI
+		// Use the JADE GUI if enabled
 		if (JADE_GUI) {
 			profile = new BootProfileImpl(new String[] {"-gui"});
 		} else {
@@ -60,12 +66,7 @@ public class Main {
 		trasmapi_api.launch();
 		trasmapi_api.connect();
 
-		AgentsManager manager = null;
-		if (type.equals("FIXED") || type.equals("INTERSECTION")) {
-			manager = new AgentsManager(sumo,mainContainer, tfai);
-		} else {
-			manager  = new AgentsManager(sumo, mainContainer, type);
-		}
+		AgentsManager manager = new AgentsManager(sumo, mainContainer, tfai);
 		manager.startupAgents(mainContainer);
 		
 		trasmapi_api.start();
@@ -74,7 +75,7 @@ public class Main {
 
 		//simulation loop
 		while(true) {
-			Thread.sleep(100);
+			Thread.sleep(SIMULATION_TICK);
 			if(!trasmapi_api.simulationStep(0))
 				break;
 		}
