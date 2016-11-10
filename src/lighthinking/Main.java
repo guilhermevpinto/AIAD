@@ -21,9 +21,9 @@ public class Main {
 
 	private static final String SUMO_ADDRESS = "localhost";
 	private static final int SUMO_PORT = 8820;
-	private static final String SUMO_CFG = "res\\mapaLearning\\file.sumocfg";
+	private static final String SUMO_CFG = "res\\Lighthinking\\sumo.cfg";
 	
-	private static final String TRAFFIC_LIGHT_INFO_XML = "res\\OtherMap\\trafficLightInfo.xml";
+	//private static final String TRAFFIC_LIGHT_INFO_XML = "res\\OtherMap\\trafficLightInfo.xml";
 	
 	private static final int SIMULATION_TICK = 100;
 	
@@ -37,7 +37,7 @@ public class Main {
 	
 	public static void main(String[] args) throws UnknownHostException, IOException, TimeoutException, UnimplementedMethod, InterruptedException {
 
-		ArrayList<TrafficLightAgentInfo> tfai = TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
+		//ArrayList<TrafficLightAgentInfo> tfai = TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
 		
 		// Use the JADE GUI if enabled
 		if (JADE_GUI) {
@@ -49,7 +49,7 @@ public class Main {
 		Runtime rt = Runtime.instance();
 		
 		// Agent container
-		mainContainer = rt.createMainContainer(profile);
+		//mainContainer = rt.createMainContainer(profile);
 
 		//Create SUMO
 		Sumo sumo = new Sumo("guisim");
@@ -65,13 +65,12 @@ public class Main {
 		// Start TraSMAPI
 		trasmapi_api.launch();
 		trasmapi_api.connect();
-
-		AgentsManager manager = new AgentsManager(sumo, mainContainer, tfai);
-		manager.startupAgents(mainContainer);
-		
 		trasmapi_api.start();
+
+		//AgentsManager manager = new AgentsManager(sumo, mainContainer, tfai);
+		//manager.startupAgents(mainContainer);
 		
-		manager.setBehaviour();
+		//manager.setBehaviour();
 
 		//simulation loop
 		while(true) {
