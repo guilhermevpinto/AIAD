@@ -38,11 +38,11 @@ public class Main {
 		
 		switch(mode) {
 		case FIXED:
-			tfai = TFAgentInfoParser.parseTFAgentInfo("src\\test\\OtherMap\\trafficLightInfo.xml");
+			tfai = TFAgentInfoParser.parseTFAgentInfo("res\\OtherMap\\trafficLightInfo.xml");
 			type = "FIXED";
 			break;
 		case INTERSECTION:
-			tfai = TFAgentInfoParser.parseTFAgentInfo("src\\test\\OtherMap\\trafficLightInfo.xml");
+			tfai = TFAgentInfoParser.parseTFAgentInfo("res\\OtherMap\\trafficLightInfo.xml");
 			type = "INTERSECTION";
 			break;
 		case LEARNING:
@@ -68,7 +68,7 @@ public class Main {
 		//Create SUMO
 		Sumo sumo = new Sumo("guisim");
 		List<String> params = new ArrayList<String>();
-		params.add("-c=src\\test\\mapaLearning\\file.sumocfg");
+		params.add("-c=res\\mapaLearning\\file.sumocfg");
 		sumo.addParameters(params);
 		sumo.addConnections("localhost", 8820);
 
