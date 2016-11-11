@@ -303,6 +303,7 @@ public class SumoCom {
 	}
 
 	private void parseSimulationVariables(SubscriptionResponse subscription) {
+		
 		for(Variable v: subscription.variables){
 			switch(v.varId){
 			case Constants.VAR_TIME_STEP:
@@ -335,6 +336,7 @@ public class SumoCom {
 					v.arrived = true;
 					v.alive = false;
 					v.arrivalTime = currentSimStep;
+					arrivedVehicles.add(s);
 				}
 		}
 	}
@@ -470,8 +472,8 @@ public class SumoCom {
 
 		ArrayList<Integer> variableList = new ArrayList<Integer>();
 		variableList.add(Constants.VAR_TIME_STEP);
-		//variableList.add(Constants.VAR_LOADED_VEHICLES_IDS);
-		//variableList.add(Constants.VAR_DEPARTED_VEHICLES_IDS);
+		variableList.add(Constants.VAR_LOADED_VEHICLES_IDS);
+		variableList.add(Constants.VAR_DEPARTED_VEHICLES_IDS);
 		//variableList.add(Constants.VAR_TELEPORT_STARTING_VEHICLES_IDS);
 		//variableList.add(Constants.VAR_TELEPORT_ENDING_VEHICLES_IDS);
 		variableList.add(Constants.VAR_ARRIVED_VEHICLES_IDS);

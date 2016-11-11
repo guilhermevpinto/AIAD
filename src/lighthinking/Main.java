@@ -9,13 +9,13 @@ import jade.BootProfileImpl;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.ContainerController;
-import test.Agents.AgentsManager;
-import test.Agents.TrafficLightAgentInfo;
-import test.Parser.TFAgentInfoParser;
+import lighthinking.Agent.AgentManager;
 import trasmapi.genAPI.TraSMAPI;
 import trasmapi.genAPI.exceptions.TimeoutException;
 import trasmapi.genAPI.exceptions.UnimplementedMethod;
 import trasmapi.sumo.Sumo;
+import trasmapi.sumo.SumoTrafficLight;
+import trasmapi.sumo.SumoVehicle;
 
 public class Main {
 
@@ -76,10 +76,11 @@ public class Main {
 		//manager.startupAgents(mainContainer);
 		
 		//manager.setBehaviour();
-
+		AgentManager agentManager = new AgentManager();
 		//simulation loop
 		while(true) {
 			Thread.sleep(SIMULATION_TICK);
+			agentManager.updateManager();
 			if(!trasmapi_api.simulationStep(0))
 				break;
 		}
