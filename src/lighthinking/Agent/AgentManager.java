@@ -37,7 +37,6 @@ public class AgentManager {
 	 * @return
 	 */
 	public static Boolean removeVehicleAgent(String id){
-		System.out.println("Acabou");
 		return VehicleAgents.remove(id) != null;
 	}
 
