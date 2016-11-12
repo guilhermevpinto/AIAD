@@ -7,6 +7,7 @@ public class VehicleAgent extends Agent{
 	String VehicleAgentID;
 	
 	public VehicleAgent(String s){
+		super();
 		VehicleAgentID = s;
 	}
 
