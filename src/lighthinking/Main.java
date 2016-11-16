@@ -25,7 +25,7 @@ public class Main {
 	
 	//private static final String TRAFFIC_LIGHT_INFO_XML = "res\\OtherMap\\trafficLightInfo.xml";
 	
-	private static final int SIMULATION_TICK = 20;
+	private static final int SIMULATION_TICK = 100;
 	
 	// Enables or disables the JADE GUI
 	private static boolean JADE_GUI = false;
