@@ -10,8 +10,8 @@ import trasmapi.sumo.SumoVehicle;
 
 public class AgentManager {
 
-	static HashMap<String,TFAgent> TFAgents = new HashMap<String,TFAgent>();
-	static HashMap<String,VehicleAgent> VehicleAgents = new HashMap<String,VehicleAgent>();
+	private HashMap<String,TFAgent> TFAgents = new HashMap<String,TFAgent>();
+	private HashMap<String,VehicleAgent> VehicleAgents = new HashMap<String,VehicleAgent>();
 
 	public AgentManager(){
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
@@ -29,7 +29,7 @@ public class AgentManager {
 	 * Adds a vehicle Agent
 	 * @param id
 	 */
-	public static void addVehicleAgent(String id){
+	public void addVehicleAgent(String id){
 		VehicleAgents.put(id, new VehicleAgent(id));
 	}
 	/**
@@ -37,14 +37,14 @@ public class AgentManager {
 	 * @param id
 	 * @return
 	 */
-	public static Boolean removeVehicleAgent(String id){
+	public Boolean removeVehicleAgent(String id){
 		return VehicleAgents.remove(id) != null;
 	}
 
 	/**
 	 * Updates manager, adding new Vehicles, removing arrived ones
 	 */
-	public synchronized  static void updateManager() {
+	public synchronized void updateManager() {
 
 		//adding and removing vehicles
 		for(SumoVehicle vehicle: SumoCom.vehicles){
