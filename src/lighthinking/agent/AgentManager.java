@@ -1,4 +1,4 @@
-package lighthinking.Agent;
+package lighthinking.agent;
 
 import java.util.ArrayList;
 import java.util.HashMap;

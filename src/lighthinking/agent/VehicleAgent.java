@@ -1,8 +1,8 @@
-package lighthinking.Agent;
+package lighthinking.agent;
 
 import jade.core.Agent;
 
-public class VehicleAgent extends Agent{
+public class VehicleAgent{
 
 	String VehicleAgentID;
 

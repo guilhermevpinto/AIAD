@@ -1,4 +1,4 @@
-package lighthinking.Agent;
+package lighthinking.agent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
 
-public class TFAgent extends Agent{
+public class TFAgent{
 
 	String TFId;
 	SumoTrafficLight SumoTF;
@@ -17,6 +17,7 @@ public class TFAgent extends Agent{
 	
 	HashSet<String> iDLanes;
 	HashMap<String, SumoLane> lanes;
+	ArrayList<String> TFneighbours;
 
 
 	public TFAgent(String id) {
@@ -32,14 +33,10 @@ public class TFAgent extends Agent{
 		for(String idlane : iDLanes)
 			lanes.put(idlane, new SumoLane(idlane));
 		
-		ArrayList<String> neighbours = new ArrayList<String>();
+		ArrayList<String> TFneighbours = new ArrayList<String>();
 		for (String l : iDLanes) {
-			neighbours.add(l.split("to")[0]);
+			TFneighbours.add(l.split("to")[0]);
 		}
-		
-		for(String t : neighbours)
-			System.out.println("Neigbour of " + TFId + ": " + t);
-		
 	}
 
 	public void update(){
