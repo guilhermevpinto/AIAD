@@ -75,7 +75,7 @@ public class Main {
 		//manager.startupAgents(mainContainer);
 		
 		//manager.setBehaviour();
-		AgentManager agentManager = new AgentManager();
+		AgentManager agentManager = new AgentManager(AgentManager.AgentType.REACTION);
 		//simulation loop
 		while(true) {
 			Thread.sleep(SIMULATION_TICK);

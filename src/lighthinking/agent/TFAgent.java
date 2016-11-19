@@ -3,11 +3,13 @@ package lighthinking.agent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import jade.core.Agent;
 import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
+import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
 public class TFAgent{
 
@@ -18,6 +20,10 @@ public class TFAgent{
 	HashSet<String> iDLanes;
 	HashMap<String, SumoLane> lanes;
 	ArrayList<String> TFneighbours;
+	
+	List<Phase> phases;
+	
+	static HashMap<String,Integer> vehStoppedPerLane;
 
 
 	public TFAgent(String id) {
@@ -28,28 +34,35 @@ public class TFAgent{
 		
 		iDLanes = new HashSet<>(SumoTF.getControlledLanes());
 		
-		lanes = new HashMap<>();
-		
-		for(String idlane : iDLanes)
-			lanes.put(idlane, new SumoLane(idlane));
-		
 		ArrayList<String> TFneighbours = new ArrayList<String>();
 		for (String l : iDLanes) {
+			AgentManager.addLane(l);
 			TFneighbours.add(l.split("to")[0]);
 		}
+		
+		SumoTrafficLightProgram TFProgram = SumoTF.getProgram();
+		
+		phases = TFProgram.getPhases();
+		
+		System.out.println(phases);
+	}
+	
+	public int getIDCurrentPhase(){
+		String state = SumoTF.getState();
+		int i = 0;
+		for(Phase phase : phases){
+			if(phase.getState().equals(state))
+				break;
+			else i++;
+		}
+		return i;
+	}
+	
+	public String getNextState(int i){
+		return phases.get(i).getState();
 	}
 
 	public void update(){
-//		System.out.println("Duration of "+ TFId.split("to")[0] +": " + SumoTF.getTimeToNextSwitch());
-//		HashMap<String,Integer> vehStoppedPerLane = getVehicleStoppedInLanes();
-	}
-	
 
-	public HashMap<String,Integer> getVehicleStoppedInLanes(){
-		HashMap<String,Integer> vehStoppedPerLane = new HashMap<>();
-		for(String id : iDLanes)
-			if(!vehStoppedPerLane.containsKey(id))
-				vehStoppedPerLane.put(id,lanes.get(id).getNumVehiclesStopped(0.0));
-		return vehStoppedPerLane;
 	}
 }
