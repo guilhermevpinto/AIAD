@@ -2,17 +2,12 @@ package lighthinking.agent;
 
 import jade.core.Agent;
 
-public class VehicleAgent{
+@SuppressWarnings("serial")
+public abstract class VehicleAgent extends Agent implements Updateable {
 
 	String VehicleAgentID;
 
-	public VehicleAgent(String s){
-		super();
+	protected VehicleAgent(String s) {
 		VehicleAgentID = s;
 	}
-
-	public void update(){
-
-	}
-
 }

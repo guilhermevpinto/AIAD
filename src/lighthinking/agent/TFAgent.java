@@ -11,7 +11,7 @@ import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
-public class TFAgent{
+public abstract class TFAgent implements Updateable {
 
 	String TFId;
 	SumoTrafficLight SumoTF;
@@ -60,9 +60,5 @@ public class TFAgent{
 	
 	public String getNextState(int i){
 		return phases.get(i).getState();
-	}
-
-	public void update(){
-
 	}
 }

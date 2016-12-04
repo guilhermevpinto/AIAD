@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import lighthinking.agent.basic.BasicTFAgent;
+import lighthinking.agent.basic.BasicVehicleAgent;
 import lighthinking.behavior.ReactionTFAgent;
 import trasmapi.sumo.SumoCom;
 import trasmapi.sumo.SumoLane;
@@ -37,12 +39,12 @@ public class AgentManager {
 				TFAgents.put(id, new ReactionTFAgent(id));
 				break;
 			default:
-				TFAgents.put(id, new TFAgent(id));
+				TFAgents.put(id, new BasicTFAgent(id));
 				break;
 			}
 		}
 		for(String id : vehiclesIds){
-			VehicleAgents.put(id, new VehicleAgent(id));
+			VehicleAgents.put(id, new BasicVehicleAgent(id));
 		}
 		
 		for(String ids : laneIDs)
@@ -56,7 +58,7 @@ public class AgentManager {
 	 * @param id
 	 */
 	public void addVehicleAgent(String id){
-		VehicleAgents.put(id, new VehicleAgent(id));
+		VehicleAgents.put(id, new BasicVehicleAgent(id));
 	}
 	/**
 	 * Removes a vehicle Agent
