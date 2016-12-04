@@ -21,7 +21,9 @@ public abstract class VehicleAgent extends Agent {
 	public void update() {
 		if(!alive && sumoVehicle.getSpeed() >= 0) {
 			alive = true;
-			System.out.println("Vehicle " + internalID + " started.");
+			if(agentManager.isDebug()) {
+				System.out.println("Vehicle " + internalID + " started.");
+			}
 		}
 	}
 
@@ -29,7 +31,9 @@ public abstract class VehicleAgent extends Agent {
 	public void finish() {
 		if(alive) {
 			alive = false;
-			System.out.println("Vehicle " + internalID + " finished.");
+			if(agentManager.isDebug()) {
+				System.out.println("Vehicle " + internalID + " finished.");
+			}
 		}
 	}
 }

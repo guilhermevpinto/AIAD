@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import lighthinking.Config;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
 import lighthinking.agent.reaction.ReactionTLAgent;
@@ -15,6 +16,7 @@ import trasmapi.sumo.SumoVehicle;
 
 public class AgentManager {
 
+	private Config config;
 	private Agent.Type agentMode;
 
 	private HashMap<String, TLAgent> trafficLightAgents;
@@ -24,11 +26,12 @@ public class AgentManager {
 	private static HashMap<String, Integer> vehiclesStoppedPerLane;
 
 	public AgentManager() {
-		this(Agent.Type.BASIC);
+		this(new Config());
 	}
 
-	public AgentManager(Agent.Type agentMode) {
-		this.agentMode = agentMode;
+	public AgentManager(Config config) {
+		this.config = config;
+		this.agentMode = this.config.agentType;
 
 		trafficLightAgents = new HashMap<String, TLAgent>();
 		vehicleAgents = new HashMap<String, VehicleAgent>();
@@ -158,6 +161,14 @@ public class AgentManager {
 			TLAgent tf = entry.getValue();
 			tf.update();
 		}
+	}
+	
+	public Config getConfig() {
+		return config;
+	}
+	
+	public boolean isDebug() {
+		return config.debug;
 	}
 
 }

@@ -73,6 +73,10 @@ public class LighthinkingGUI {
 		JCheckBox chckbxUseJadeGui = new JCheckBox("Use JADE gui");
 		chckbxUseJadeGui.setBounds(212, 90, 225, 23);
 		frame.getContentPane().add(chckbxUseJadeGui);
+		
+		JCheckBox chckbxDebug = new JCheckBox("Debug");
+		chckbxDebug.setBounds(212, 116, 177, 23);
+		frame.getContentPane().add(chckbxDebug);
 
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -82,6 +86,7 @@ public class LighthinkingGUI {
 
 				conf.jadeGUI = chckbxUseJadeGui.isSelected();
 				conf.agentType = (Type) comboBox.getSelectedItem();
+				conf.debug = chckbxDebug.isSelected();
 
 				try {
 					Lighthinking.start(conf);
