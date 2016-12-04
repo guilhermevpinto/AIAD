@@ -37,7 +37,7 @@ public abstract class TLAgent extends Agent {
 		
 		neighbourLights = new ArrayList<String>();
 		for (String l : controlledLaneIds) {
-			AgentManager.addLane(l);
+			mngr.addLane(l);
 			neighbourLights.add(l.split("to")[0]);
 		}
 		

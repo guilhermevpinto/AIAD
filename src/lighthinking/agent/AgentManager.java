@@ -42,7 +42,8 @@ public class AgentManager {
 	private void init() {
 		laneIDs = new HashSet<String>(SumoCom.getAllEdgesIds());
 		for (String id : laneIDs) {
-			lanes.put(id, new SumoLane(id));
+			actualAddLane(id);
+			vehiclesStoppedPerLane.put(id, 0);
 		}
 
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
@@ -69,10 +70,6 @@ public class AgentManager {
 
 			break;
 		}
-
-		for (String ids : laneIDs) {
-			vehiclesStoppedPerLane.put(ids, 0);
-		}
 	}
 
 	public void addVehicleAgent(VehicleAgent agent) {
@@ -91,12 +88,38 @@ public class AgentManager {
 		return trafficLightAgents.remove(id) != null;
 	}
 
+	public void addLane(String id) {
+		if(!laneIDs.contains(id)) {
+			laneIDs.add(id);
+		}
+		if(!lanes.containsKey(id)) {
+			actualAddLane(id);
+		}
+	}
+
+	private void actualAddLane(String id) {
+		lanes.put(id, new SumoLane(id));
+	}
+
+	public void updateVehicleStoppedInLanes() {
+		for (String id : laneIDs)
+			if (!vehiclesStoppedPerLane.containsKey(id))
+				vehiclesStoppedPerLane.put(id, lanes.get(id).getNumVehiclesStopped(0.2));
+	}
+
 	/**
 	 * Updates manager, adding new Vehicles, removing arrived ones
 	 */
 	public synchronized void updateManager() {
 
 		// Add new vehicles and remove stopped vehicles
+		updateAgentObjects();
+		updateAgents();
+		updateVehicleStoppedInLanes();
+	}
+
+	// Add new vehicles and remove stopped vehicles
+	private void updateAgentObjects() {
 		for (SumoVehicle vehicle : SumoCom.vehicles) {
 			if (!vehicleAgents.containsKey(vehicle.id)) {
 				switch (agentMode) {
@@ -113,11 +136,10 @@ public class AgentManager {
 		for (String id : SumoCom.arrivedVehicles) {
 			removeVehicleAgent(id);
 		}
+	}
 
-		// Update number of cars stopped by lane
-		getVehicleStoppedInLanes();
-
-		// Update existing vehicles and traffic lights
+	// Update existing vehicles and traffic lights
+	private void updateAgents() {
 		for (HashMap.Entry<String, VehicleAgent> entry : vehicleAgents.entrySet()) {
 			VehicleAgent vehicle = entry.getValue();
 			vehicle.update();
@@ -126,16 +148,6 @@ public class AgentManager {
 			TLAgent tf = entry.getValue();
 			tf.update();
 		}
-	}
-
-	public void getVehicleStoppedInLanes() {
-		for (String id : laneIDs)
-			if (!vehiclesStoppedPerLane.containsKey(id))
-				vehiclesStoppedPerLane.put(id, lanes.get(id).getNumVehiclesStopped(0.2));
-	}
-
-	public static void addLane(String id) {
-		laneIDs.add(id);
 	}
 
 }
