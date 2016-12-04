@@ -7,9 +7,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import lighthinking.agent.basic.BasicTFAgent;
+import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
-import lighthinking.behavior.ReactionTFAgent;
+import lighthinking.behavior.ReactionTLAgent;
 import trasmapi.sumo.SumoCom;
 import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoTrafficLight;
@@ -17,8 +17,8 @@ import trasmapi.sumo.SumoVehicle;
 
 public class AgentManager {
 
-	private HashMap<String,TFAgent> TFAgents = new HashMap<String,TFAgent>();
-	private HashMap<String,VehicleAgent> VehicleAgents = new HashMap<String,VehicleAgent>();
+	private HashMap<String,TLAgent> trafficLightAgents = new HashMap<String,TLAgent>();
+	private HashMap<String,VehicleAgent> vehicleAgents = new HashMap<String,VehicleAgent>();
 	private HashMap<String, SumoLane> lanes = new HashMap<String,SumoLane>();
 	public static HashMap<String, Integer> vehStoppedPerLane = new HashMap<String,Integer>();
 	public static HashSet<String> laneIDs = new HashSet<>();
@@ -36,15 +36,15 @@ public class AgentManager {
 			switch(mode)
 			{
 			case REACTION: 
-				TFAgents.put(id, new ReactionTFAgent(id));
+				trafficLightAgents.put(id, new ReactionTLAgent(id));
 				break;
 			default:
-				TFAgents.put(id, new BasicTFAgent(id));
+				trafficLightAgents.put(id, new BasicTLAgent(id));
 				break;
 			}
 		}
 		for(String id : vehiclesIds){
-			VehicleAgents.put(id, new BasicVehicleAgent(id));
+			vehicleAgents.put(id, new BasicVehicleAgent(id));
 		}
 		
 		for(String ids : laneIDs)
@@ -58,7 +58,7 @@ public class AgentManager {
 	 * @param id
 	 */
 	public void addVehicleAgent(String id){
-		VehicleAgents.put(id, new BasicVehicleAgent(id));
+		vehicleAgents.put(id, new BasicVehicleAgent(id));
 	}
 	/**
 	 * Removes a vehicle Agent
@@ -66,7 +66,7 @@ public class AgentManager {
 	 * @return
 	 */
 	public Boolean removeVehicleAgent(String id){
-		return VehicleAgents.remove(id) != null;
+		return vehicleAgents.remove(id) != null;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class AgentManager {
 
 		//adding and removing vehicles
 		for(SumoVehicle vehicle: SumoCom.vehicles){
-			if(!VehicleAgents.containsKey(vehicle.id))
+			if(!vehicleAgents.containsKey(vehicle.id))
 				addVehicleAgent(vehicle.id);
 		}
 		for(String id : SumoCom.arrivedVehicles){
@@ -88,14 +88,14 @@ public class AgentManager {
 		getVehicleStoppedInLanes();
 
 		//update each vehicle and TF
-		for (HashMap.Entry<String, VehicleAgent> entry : VehicleAgents.entrySet())
+		for (HashMap.Entry<String, VehicleAgent> entry : vehicleAgents.entrySet())
 		{
 			VehicleAgent vehicle = entry.getValue();
 			vehicle.update();
 		}
-		for (HashMap.Entry<String, TFAgent> entry : TFAgents.entrySet())
+		for (HashMap.Entry<String, TLAgent> entry : trafficLightAgents.entrySet())
 		{
-			TFAgent TF = entry.getValue();
+			TLAgent TF = entry.getValue();
 			TF.update();
 		}
 	}

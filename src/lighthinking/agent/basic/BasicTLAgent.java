@@ -1,11 +1,11 @@
 package lighthinking.agent.basic;
 
 import lighthinking.agent.AgentManager;
-import lighthinking.agent.TFAgent;
+import lighthinking.agent.TLAgent;
 
-public class BasicTFAgent extends TFAgent {
+public class BasicTLAgent extends TLAgent {
 
-	public BasicTFAgent(String id) {
+	public BasicTLAgent(String id) {
 		super(id);
 		// TODO Auto-generated constructor stub
 	}

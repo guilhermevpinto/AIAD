@@ -11,7 +11,7 @@ import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
-public abstract class TFAgent implements Updateable {
+public abstract class TLAgent implements Updateable {
 
 	String TFId;
 	SumoTrafficLight SumoTF;
@@ -26,7 +26,7 @@ public abstract class TFAgent implements Updateable {
 	static HashMap<String,Integer> vehStoppedPerLane;
 
 
-	public TFAgent(String id) {
+	public TLAgent(String id) {
 		super();
 		TFId = id;
 		

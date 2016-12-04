@@ -1,11 +1,11 @@
 package lighthinking.behavior;
 
 import lighthinking.agent.AgentManager;
-import lighthinking.agent.TFAgent;
+import lighthinking.agent.TLAgent;
 
-public class ReactionTFAgent extends TFAgent {
+public class ReactionTLAgent extends TLAgent {
 
-	public ReactionTFAgent(String id) {
+	public ReactionTLAgent(String id) {
 		super(id);
 		// TODO Auto-generated constructor stub
 	}
