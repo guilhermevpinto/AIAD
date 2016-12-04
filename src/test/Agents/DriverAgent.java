@@ -12,6 +12,7 @@ import trasmapi.genAPI.exceptions.UnimplementedMethod;
 import trasmapi.sumo.SumoCom;
 import trasmapi.sumo.SumoVehicle;
 
+@SuppressWarnings("serial")
 public class DriverAgent extends Agent{
 
 	public static Random rand;

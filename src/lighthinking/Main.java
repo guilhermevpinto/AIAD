@@ -9,21 +9,19 @@ import jade.BootProfileImpl;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.ContainerController;
-import lighthinking.Agent.AgentManager;
+import lighthinking.agent.AgentManager;
 import trasmapi.genAPI.TraSMAPI;
 import trasmapi.genAPI.exceptions.TimeoutException;
 import trasmapi.genAPI.exceptions.UnimplementedMethod;
 import trasmapi.sumo.Sumo;
-import trasmapi.sumo.SumoTrafficLight;
-import trasmapi.sumo.SumoVehicle;
 
+@Deprecated
 public class Main {
 
 	private static final String SUMO_ADDRESS = "localhost";
 	private static final int SUMO_PORT = 8820;
 	private static final String SUMO_CFG = "res\\Lighthinking\\test\\sumo.cfg";
 	
-	//private static final String TRAFFIC_LIGHT_INFO_XML = "res\\OtherMap\\trafficLightInfo.xml";
 	
 	private static final int SIMULATION_TICK = 100;
 	
@@ -35,7 +33,7 @@ public class Main {
 	
 	// TODO se for para ter outros modos vai ser necessário um enum algures e mudar os construtores
 	
-	public static void main(String[] args) throws UnknownHostException, IOException, TimeoutException, UnimplementedMethod, InterruptedException {
+	public static void main() throws UnknownHostException, IOException, TimeoutException, UnimplementedMethod, InterruptedException {
 
 		//ArrayList<TrafficLightAgentInfo> tfai = TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
 		
@@ -76,7 +74,7 @@ public class Main {
 		//manager.startupAgents(mainContainer);
 		
 		//manager.setBehaviour();
-		AgentManager agentManager = new AgentManager();
+		AgentManager agentManager = new AgentManager(lighthinking.agent.Agent.Type.REACTION);
 		//simulation loop
 		while(true) {
 			Thread.sleep(SIMULATION_TICK);
