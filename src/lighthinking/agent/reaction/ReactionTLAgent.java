@@ -6,8 +6,8 @@ import lighthinking.agent.TLAgent;
 @SuppressWarnings("serial")
 public class ReactionTLAgent extends TLAgent {
 
-	public ReactionTLAgent(String id) {
-		super(id);
+	public ReactionTLAgent(String id, AgentManager mngr) {
+		super(id, mngr);
 		this.type = Type.REACTION;
 		// TODO Auto-generated constructor stub
 	}

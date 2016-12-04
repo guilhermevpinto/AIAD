@@ -6,8 +6,8 @@ import lighthinking.agent.TLAgent;
 @SuppressWarnings("serial")
 public class BasicTLAgent extends TLAgent {
 
-	public BasicTLAgent(String id) {
-		super(id);
+	public BasicTLAgent(String id, AgentManager mngr) {
+		super(id, mngr);
 		this.type = Type.BASIC;
 		// TODO Auto-generated constructor stub
 	}

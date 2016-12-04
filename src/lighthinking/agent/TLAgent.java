@@ -11,6 +11,8 @@ import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
 @SuppressWarnings("serial")
 public abstract class TLAgent extends Agent {
+	
+	protected AgentManager agentManager;
 
 	protected SumoTrafficLight sumoTrafficLight;
 	protected SumoTrafficLightProgram sumoTrafficLightProgram;
@@ -18,15 +20,16 @@ public abstract class TLAgent extends Agent {
 	protected HashSet<String> controlledLaneIds;
 	protected ArrayList<String> neighbourLights;
 	
-	List<Phase> phases;
+	protected List<Phase> phases;
 	
-	static HashMap<String,Integer> vehiclesStoppedPerLane;
+	protected HashMap<String,Integer> vehiclesStoppedPerLane;
 
 	
 	
-	public TLAgent(String id) {
+	public TLAgent(String id, AgentManager mngr) {
 		super();
 		internalID = id;
+		agentManager = mngr;
 		
 		sumoTrafficLight = new SumoTrafficLight(internalID);
 		

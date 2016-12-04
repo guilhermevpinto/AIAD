@@ -6,8 +6,8 @@ import lighthinking.agent.VehicleAgent;
 @SuppressWarnings("serial")
 public class BasicVehicleAgent extends VehicleAgent {
 
-	public BasicVehicleAgent(String s) {
-		super(s);
+	public BasicVehicleAgent(String s, AgentManager mngr) {
+		super(s, mngr);
 		this.type = Type.BASIC;
 		// TODO Auto-generated constructor stub
 	}

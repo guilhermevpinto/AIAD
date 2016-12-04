@@ -9,5 +9,5 @@ public interface Updateable {
 
 	// Complete version (more comunication with other entities)
 	public void update(AgentManager agentManager);
-	
+
 }

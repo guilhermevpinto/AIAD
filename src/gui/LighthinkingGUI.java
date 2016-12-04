@@ -55,36 +55,34 @@ public class LighthinkingGUI {
 		frame.setBounds(100, 100, 544, 486);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		JComboBox<Type> comboBox = new JComboBox(Agent.Type.values());
 		comboBox.setBounds(183, 50, 162, 20);
 		frame.getContentPane().add(comboBox);
-		
+
 		JLabel lblNewLabel = new JLabel("Agent type:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setBounds(34, 53, 148, 14);
 		frame.getContentPane().add(lblNewLabel);
-		
+
 		JButton btnStart = new JButton("START");
 		btnStart.setBounds(212, 379, 105, 41);
 		frame.getContentPane().add(btnStart);
-		
+
 		JCheckBox chckbxUseJadeGui = new JCheckBox("Use JADE gui");
 		chckbxUseJadeGui.setBounds(212, 90, 225, 23);
 		frame.getContentPane().add(chckbxUseJadeGui);
-		
-		
-		
+
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				frame.dispose();
-				
+
 				Config conf = new Config();
-				
+
 				conf.jadeGUI = chckbxUseJadeGui.isSelected();
 				conf.agentType = (Type) comboBox.getSelectedItem();
-				
+
 				try {
 					Lighthinking.start(conf);
 				} catch (IOException | TimeoutException | UnimplementedMethod | InterruptedException e) {

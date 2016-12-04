@@ -30,7 +30,8 @@ public class Lighthinking {
 		start(new Config());
 	}
 
-	public static void start(Config config) throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
+	public static void start(Config config)
+			throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
 		// ArrayList<TrafficLightAgentInfo> tfai =
 		// TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
 
