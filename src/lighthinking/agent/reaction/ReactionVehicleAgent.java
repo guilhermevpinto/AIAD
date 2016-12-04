@@ -18,10 +18,4 @@ public class ReactionVehicleAgent extends VehicleAgent {
 		
 	}
 
-	@Override
-	public void update(AgentManager agentManager) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

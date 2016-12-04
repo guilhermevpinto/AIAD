@@ -77,7 +77,12 @@ public class AgentManager {
 	}
 
 	public Boolean removeVehicleAgent(String id) {
-		return vehicleAgents.remove(id) != null;
+		VehicleAgent agent = vehicleAgents.get(id);
+		if(agent != null) {
+			agent.finish();
+			return vehicleAgents.remove(id) != null;
+		}
+		return false;
 	}
 
 	public void addTLAgent(TLAgent agent) {
@@ -85,7 +90,12 @@ public class AgentManager {
 	}
 
 	public boolean removeTLAgent(String id) {
-		return trafficLightAgents.remove(id) != null;
+		TLAgent agent = trafficLightAgents.get(id);
+		if(agent != null) {
+			agent.finish();
+			return trafficLightAgents.remove(id) != null;
+		}
+		return false;
 	}
 
 	public void addLane(String id) {
@@ -133,6 +143,7 @@ public class AgentManager {
 			}
 		}
 		for (String id : SumoCom.arrivedVehicles) {
+			
 			removeVehicleAgent(id);
 		}
 	}

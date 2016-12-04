@@ -13,12 +13,6 @@ public class BasicTLAgent extends TLAgent {
 	}
 
 	@Override
-	public void update(AgentManager agentManager) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void update() {
 		// TODO Auto-generated method stub
 		

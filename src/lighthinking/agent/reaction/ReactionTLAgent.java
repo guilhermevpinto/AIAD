@@ -18,12 +18,6 @@ public class ReactionTLAgent extends TLAgent {
 		
 		//int indexState = this.getIDCurrentPhase();
 		//int numOfStoppedVeh = AgentManager.vehStoppedPerLane.get(key)
-	}
-
-	@Override
-	public void update(AgentManager agentManager) {
-		// TODO completar		
-	}
-	
+	}	
 
 }
