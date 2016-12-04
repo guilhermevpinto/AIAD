@@ -23,18 +23,15 @@ public class Lighthinking {
 
 	private static final int SIMULATION_TICK = 100;
 
-	// Enables or disables the JADE GUI
-	private static boolean JADE_GUI = false;
-
 	private static ProfileImpl profile;
 	private static ContainerController mainContainer;
 
-	public static void start(Agent.Type agentType) throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
+	public static void start(Config config) throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
 		// ArrayList<TrafficLightAgentInfo> tfai =
 		// TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
 
 		// Use the JADE GUI if enabled
-		if (JADE_GUI) {
+		if (config.jadeGUI) {
 			profile = new BootProfileImpl(new String[] { "-gui" });
 		} else {
 			profile = new ProfileImpl();
@@ -69,7 +66,7 @@ public class Lighthinking {
 		// manager.startupAgents(mainContainer);
 
 		// manager.setBehaviour();
-		AgentManager agentManager = new AgentManager(agentType);
+		AgentManager agentManager = new AgentManager(config.agentType);
 		// simulation loop
 		while (true) {
 			Thread.sleep(SIMULATION_TICK);

@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import lighthinking.Config;
 import lighthinking.Lighthinking;
-import lighthinking.Main;
 import lighthinking.agent.Agent;
 import lighthinking.agent.Agent.Type;
 import trasmapi.genAPI.exceptions.TimeoutException;
@@ -18,8 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.JCheckBox;
 
 public class LighthinkingGUI {
 
@@ -57,7 +56,8 @@ public class LighthinkingGUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JComboBox<Type> comboBox = new JComboBox<Type>(Agent.Type.values());
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		JComboBox<Type> comboBox = new JComboBox(Agent.Type.values());
 		comboBox.setBounds(183, 50, 162, 20);
 		frame.getContentPane().add(comboBox);
 		
@@ -69,11 +69,24 @@ public class LighthinkingGUI {
 		JButton btnStart = new JButton("START");
 		btnStart.setBounds(212, 379, 105, 41);
 		frame.getContentPane().add(btnStart);
+		
+		JCheckBox chckbxUseJadeGui = new JCheckBox("Use JADE gui");
+		chckbxUseJadeGui.setBounds(212, 90, 97, 23);
+		frame.getContentPane().add(chckbxUseJadeGui);
+		
+		
+		
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				frame.dispose();
+				
+				Config conf = new Config();
+				
+				conf.jadeGUI = chckbxUseJadeGui.isSelected();
+				conf.agentType = (Type) comboBox.getSelectedItem();
+				
 				try {
-					Lighthinking.start((Type)comboBox.getSelectedItem());
+					Lighthinking.start(conf);
 				} catch (IOException | TimeoutException | UnimplementedMethod | InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
