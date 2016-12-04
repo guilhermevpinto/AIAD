@@ -90,8 +90,8 @@ public class LighthinkingGUI {
 
 				try {
 					Lighthinking.start(conf);
+					System.exit(0);
 				} catch (IOException | TimeoutException | UnimplementedMethod | InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
