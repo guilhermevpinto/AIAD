@@ -31,6 +31,7 @@ public class AgentManager {
 			case REACTION: 
 				trafficLightAgents.put(id, new ReactionTLAgent(id));
 				break;
+			case BASIC:
 			default:
 				trafficLightAgents.put(id, new BasicTLAgent(id));
 				break;
