@@ -44,7 +44,7 @@ public abstract class TLAgent extends Agent {
 		sumoTrafficLightProgram = sumoTrafficLight.getProgram();
 		phases = sumoTrafficLightProgram.getPhases();
 		
-		System.out.println(phases);
+		//System.out.println(phases);
 	}
 	
 	public int getIDCurrentPhase(){

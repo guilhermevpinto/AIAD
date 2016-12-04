@@ -40,11 +40,11 @@ public class AgentManager {
 	}
 
 	private void init() {
-		laneIDs = new HashSet<String>(SumoCom.getAllEdgesIds());
-		for (String id : laneIDs) {
-			actualAddLane(id);
-			vehiclesStoppedPerLane.put(id, 0);
-		}
+//		laneIDs = new HashSet<String>(SumoCom.getAllEdgesIds());
+//		for (String id : laneIDs) {
+//			actualAddLane(id);
+//			vehiclesStoppedPerLane.put(id, 0);
+//		}
 
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
 		ArrayList<String> vehiclesIds = SumoCom.getAllVehiclesIds();
@@ -111,7 +111,6 @@ public class AgentManager {
 	 * Updates manager, adding new Vehicles, removing arrived ones
 	 */
 	public synchronized void updateManager() {
-
 		// Add new vehicles and remove stopped vehicles
 		updateAgentObjects();
 		updateAgents();
