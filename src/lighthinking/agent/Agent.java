@@ -12,4 +12,12 @@ public abstract class Agent extends jade.core.Agent implements Updateable {
 	
 	protected Type type;
 	protected String internalID;
+	
+	public Type getType() {
+		return type;
+	}
+	
+	public String getID() {
+		return internalID;
+	}
 }
