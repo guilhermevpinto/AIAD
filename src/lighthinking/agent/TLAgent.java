@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import jade.core.Agent;
 import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
-public abstract class TLAgent implements Updateable {
+@SuppressWarnings("serial")
+public abstract class TLAgent extends Agent implements Updateable {
 
 	String TFId;
 	SumoTrafficLight SumoTF;

@@ -1,15 +1,12 @@
 package lighthinking.agent;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
-import lighthinking.behavior.ReactionTLAgent;
+import lighthinking.agent.reaction.ReactionTLAgent;
 import trasmapi.sumo.SumoCom;
 import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoTrafficLight;
@@ -22,12 +19,8 @@ public class AgentManager {
 	private HashMap<String, SumoLane> lanes = new HashMap<String,SumoLane>();
 	public static HashMap<String, Integer> vehStoppedPerLane = new HashMap<String,Integer>();
 	public static HashSet<String> laneIDs = new HashSet<>();
-	
-	public static enum AgentType{
-		REACTION
-	}
 
-	public AgentManager(AgentType mode){
+	public AgentManager(Agent.Type mode){
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
 		ArrayList<String> vehiclesIds = SumoCom.getAllVehiclesIds();
 		

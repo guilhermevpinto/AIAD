@@ -8,6 +8,7 @@ public class BasicVehicleAgent extends VehicleAgent {
 
 	public BasicVehicleAgent(String s) {
 		super(s);
+		this.type = Type.BASIC;
 		// TODO Auto-generated constructor stub
 	}
 

@@ -14,8 +14,6 @@ import trasmapi.genAPI.TraSMAPI;
 import trasmapi.genAPI.exceptions.TimeoutException;
 import trasmapi.genAPI.exceptions.UnimplementedMethod;
 import trasmapi.sumo.Sumo;
-import trasmapi.sumo.SumoTrafficLight;
-import trasmapi.sumo.SumoVehicle;
 
 public class Main {
 
@@ -75,7 +73,7 @@ public class Main {
 		//manager.startupAgents(mainContainer);
 		
 		//manager.setBehaviour();
-		AgentManager agentManager = new AgentManager(AgentManager.AgentType.REACTION);
+		AgentManager agentManager = new AgentManager(lighthinking.agent.Agent.Type.REACTION);
 		//simulation loop
 		while(true) {
 			Thread.sleep(SIMULATION_TICK);
