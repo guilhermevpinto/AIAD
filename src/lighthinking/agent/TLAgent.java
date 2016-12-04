@@ -11,7 +11,7 @@ import trasmapi.sumo.SumoTrafficLightProgram;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
 @SuppressWarnings("serial")
-public abstract class TLAgent extends Agent implements Updateable {
+public abstract class TLAgent extends Agent {
 
 	String TFId;
 	SumoTrafficLight SumoTF;

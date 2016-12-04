@@ -1,4 +1,6 @@
-package lighthinking.agent;
+package utils;
+
+import lighthinking.agent.AgentManager;
 
 public interface Updateable {
 

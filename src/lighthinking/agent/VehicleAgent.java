@@ -1,7 +1,7 @@
 package lighthinking.agent;
 
 @SuppressWarnings("serial")
-public abstract class VehicleAgent extends Agent implements Updateable {
+public abstract class VehicleAgent extends Agent {
 
 	String VehicleAgentID;
 
