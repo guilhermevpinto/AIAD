@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
@@ -13,42 +12,40 @@ import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 @SuppressWarnings("serial")
 public abstract class TLAgent extends Agent {
 
-	String TFId;
-	SumoTrafficLight SumoTF;
-	SumoTrafficLightProgram TFProgram;
+	protected SumoTrafficLight sumoTrafficLight;
+	protected SumoTrafficLightProgram sumoTrafficLightProgram;
 	
-	HashSet<String> iDLanes;
-	HashMap<String, SumoLane> lanes;
-	ArrayList<String> TFneighbours;
+	protected HashSet<String> controlledLaneIds;
+	protected ArrayList<String> neighbourLights;
 	
 	List<Phase> phases;
 	
-	static HashMap<String,Integer> vehStoppedPerLane;
+	static HashMap<String,Integer> vehiclesStoppedPerLane;
 
-
+	
+	
 	public TLAgent(String id) {
 		super();
-		TFId = id;
+		internalID = id;
 		
-		SumoTF = new SumoTrafficLight(TFId);
+		sumoTrafficLight = new SumoTrafficLight(internalID);
 		
-		iDLanes = new HashSet<>(SumoTF.getControlledLanes());
+		controlledLaneIds = new HashSet<>(sumoTrafficLight.getControlledLanes());
 		
-		ArrayList<String> TFneighbours = new ArrayList<String>();
-		for (String l : iDLanes) {
+		neighbourLights = new ArrayList<String>();
+		for (String l : controlledLaneIds) {
 			AgentManager.addLane(l);
-			TFneighbours.add(l.split("to")[0]);
+			neighbourLights.add(l.split("to")[0]);
 		}
 		
-		SumoTrafficLightProgram TFProgram = SumoTF.getProgram();
-		
-		phases = TFProgram.getPhases();
+		sumoTrafficLightProgram = sumoTrafficLight.getProgram();
+		phases = sumoTrafficLightProgram.getPhases();
 		
 		System.out.println(phases);
 	}
 	
 	public int getIDCurrentPhase(){
-		String state = SumoTF.getState();
+		String state = sumoTrafficLight.getState();
 		int i = 0;
 		for(Phase phase : phases){
 			if(phase.getState().equals(state))

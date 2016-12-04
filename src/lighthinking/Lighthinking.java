@@ -26,6 +26,10 @@ public class Lighthinking {
 	private static ProfileImpl profile;
 	private static ContainerController mainContainer;
 
+	public static void start() throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
+		start(new Config());
+	}
+
 	public static void start(Config config) throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
 		// ArrayList<TrafficLightAgentInfo> tfai =
 		// TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);

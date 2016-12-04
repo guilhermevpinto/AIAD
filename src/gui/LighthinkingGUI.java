@@ -63,7 +63,7 @@ public class LighthinkingGUI {
 		
 		JLabel lblNewLabel = new JLabel("Agent type:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setBounds(108, 53, 74, 14);
+		lblNewLabel.setBounds(34, 53, 148, 14);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JButton btnStart = new JButton("START");
@@ -71,7 +71,7 @@ public class LighthinkingGUI {
 		frame.getContentPane().add(btnStart);
 		
 		JCheckBox chckbxUseJadeGui = new JCheckBox("Use JADE gui");
-		chckbxUseJadeGui.setBounds(212, 90, 97, 23);
+		chckbxUseJadeGui.setBounds(212, 90, 225, 23);
 		frame.getContentPane().add(chckbxUseJadeGui);
 		
 		
