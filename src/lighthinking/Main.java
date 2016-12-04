@@ -15,6 +15,7 @@ import trasmapi.genAPI.exceptions.TimeoutException;
 import trasmapi.genAPI.exceptions.UnimplementedMethod;
 import trasmapi.sumo.Sumo;
 
+@Deprecated
 public class Main {
 
 	private static final String SUMO_ADDRESS = "localhost";
@@ -32,7 +33,7 @@ public class Main {
 	
 	// TODO se for para ter outros modos vai ser necessário um enum algures e mudar os construtores
 	
-	public static void main(String[] args) throws UnknownHostException, IOException, TimeoutException, UnimplementedMethod, InterruptedException {
+	public static void main() throws UnknownHostException, IOException, TimeoutException, UnimplementedMethod, InterruptedException {
 
 		//ArrayList<TrafficLightAgentInfo> tfai = TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
 		
