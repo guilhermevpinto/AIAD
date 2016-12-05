@@ -11,6 +11,7 @@ public abstract class VehicleAgent extends Agent {
 	protected SumoVehicle sumoVehicle;
 	protected boolean alive;
 	
+	//Params
 	protected double speed;
 	protected String routeID = null;
 	protected ArrayList<String> edges = null;

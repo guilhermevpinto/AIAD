@@ -21,9 +21,14 @@ public abstract class TLAgent extends Agent {
 	protected ArrayList<String> neighbourLights;
 	
 	protected List<Phase> phases;
+	protected ArrayList<ArrayList<Integer>> laneChanging;
 	
+	
+	//params
 	protected int index = -1;
 
+	// new parameters added here must be added to "resetParams()"
+	
 	public TLAgent(String id, AgentManager mngr) {
 		super();
 		internalID = id;
@@ -44,6 +49,8 @@ public abstract class TLAgent extends Agent {
 		
 		index = sumoTrafficLight.getCurrentPhaseIndex();
 		
+		this.getLaneChanging();
+		
 		//System.out.println(phases);
 	}
 	
@@ -58,29 +65,59 @@ public abstract class TLAgent extends Agent {
 		return i;
 	}
 	
+	//Next after yellow light phase
 	public String getNextState(){
-		return phases.get((index + 1) % this.phases.size()).getState();
+		return phases.get((index + 2) % this.phases.size()).getState();
 	}
 	
 	public String getCurrentState(){
 		return phases.get(index).getState(); 	
 	}
 	
-	public ArrayList<Integer> getNumberOfStoppedCars(){
-		ArrayList<Integer> returnArray = new ArrayList<>();
-		for(String laneID : controlledLaneIds)
-		{
-			returnArray.add(agentManager.getVehiclesStoppedPerLane(laneID));
-		}
-		return returnArray;
+	public void getNumberOfStoppedCars(){
+		
+		String currentState = this.getCurrentState();
+		String nextState = this.getNextState();
+		
+		
+		
+//		ArrayList<Integer> returnArray = new ArrayList<>();
+//		for(String laneID : controlledLaneIds)
+//		{
+//			returnArray.add(agentManager.getVehiclesStoppedPerLane(laneID));
+//		}
+//		return returnArray;
 	}
 	
 	@Override
 	public void update() {
+		
 		int newIndex;
+		
 		if((newIndex = sumoTrafficLight.getCurrentPhaseIndex()) != index)
 			index = newIndex;
+		
 	}
 	
-	
+	//get the lanes changing to green at each state
+	private void getLaneChanging(){
+		
+		laneChanging = new ArrayList<ArrayList<Integer>>();
+		
+		for(int i = 0; i < phases.size();i++)
+		{
+			ArrayList<Integer> changes = new ArrayList<>();
+			String currentState = phases.get(i).getState();
+			String nextState = phases.get( (i+1) % phases.size()).getState();
+			
+			for(int j = 0; j < currentState.length(); j++)
+			{
+				if(currentState.charAt(j) == 'r')
+					if(nextState.charAt(j) == 'g' || nextState.charAt(j) == 'G')
+						changes.add(j);
+			}
+			
+			laneChanging.add(changes);
+		}
+	}
 }
