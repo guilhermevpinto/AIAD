@@ -45,10 +45,11 @@ public abstract class TLAgent extends Agent {
 		index = sumoTrafficLight.getCurrentPhaseIndex();
 		
 		
-		if(internalID.equals("B3")) {
+		if(internalID.equals("C3")) {
 			int i = 0;
 			for(String laneid : controlledLaneIds)
 				System.out.println("Neigbour " + (i++) +": " + laneid);
+			System.out.println(this.getCurrentState());
 		}
 		
 		//System.out.println(phases);
