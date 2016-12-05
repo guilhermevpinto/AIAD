@@ -76,7 +76,6 @@ public abstract class TLAgent extends Agent {
 			//System.out.println("" + internalID + " time " + sumoTrafficLight.getTimeToNextSwitch());
 			//System.out.println("" + internalID + " phase " + sumoTrafficLight.getCurrentPhaseDuration());
 		}
-		
 	}
 	
 	
