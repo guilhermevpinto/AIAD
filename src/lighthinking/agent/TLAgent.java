@@ -60,10 +60,7 @@ public abstract class TLAgent extends Agent {
 	
 	@Override
 	public void update() {
-		if(internalID.equals("B4")) {
-			System.out.println("" + internalID + " time " + sumoTrafficLight.getTimeToNextSwitch());
-			System.out.println("" + internalID + " phase " + sumoTrafficLight.getCurrentPhaseDuration());
-		}
+		// TODO atualizar parâmetros
 	}
 	
 	
