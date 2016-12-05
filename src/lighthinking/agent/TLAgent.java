@@ -17,7 +17,7 @@ public abstract class TLAgent extends Agent {
 	protected SumoTrafficLight sumoTrafficLight;
 	protected SumoTrafficLightProgram sumoTrafficLightProgram;
 	
-	protected HashSet<String> controlledLaneIds;
+	protected ArrayList<String> controlledLaneIds;
 	protected ArrayList<String> neighbourLights;
 	
 	protected List<Phase> phases;
@@ -31,7 +31,7 @@ public abstract class TLAgent extends Agent {
 		
 		sumoTrafficLight = new SumoTrafficLight(internalID);
 		
-		controlledLaneIds = new HashSet<>(sumoTrafficLight.getControlledLanes());
+		controlledLaneIds = new ArrayList<>(sumoTrafficLight.getControlledLanes());
 		
 		neighbourLights = new ArrayList<String>();
 		for (String l : controlledLaneIds) {
@@ -43,14 +43,6 @@ public abstract class TLAgent extends Agent {
 		phases = sumoTrafficLightProgram.getPhases();
 		
 		index = sumoTrafficLight.getCurrentPhaseIndex();
-		
-		
-		if(internalID.equals("C3")) {
-			int i = 0;
-			for(String laneid : controlledLaneIds)
-				System.out.println("Neigbour " + (i++) +": " + laneid);
-			System.out.println(this.getCurrentState());
-		}
 		
 		//System.out.println(phases);
 	}
@@ -85,14 +77,9 @@ public abstract class TLAgent extends Agent {
 	
 	@Override
 	public void update() {
-		
 		int newIndex;
-		if(internalID.equals("B3"))
-		if((newIndex = sumoTrafficLight.getCurrentPhaseIndex()) != index){
+		if((newIndex = sumoTrafficLight.getCurrentPhaseIndex()) != index)
 			index = newIndex;
-			System.out.println(this.getCurrentState());
-		}
-		
 	}
 	
 	
