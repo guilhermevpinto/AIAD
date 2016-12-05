@@ -21,6 +21,8 @@ public abstract class TLAgent extends Agent {
 	protected ArrayList<String> neighbourLights;
 	
 	protected List<Phase> phases;
+	
+	protected int index = -1;
 
 	public TLAgent(String id, AgentManager mngr) {
 		super();
@@ -40,6 +42,8 @@ public abstract class TLAgent extends Agent {
 		sumoTrafficLightProgram = sumoTrafficLight.getProgram();
 		phases = sumoTrafficLightProgram.getPhases();
 		
+		index = sumoTrafficLight.getCurrentPhaseIndex();
+		
 		//System.out.println(phases);
 	}
 	
@@ -54,16 +58,25 @@ public abstract class TLAgent extends Agent {
 		return i;
 	}
 	
-	public String getNextState(int i){
-		return phases.get(i).getState();
+	public String getNextState(){
+		return phases.get((index + 1) % this.phases.size()).getState();
+	}
+	
+	public String getCurrentState(){
+		return phases.get(index).getState(); 	
 	}
 	
 	@Override
 	public void update() {
+		int newIndex;
+		if((newIndex = sumoTrafficLight.getCurrentPhaseIndex()) != index)
+			index = newIndex;
 		if(internalID.equals("B4")) {
-			System.out.println("" + internalID + " time " + sumoTrafficLight.getTimeToNextSwitch());
-			System.out.println("" + internalID + " phase " + sumoTrafficLight.getCurrentPhaseDuration());
+			System.out.println(internalID + " Sem Index : " + index);
+			//System.out.println("" + internalID + " time " + sumoTrafficLight.getTimeToNextSwitch());
+			//System.out.println("" + internalID + " phase " + sumoTrafficLight.getCurrentPhaseDuration());
 		}
+		
 	}
 	
 	

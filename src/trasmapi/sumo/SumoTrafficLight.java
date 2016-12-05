@@ -139,6 +139,34 @@ public class SumoTrafficLight extends TrafficLight {
 
 		return -1;
 	}
+	
+	public int getCurrentPhaseIndex(){
+
+		Command cmd = new Command(Constants.CMD_GET_TL_VARIABLE);
+		Content cnt = new Content(Constants.TL_CURRENT_PHASE,id);
+
+		cmd.setContent(cnt);
+
+		RequestMessage reqMsg = new RequestMessage();
+		reqMsg.addCommand(cmd);
+
+
+		try {
+
+			ResponseMessage rspMsg = SumoCom.query(reqMsg);
+			Content content = rspMsg.validate( (byte)  Constants.CMD_GET_TL_VARIABLE, (byte)  Constants.RESPONSE_GET_TL_VARIABLE,
+					(byte)  Constants.TL_CURRENT_PHASE, (byte)  Constants.TYPE_INTEGER);
+
+			return content.getInteger();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (WrongCommand e) {
+			e.printStackTrace();
+		}
+
+		return -1;
+	}
 
 	public ArrayList<String> getControlledLanes(){
 
