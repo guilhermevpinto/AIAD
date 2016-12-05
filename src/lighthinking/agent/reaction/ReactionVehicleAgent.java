@@ -9,13 +9,11 @@ public class ReactionVehicleAgent extends VehicleAgent {
 	public ReactionVehicleAgent(String s, AgentManager mngr) {
 		super(s, mngr);
 		this.type = Type.BASIC;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		super.update();
 	}
 
 }

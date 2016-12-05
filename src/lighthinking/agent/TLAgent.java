@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
@@ -13,7 +14,6 @@ import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 public abstract class TLAgent extends Agent {
 	
 	protected AgentManager agentManager;
-
 	protected SumoTrafficLight sumoTrafficLight;
 	protected SumoTrafficLightProgram sumoTrafficLightProgram;
 	
@@ -21,11 +21,7 @@ public abstract class TLAgent extends Agent {
 	protected ArrayList<String> neighbourLights;
 	
 	protected List<Phase> phases;
-	
-	protected HashMap<String,Integer> vehiclesStoppedPerLane;
 
-	
-	
 	public TLAgent(String id, AgentManager mngr) {
 		super();
 		internalID = id;
@@ -61,4 +57,14 @@ public abstract class TLAgent extends Agent {
 	public String getNextState(int i){
 		return phases.get(i).getState();
 	}
+	
+	@Override
+	public void update() {
+		if(internalID.equals("B4")) {
+			System.out.println("" + internalID + " state " + sumoTrafficLight.getState());
+			System.out.println("" + internalID + " time " + sumoTrafficLight.getTimeToNextSwitch());
+		}
+	}
+	
+	
 }
