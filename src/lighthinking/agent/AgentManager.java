@@ -25,6 +25,7 @@ public class AgentManager {
 	private HashMap<String, SumoLane> lanes;
 	private static HashMap<String, Integer> vehiclesStoppedPerLane;
 
+
 	public AgentManager() {
 		this(new Config());
 	}
@@ -127,7 +128,7 @@ public class AgentManager {
 		// Add new vehicles and remove stopped vehicles
 		updateAgentObjects();
 		updateAgents();
-		updateVehicleStoppedInLanes();
+		//updateVehicleStoppedInLanes();
 	}
 
 	// Add new vehicles and remove stopped vehicles
@@ -169,6 +170,11 @@ public class AgentManager {
 	
 	public boolean isDebug() {
 		return config.debug;
+	}
+	
+
+	public static Integer getVehiclesStoppedPerLane(String lane) {
+		return vehiclesStoppedPerLane.get(lane);
 	}
 
 }
