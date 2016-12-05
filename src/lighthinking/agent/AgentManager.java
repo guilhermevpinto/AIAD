@@ -49,7 +49,7 @@ public class AgentManager {
 //			actualAddLane(id);
 //			vehiclesStoppedPerLane.put(id, 0);
 //		}
-
+		
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
 		ArrayList<String> vehiclesIds = SumoCom.getAllVehiclesIds();
 
