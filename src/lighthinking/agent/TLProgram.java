@@ -17,19 +17,16 @@ public class TLProgram {
 		return actualProgramSkipPhase(program, phase, 1);
 	}
 	
-	public static SumoTrafficLightProgram actualProgramSkipPhase(SumoTrafficLightProgram program, Phase phase, int offset) {
+	private static SumoTrafficLightProgram actualProgramSkipPhase(SumoTrafficLightProgram program, Phase phase, int offset) {
 		SumoTrafficLightProgram result = new SumoTrafficLightProgram(program.getId());
 		List<Phase> phases = program.getPhases();
 		int startPos = indexOfPhase(program, phase) + offset;
 		int currPos = 0;
 		
-		System.out.println(phase.getState() + "  " + startPos);
-		
 		int size = phases.size();
 		while(currPos < size) {
 			Phase p = phases.get((startPos + currPos) % size);
 			result.addPhase(p.getDuration(), p.getState());
-			System.out.println("Adding " + p.getState());
 			
 			++currPos;
 		}
@@ -37,12 +34,23 @@ public class TLProgram {
 		return result;
 	}
 	
-	private static int indexOfPhase(SumoTrafficLightProgram program, Phase phase) {
+	public static int indexOfPhase(SumoTrafficLightProgram program, Phase phase) {
 		List<Phase> phases = program.getPhases();
 		
 		for(int i = 0; i < phases.size(); ++i) {
 			Phase p = phases.get(i);
 			if(p.getDuration() == phase.getDuration() && p.getState().equals(phase.getState())) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	public static int indexOfPhase(SumoTrafficLightProgram program, String state) {
+		List<Phase> phases = program.getPhases();
+		for(int i = 0; i < phases.size(); ++i) {
+			if(phases.get(i).getState().equals(state)) {
 				return i;
 			}
 		}
