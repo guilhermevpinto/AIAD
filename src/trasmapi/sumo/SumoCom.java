@@ -329,11 +329,6 @@ public class SumoCom {
 	private void loadArrivedVehicles(ArrayList<String> arrivedVehiclesIDs) {
 
 		for(String s: arrivedVehiclesIDs){
-			if(s.equals("0")){
-				System.out.println("YOOO");
-				for(SumoVehicle v: vehicles)
-					System.out.println(v.id);
-			}
 			for(SumoVehicle v: vehicles)
 				if(v.id.equals(s)){
 					if(s.equals("0"))
