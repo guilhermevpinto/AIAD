@@ -7,9 +7,12 @@ import trasmapi.sumo.SumoVehicle;
 @SuppressWarnings("serial")
 public abstract class VehicleAgent extends Agent {
 	
+	public static int totalTicksStopped = 0;
+	
 	protected AgentManager agentManager;
 	protected SumoVehicle sumoVehicle;
 	protected boolean alive;
+	protected int ticksStopped;
 	
 	//Params
 	protected double speed;
@@ -25,10 +28,12 @@ public abstract class VehicleAgent extends Agent {
 		agentManager = mngr;
 		sumoVehicle = new SumoVehicle(internalID);
 		alive = false;
+		ticksStopped = 0;
 	}
 	
 	@Override
 	public void update() {
+		//not sure if needed
 		if(!alive) {
 			if(sumoVehicle.getSpeed() >= 0) {
 				alive = true;
@@ -38,6 +43,11 @@ public abstract class VehicleAgent extends Agent {
 				resetParams();
 			}
 		}
+		
+		double currentSpeed = this.getSpeed();
+		
+		if(currentSpeed < 0.2)
+			ticksStopped++;
 		resetParams();
 	}
 	
@@ -53,6 +63,7 @@ public abstract class VehicleAgent extends Agent {
 	public void finish() {
 		if(alive) {
 			alive = false;
+			totalTicksStopped += ticksStopped;
 			if(agentManager.isDebug()) {
 				System.out.println("Vehicle " + internalID + " finished.");
 			}
