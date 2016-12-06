@@ -3,7 +3,7 @@
   options: -n net.net.xml -b 0 -e 3600 -p 1 <doubleminus>fringe-factor=100
 -->
 <trips>
-    <trip id="0" depart="0.00" from="C4toD4" to="D0toD1" />
+    <trip id="0" from="C4toD4" to="D0toD1" depart="1.00"/>
     <trip id="1" depart="1.00" from="E4toD4" to="B0toB1" />
     <trip id="2" depart="2.00" from="B2toC2" to="E3toE4" />
     <trip id="3" depart="3.00" from="C0toD0" to="B1toB0" />

@@ -53,13 +53,14 @@ public class AgentManager {
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
 		ArrayList<String> vehiclesIds = SumoCom.getAllVehiclesIds();
 
+		/*TODO isto buga tudo*/
 		switch (agentMode) {
 		case REACTION:
 			for (String id : trafficLightIds) {
 				addTLAgent(new ReactionTLAgent(id, this));
 			}
 			for (String id : vehiclesIds) {
-				addVehicleAgent(new ReactionVehicleAgent(id, this));
+				//addVehicleAgent(new ReactionVehicleAgent(id, this));
 			}
 
 			break;
@@ -69,7 +70,7 @@ public class AgentManager {
 				addTLAgent(new BasicTLAgent(id, this));
 			}
 			for (String id : vehiclesIds) {
-				addVehicleAgent(new BasicVehicleAgent(id, this));
+				//addVehicleAgent(new BasicVehicleAgent(id, this));
 			}
 
 			break;
@@ -147,7 +148,6 @@ public class AgentManager {
 			}
 		}
 		for (String id : SumoCom.arrivedVehicles) {
-			
 			removeVehicleAgent(id);
 		}
 	}

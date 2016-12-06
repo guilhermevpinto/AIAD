@@ -2,6 +2,7 @@ package lighthinking.agent;
 
 import java.util.ArrayList;
 
+import trasmapi.sumo.SumoCom;
 import trasmapi.sumo.SumoVehicle;
 
 @SuppressWarnings("serial")
@@ -35,7 +36,7 @@ public abstract class VehicleAgent extends Agent {
 	public void update() {
 		//not sure if needed
 		if(!alive) {
-			if(sumoVehicle.getSpeed() >= 0) {
+			if(sumoVehicle.getSpeed() >= 0 && !SumoCom.arrivedVehicles.contains(this.internalID)) {
 				alive = true;
 				if(agentManager.isDebug()) {
 					System.out.println("Vehicle " + internalID + " started.");
@@ -43,11 +44,12 @@ public abstract class VehicleAgent extends Agent {
 				resetParams();
 			}
 		}
-		
-		double currentSpeed = this.getSpeed();
-		
-		if(currentSpeed < 0.2)
-			ticksStopped++;
+		if(alive){
+			double currentSpeed = this.getSpeed();
+			
+			if(currentSpeed < 0.2)
+				ticksStopped++;
+		}
 		resetParams();
 	}
 	
