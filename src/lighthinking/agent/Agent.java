@@ -5,6 +5,8 @@ import utils.Updateable;
 @SuppressWarnings("serial")
 public abstract class Agent extends jade.core.Agent implements Updateable {
 	
+	protected static int tick = 0;
+	
 	public static enum Type {
 		BASIC,	// DEFAULT
 		REACTION
@@ -22,4 +24,8 @@ public abstract class Agent extends jade.core.Agent implements Updateable {
 	}
 	
 	public void finish() {}
+	
+	public static void updateTicker() {
+		++tick;
+	}
 }

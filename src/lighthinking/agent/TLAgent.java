@@ -92,11 +92,6 @@ public abstract class TLAgent extends Agent {
 	@Override
 	public void update() {
 		
-		if(internalID.equals("B4") && tick == 20) {
-			System.out.println("MEGA TICK");
-			sumoTrafficLight.setState("GGGGGGGGG");
-		}
-		
 		int newIndex;
 		
 		if((newIndex = sumoTrafficLight.getCurrentPhaseIndex()) != index)
