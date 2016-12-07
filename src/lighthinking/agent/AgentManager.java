@@ -1,6 +1,7 @@
 package lighthinking.agent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -178,6 +179,10 @@ public class AgentManager {
 
 	public static Integer getVehiclesStoppedPerLane(String lane) {
 		return vehiclesStoppedPerLane.get(lane);
+	}
+	
+	public Collection<VehicleAgent> getVehicles() {
+		return vehicleAgents.values();
 	}
 
 }
