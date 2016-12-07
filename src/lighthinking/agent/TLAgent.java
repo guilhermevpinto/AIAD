@@ -72,10 +72,7 @@ public abstract class TLAgent extends Agent {
 	}
 	
 	public String getCurrentState(){
-		if(state != null) {
-			state = phases.get(getPhaseIndex()).getState();
-		}
-		return phases.get(getPhaseIndex()).getState(); 	
+		return sumoTrafficLight.getState();
 	}
 	
 	public int getCarsOnGreenLanes() {
@@ -93,6 +90,8 @@ public abstract class TLAgent extends Agent {
 			for(String lane : uniqueGreenLanes) {
 				carsOnGreenLanes += VehicleAgent.getVehiclesOnLane(lane, agentManager.getVehicles());
 			}
+			if(internalID.equals("E3"))
+				System.out.println(state + "/" + carsOnGreenLanes);
 		}
 		
 		return carsOnGreenLanes;
