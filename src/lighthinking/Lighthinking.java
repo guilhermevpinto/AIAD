@@ -77,10 +77,10 @@ public class Lighthinking {
 		// simulation loop
 		while (true) {
 			Thread.sleep(SIMULATION_TICK);
-			Agent.updateTicker();
-			agentManager.updateManager();
 			if (!trasmapi_api.simulationStep(0))
 				break;
+			Agent.updateTicker();
+			agentManager.updateManager();
 			if(SumoCom.arrivedVehicles.size() == SumoCom.vehicles.size())
 				break;
 		}

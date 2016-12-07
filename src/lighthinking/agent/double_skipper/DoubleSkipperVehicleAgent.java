@@ -7,6 +7,6 @@ import lighthinking.agent.VehicleAgent;
 public class DoubleSkipperVehicleAgent extends VehicleAgent {
 	public DoubleSkipperVehicleAgent(String s, AgentManager mngr) {
 		super(s, mngr);
-		this.type = Type.BASIC;
+		this.type = Type.DOUBLE_SKIPPER;
 	}
 }

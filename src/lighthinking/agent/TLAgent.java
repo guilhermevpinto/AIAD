@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.sun.jmx.snmp.internal.SnmpAccessControlSubSystem;
+
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
@@ -110,6 +112,9 @@ public abstract class TLAgent extends Agent {
 				}
 			}
 			for(String lane : uniqueYellowRedLanes) {
+				if(internalID.equals("B3")) {
+					System.out.println(lane);
+				}
 				carsOnGreenLanes += VehicleAgent.getVehiclesStoppedOnLane(lane, agentManager.getVehicles());
 			}
 		}
