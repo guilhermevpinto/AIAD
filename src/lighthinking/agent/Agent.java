@@ -9,7 +9,7 @@ public abstract class Agent extends jade.core.Agent implements Updateable {
 	
 	public static enum Type {
 		BASIC,	// DEFAULT
-		REACTION
+		SKIPPER
 	}
 	
 	protected Type type;

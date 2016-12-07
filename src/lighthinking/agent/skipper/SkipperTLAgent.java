@@ -8,7 +8,7 @@ public class SkipperTLAgent extends TLAgent {
 
 	public SkipperTLAgent(String id, AgentManager mngr) {
 		super(id, mngr);
-		this.type = Type.REACTION;
+		this.type = Type.SKIPPER;
 	}
 
 	@Override
