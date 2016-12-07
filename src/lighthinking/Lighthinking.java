@@ -84,8 +84,9 @@ public class Lighthinking {
 			if(SumoCom.arrivedVehicles.size() == SumoCom.vehicles.size())
 				break;
 		}
-		System.out.println("Total waiting time : " + VehicleAgent.totalTicksStopped);
-		System.out.println("Median of waiting time : " + VehicleAgent.totalTicksStopped / VehicleAgent.vehiclesended);
+		
+		Statistics.createStats();
+		
 	}
 
 }
