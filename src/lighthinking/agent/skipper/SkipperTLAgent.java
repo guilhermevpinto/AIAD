@@ -22,6 +22,7 @@ public class SkipperTLAgent extends TLAgent {
 	@Override
 	public void update() {
 		super.update();
+		updateTicks();
 		
 		if(previousState == null || !previousState.equals(getCurrentState())) {
 			ticksWithoutCarsOnGreen = 0;
