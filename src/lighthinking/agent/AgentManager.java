@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import jade.wrapper.ContainerController;
 import lighthinking.Config;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
@@ -24,14 +25,16 @@ public class AgentManager {
 	private static HashSet<String> laneIDs; // to speed up some calculations
 	private HashMap<String, SumoLane> lanes;
 	private static HashMap<String, Integer> vehiclesStoppedPerLane;
+	private ContainerController mainContainer;
 
 
 	public AgentManager() {
-		this(new Config());
+		this(new Config(), null);
 	}
 
-	public AgentManager(Config config) {
+	public AgentManager(Config config, ContainerController mainContainer) {
 		this.config = config;
+		this.mainContainer = mainContainer;
 		this.agentMode = this.config.agentType;
 
 		trafficLightAgents = new HashMap<String, TLAgent>();
