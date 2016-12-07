@@ -9,6 +9,8 @@ import jade.wrapper.ContainerController;
 import lighthinking.Config;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
+import lighthinking.agent.double_skipper.DoubleSkipperTLAgent;
+import lighthinking.agent.double_skipper.DoubleSkipperVehicleAgent;
 import lighthinking.agent.skipper.SkipperTLAgent;
 import lighthinking.agent.skipper.SkipperVehicleAgent;
 import trasmapi.sumo.SumoCom;
@@ -64,6 +66,15 @@ public class AgentManager {
 			}
 			for (String id : vehiclesIds) {
 				addVehicleAgent(new SkipperVehicleAgent(id, this));
+			}
+
+			break;
+		case DOUBLE_SKIPPER:
+			for (String id : trafficLightIds) {
+				addTLAgent(new DoubleSkipperTLAgent(id, this));
+			}
+			for (String id : vehiclesIds) {
+				addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
 			}
 
 			break;
@@ -142,6 +153,9 @@ public class AgentManager {
 				switch (agentMode) {
 				case SKIPPER:
 					addVehicleAgent(new SkipperVehicleAgent(vehicle.id, this));
+					break;
+				case DOUBLE_SKIPPER:
+					addVehicleAgent(new DoubleSkipperVehicleAgent(vehicle.id, this));
 					break;
 				case BASIC:
 				default:
