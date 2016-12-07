@@ -7,8 +7,8 @@ import java.util.HashSet;
 import lighthinking.Config;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
-import lighthinking.agent.reaction.ReactionTLAgent;
-import lighthinking.agent.reaction.ReactionVehicleAgent;
+import lighthinking.agent.skipper.SkipperTLAgent;
+import lighthinking.agent.skipper.SkipperVehicleAgent;
 import trasmapi.sumo.SumoCom;
 import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoTrafficLight;
@@ -53,14 +53,13 @@ public class AgentManager {
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
 		ArrayList<String> vehiclesIds = SumoCom.getAllVehiclesIds();
 
-		/*TODO isto buga tudo*/
 		switch (agentMode) {
 		case REACTION:
 			for (String id : trafficLightIds) {
-				addTLAgent(new ReactionTLAgent(id, this));
+				addTLAgent(new SkipperTLAgent(id, this));
 			}
 			for (String id : vehiclesIds) {
-				//addVehicleAgent(new ReactionVehicleAgent(id, this));
+				addVehicleAgent(new SkipperVehicleAgent(id, this));
 			}
 
 			break;
@@ -70,7 +69,7 @@ public class AgentManager {
 				addTLAgent(new BasicTLAgent(id, this));
 			}
 			for (String id : vehiclesIds) {
-				//addVehicleAgent(new BasicVehicleAgent(id, this));
+				addVehicleAgent(new BasicVehicleAgent(id, this));
 			}
 
 			break;
@@ -85,8 +84,7 @@ public class AgentManager {
 		VehicleAgent agent = vehicleAgents.get(id);
 		if(agent != null) {
 			agent.finish();
-			//return vehicleAgents.remove(id) != null;
-			return true;
+			return vehicleAgents.remove(id) != null;
 		}
 		return false;
 	}
@@ -139,7 +137,7 @@ public class AgentManager {
 			if (!vehicleAgents.containsKey(vehicle.id)) {
 				switch (agentMode) {
 				case REACTION:
-					addVehicleAgent(new ReactionVehicleAgent(vehicle.id, this));
+					addVehicleAgent(new SkipperVehicleAgent(vehicle.id, this));
 					break;
 				case BASIC:
 				default:
@@ -149,6 +147,7 @@ public class AgentManager {
 			}
 		}
 		for (String id : SumoCom.arrivedVehicles) {
+			
 			removeVehicleAgent(id);
 		}
 	}
