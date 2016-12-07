@@ -59,7 +59,7 @@ public abstract class VehicleAgent extends Agent {
 		}
 	}
 	
-	protected void resetParams() {
+	private void resetParams() {
 		speed = -1;
 		routeID = null;
 		edges = null;
