@@ -10,7 +10,7 @@ import trasmapi.sumo.SumoVehicle;
 @SuppressWarnings("serial")
 public abstract class VehicleAgent extends Agent {
 	
-	public static final double VELOCITY_THRESHOLD = 0.3;
+	public static final double VELOCITY_THRESHOLD = 0.4;
 	
 	public static int totalTicksStopped = 0;
 	public static int vehiclesended = 0;
@@ -155,8 +155,12 @@ public abstract class VehicleAgent extends Agent {
 		int result = 0;
 
 		for(VehicleAgent v : vehicles) {
+			if(v.isAlive() && laneID.startsWith(v.getEdgeID())) {
+				System.out.println("Veich " + v.getID() + " speed " + v.getSpeed());
+			}
 			if(v.isAlive() && laneID.startsWith(v.getEdgeID()) && v.getSpeed() <= VELOCITY_THRESHOLD) {
 				++result;
+				System.out.println("ADDED");
 			}
 		}
 		
