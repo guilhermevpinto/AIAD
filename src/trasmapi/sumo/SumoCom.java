@@ -328,11 +328,11 @@ public class SumoCom {
 
 	private void loadArrivedVehicles(ArrayList<String> arrivedVehiclesIDs) {
 
-		//System.out.println("Arrived : " + arrivedVehiclesIDs);
-
 		for(String s: arrivedVehiclesIDs){
 			for(SumoVehicle v: vehicles)
 				if(v.id.equals(s)){
+					if(s.equals("0"))
+						System.out.println("YOOO2");
 					v.arrived = true;
 					v.alive = false;
 					v.arrivalTime = currentSimStep;
