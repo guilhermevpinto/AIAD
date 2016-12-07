@@ -7,6 +7,7 @@ import lighthinking.agent.TLAgent;
 public class DoubleSkipperTLAgent extends TLAgent {
 
 	private static final int MAX_TICKS_WITHOUT_CARS = 7;
+	private static final int FACTOR_CARS_ON_RED = 3;
 
 	private int ticksWithoutCarsOnGreen = 0;
 	private int carsOnGreen = 0;
@@ -22,27 +23,30 @@ public class DoubleSkipperTLAgent extends TLAgent {
 	public void update() {
 		super.update();
 		updateTicks();
-//		if(previousState == null || !previousState.equals(getCurrentState())) {
-//			ticksWithoutCarsOnGreen = 0;
-//		}	
-//		
-//		if (ticksWithoutCarsOnGreen >= MAX_TICKS_WITHOUT_CARS) {
-//			ticksWithoutCarsOnGreen = 0;
-//			if (agentManager.isDebug()) {
-//				System.out.println("Traffic light " + internalID + " skipped a phase (no cars on green).");
-//			}
-//			this.skipCurrentPhase();
-//		}
-//		
-//		previousState = getCurrentState();
+		if(previousState == null || !previousState.equals(getCurrentState())) {
+			ticksWithoutCarsOnGreen = 0;
+		}	
+		
+		if (ticksWithoutCarsOnGreen >= MAX_TICKS_WITHOUT_CARS) {
+			ticksWithoutCarsOnGreen = 0;
+			if (agentManager.isDebug()) {
+				System.out.println("Traffic light " + internalID + " skipped a phase (no cars on green).");
+			}
+			this.skipCurrentPhase();
+		} else if (carsOnRed >= carsOnGreen * FACTOR_CARS_ON_RED && carsOnGreen >= 2) {
+			ticksWithoutCarsOnGreen = 0;
+			if (agentManager.isDebug()) {
+				System.out.println("Traffic light " + internalID + " skipped a phase (too many cars on red sign).");
+			}
+			this.skipCurrentPhase();
+		}
+		
+		previousState = getCurrentState();
 	}
 
 	private void updateTicks() {
 		carsOnGreen = getCarsOnGreenLanes();
 		carsOnRed = getNumberOfStoppedCars();
-		if(internalID.equals("B3")) {
-			System.out.println("G " + carsOnGreen + "   R " + carsOnRed);
-		}
 		if (carsOnGreenLanes == 0) {
 			++ticksWithoutCarsOnGreen;
 		} else {
