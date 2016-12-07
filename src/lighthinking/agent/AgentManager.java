@@ -85,7 +85,8 @@ public class AgentManager {
 		VehicleAgent agent = vehicleAgents.get(id);
 		if(agent != null) {
 			agent.finish();
-			return vehicleAgents.remove(id) != null;
+			//return vehicleAgents.remove(id) != null;
+			return true;
 		}
 		return false;
 	}

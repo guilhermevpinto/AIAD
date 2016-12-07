@@ -81,8 +81,11 @@ public class Lighthinking {
 			agentManager.updateManager();
 			if (!trasmapi_api.simulationStep(0))
 				break;
+			if(SumoCom.arrivedVehicles.size() == SumoCom.vehicles.size())
+				break;
 		}
 		System.out.println("Total waiting time : " + VehicleAgent.totalTicksStopped);
+		System.out.println("Median of waiting time : " + VehicleAgent.totalTicksStopped / VehicleAgent.vehiclesended);
 	}
 
 }
