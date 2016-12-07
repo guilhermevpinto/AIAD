@@ -22,7 +22,7 @@ public class SkipperTLAgent extends TLAgent {
 		updateTicks();
 		if(previousState == null || !previousState.equals(getCurrentState())) {
 			ticksWithoutCarsOnGreen = 0;
-		}
+		}	
 		
 		if (ticksWithoutCarsOnGreen >= MAX_TICKS_WITHOUT_CARS) {
 			ticksWithoutCarsOnGreen = 0;
@@ -43,4 +43,5 @@ public class SkipperTLAgent extends TLAgent {
 			ticksWithoutCarsOnGreen = 0;
 		}
 	}
+	
 }
