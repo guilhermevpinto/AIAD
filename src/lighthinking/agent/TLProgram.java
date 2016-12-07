@@ -6,6 +6,8 @@ import trasmapi.sumo.SumoTrafficLightProgram;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
 public class TLProgram {
+	
+	protected static int programID = 1;
 
 	// New program starts at phase "phase"
 	public static SumoTrafficLightProgram programSkipToPhase(SumoTrafficLightProgram program, Phase phase) {
@@ -18,7 +20,7 @@ public class TLProgram {
 	}
 	
 	private static SumoTrafficLightProgram actualProgramSkipPhase(SumoTrafficLightProgram program, Phase phase, int offset) {
-		SumoTrafficLightProgram result = new SumoTrafficLightProgram(program.getId());
+		SumoTrafficLightProgram result = new SumoTrafficLightProgram(Integer.toString(programID++));
 		List<Phase> phases = program.getPhases();
 		int startPos = indexOfPhase(program, phase) + offset;
 		int currPos = 0;

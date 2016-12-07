@@ -76,9 +76,9 @@ public class Lighthinking {
 		AgentManager agentManager = new AgentManager(config, mainContainer);
 		// simulation loop
 		while (true) {
-			Thread.sleep(SIMULATION_TICK);
 			if (!trasmapi_api.simulationStep(0))
 				break;
+			Thread.sleep(SIMULATION_TICK);
 			Agent.updateTicker();
 			agentManager.updateManager();
 			if(SumoCom.arrivedVehicles.size() == SumoCom.vehicles.size())

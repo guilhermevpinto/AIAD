@@ -90,8 +90,6 @@ public abstract class TLAgent extends Agent {
 			for(String lane : uniqueGreenLanes) {
 				carsOnGreenLanes += VehicleAgent.getVehiclesOnLane(lane, agentManager.getVehicles());
 			}
-			if(internalID.equals("E3"))
-				System.out.println(state + "/" + carsOnGreenLanes);
 		}
 		
 		return carsOnGreenLanes;
@@ -111,9 +109,6 @@ public abstract class TLAgent extends Agent {
 				}
 			}
 			for(String lane : uniqueRedLanes) {
-				if(internalID.equals("B3")) {
-					System.out.println(lane);
-				}
 				carsStopped += VehicleAgent.getVehiclesStoppedOnLane(lane, agentManager.getVehicles());
 			}
 		}
