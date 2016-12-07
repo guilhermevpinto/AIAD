@@ -73,7 +73,7 @@ public class Lighthinking {
 		// manager.startupAgents(mainContainer);
 
 		// manager.setBehaviour();
-		AgentManager agentManager = new AgentManager(config);
+		AgentManager agentManager = new AgentManager(config, mainContainer);
 		// simulation loop
 		while (true) {
 			Thread.sleep(SIMULATION_TICK);
