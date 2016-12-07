@@ -103,18 +103,18 @@ public abstract class TLAgent extends Agent {
 			carsStopped = 0;
 			String state = getCurrentState();
 			
-			HashSet<String> uniqueYellowRedLanes = new HashSet<>();
+			HashSet<String> uniqueRedLanes = new HashSet<>();
 			for(int i = 0; i < controlledLaneIds.size(); ++i) {
 				char color = state.charAt(i);
-				if(color != 'g' && color != 'G') {
-					uniqueYellowRedLanes.add(controlledLaneIds.get(i));
+				if(color == 'r' || color == 'R') {
+					uniqueRedLanes.add(controlledLaneIds.get(i));
 				}
 			}
-			for(String lane : uniqueYellowRedLanes) {
+			for(String lane : uniqueRedLanes) {
 				if(internalID.equals("B3")) {
 					System.out.println(lane);
 				}
-				carsOnGreenLanes += VehicleAgent.getVehiclesStoppedOnLane(lane, agentManager.getVehicles());
+				carsStopped += VehicleAgent.getVehiclesStoppedOnLane(lane, agentManager.getVehicles());
 			}
 		}
 		
