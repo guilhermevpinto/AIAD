@@ -10,6 +10,8 @@ public abstract class VehicleAgent extends Agent {
 	
 	public static int totalTicksStopped = 0;
 	public static int vehiclesended = 0;
+	public static int maxTime = 0;
+	public static int minTime = Integer.MAX_VALUE;
 	
 	protected AgentManager agentManager;
 	protected SumoVehicle sumoVehicle;
@@ -72,6 +74,10 @@ public abstract class VehicleAgent extends Agent {
 			end = true;
 			totalTicksStopped += ticksStopped;
 			vehiclesended++;
+			if(ticksStopped > maxTime)
+				maxTime = ticksStopped;
+			if(ticksStopped < minTime)
+				minTime = ticksStopped;
 			if(agentManager.isDebug()) {
 				System.out.println("Vehicle " + internalID + " finished.");
 			}
