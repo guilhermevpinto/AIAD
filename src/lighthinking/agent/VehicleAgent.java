@@ -1,6 +1,8 @@
 package lighthinking.agent;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import trasmapi.sumo.SumoCom;
 import trasmapi.sumo.SumoVehicle;
@@ -133,6 +135,18 @@ public abstract class VehicleAgent extends Agent {
 			return waitingTime;
 		}
 		return -1;
+	}
+	
+	public static int getVehiclesOnLane(String laneID, Collection<VehicleAgent> vehicles) {
+		int result = 0;
+
+		for(VehicleAgent v : vehicles) {
+			if(v.isAlive() && laneID.startsWith(v.getEdgeID())) {
+				++result;
+			}
+		}
+		
+		return result;
 	}
 	
 }

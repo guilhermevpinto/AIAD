@@ -1,7 +1,6 @@
 package lighthinking.agent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +25,7 @@ public abstract class TLAgent extends Agent {
 	
 	//params
 	protected int index = -1;
+	protected String state = null;
 	// new parameters added here must be added to "resetParams()"
 	
 	public TLAgent(String id, AgentManager mngr) {
@@ -49,8 +49,6 @@ public abstract class TLAgent extends Agent {
 		index = sumoTrafficLight.getCurrentPhaseIndex();
 		
 		this.getLaneChanging();
-		
-		//System.out.println(phases);
 	}
 	
 	public int getIDCurrentPhase(){
@@ -66,17 +64,37 @@ public abstract class TLAgent extends Agent {
 	
 	//Next after yellow light phase
 	public String getNextState(){
-		return phases.get((index + 2) % this.phases.size()).getState();
+		return phases.get((getPhaseIndex() + 2) % this.phases.size()).getState();
 	}
 	
 	public String getCurrentState(){
-		return phases.get(index).getState(); 	
+		if(state != null) {
+			state = phases.get(getPhaseIndex()).getState();
+		}
+		return phases.get(getPhaseIndex()).getState(); 	
 	}
 	
+	public int getCarsOnGreenLanes() {
+		int result = 0;
+		String state = getCurrentState();
+		
+		HashSet<String> uniqueGreenLanes = new HashSet<>();
+		for(int i = 0; i < controlledLaneIds.size(); ++i) {
+			char color = state.charAt(i);
+			if(color == 'g' || color == 'G') {
+				uniqueGreenLanes.add(controlledLaneIds.get(i));
+			}
+		}
+		for(String lane : uniqueGreenLanes) {
+			result += VehicleAgent.getVehiclesOnLane(lane, agentManager.getVehicles());
+		}
+		
+		return result;
+	}
+	
+	
 	public void getNumberOfStoppedCars(){
-		String currentState = this.getCurrentState();	
-		
-		
+//		String currentState = this.getCurrentState();			
 //		ArrayList<Integer> returnArray = new ArrayList<>();
 //		for(String laneID : controlledLaneIds)
 //		{
@@ -100,6 +118,7 @@ public abstract class TLAgent extends Agent {
 	
 	private void resetParams() {
 		index = -1;
+		state = null;
 	}
 	
 	//get the lanes changing to green at each state
@@ -125,9 +144,7 @@ public abstract class TLAgent extends Agent {
 	}
 	
 	public void skipCurrentPhase() {
-		if(index == -1) {
-			getPhaseIndex();
-		}
+		getPhaseIndex();
 		sumoTrafficLightProgram = TLProgram.programSkipPhase(sumoTrafficLightProgram, phases.get(index));
 		sumoTrafficLight.setProgram(sumoTrafficLightProgram);
 	}

@@ -1,6 +1,7 @@
 package lighthinking.agent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -57,7 +58,7 @@ public class AgentManager {
 		ArrayList<String> vehiclesIds = SumoCom.getAllVehiclesIds();
 
 		switch (agentMode) {
-		case REACTION:
+		case SKIPPER:
 			for (String id : trafficLightIds) {
 				addTLAgent(new SkipperTLAgent(id, this));
 			}
@@ -139,7 +140,7 @@ public class AgentManager {
 		for (SumoVehicle vehicle : SumoCom.vehicles) {
 			if (!vehicleAgents.containsKey(vehicle.id)) {
 				switch (agentMode) {
-				case REACTION:
+				case SKIPPER:
 					addVehicleAgent(new SkipperVehicleAgent(vehicle.id, this));
 					break;
 				case BASIC:
@@ -178,6 +179,10 @@ public class AgentManager {
 
 	public static Integer getVehiclesStoppedPerLane(String lane) {
 		return vehiclesStoppedPerLane.get(lane);
+	}
+	
+	public Collection<VehicleAgent> getVehicles() {
+		return vehicleAgents.values();
 	}
 
 }

@@ -11,9 +11,4 @@ public class BasicTLAgent extends TLAgent {
 		this.type = Type.BASIC;
 	}
 
-	@Override
-	public void update() {
-		super.update();
-	}
-
 }
