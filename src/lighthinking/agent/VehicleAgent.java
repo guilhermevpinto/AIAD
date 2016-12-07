@@ -13,6 +13,7 @@ public abstract class VehicleAgent extends Agent {
 	public static final double VELOCITY_THRESHOLD = 0.4;
 	
 	public static int totalTicksStopped = 0;
+	public static int totalTicksAlive = 0;
 	public static int vehiclesended = 0;
 	public static int maxTime = 0;
 	public static int minTime = Integer.MAX_VALUE;
@@ -22,6 +23,7 @@ public abstract class VehicleAgent extends Agent {
 	protected boolean alive;
 	protected boolean end;
 	protected int ticksStopped;
+	protected int ticksAlive;
 	
 	//Params
 	protected double speed;
@@ -39,6 +41,7 @@ public abstract class VehicleAgent extends Agent {
 		alive = false;
 		end = false;
 		ticksStopped = 0;
+		ticksAlive = 0;
 	}
 	
 	@Override
@@ -54,6 +57,7 @@ public abstract class VehicleAgent extends Agent {
 				}
 			}
 			if(alive){
+				ticksAlive++;
 				double currentSpeed = this.getSpeed();
 				
 				if(currentSpeed < 0.2)
@@ -77,6 +81,7 @@ public abstract class VehicleAgent extends Agent {
 			alive = false;
 			end = true;
 			totalTicksStopped += ticksStopped;
+			totalTicksAlive += ticksAlive;
 			vehiclesended++;
 			if(ticksStopped > maxTime)
 				maxTime = ticksStopped;
@@ -165,6 +170,10 @@ public abstract class VehicleAgent extends Agent {
 		}
 		
 		return result;
+	}
+
+	public int getTicksAlive() {
+		return ticksAlive;
 	}
 	
 }
