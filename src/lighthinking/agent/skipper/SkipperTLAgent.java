@@ -1,12 +1,12 @@
-package lighthinking.agent.reaction;
+package lighthinking.agent.skipper;
 
 import lighthinking.agent.AgentManager;
 import lighthinking.agent.TLAgent;
 
 @SuppressWarnings("serial")
-public class ReactionTLAgent extends TLAgent {
+public class SkipperTLAgent extends TLAgent {
 
-	public ReactionTLAgent(String id, AgentManager mngr) {
+	public SkipperTLAgent(String id, AgentManager mngr) {
 		super(id, mngr);
 		this.type = Type.REACTION;
 	}

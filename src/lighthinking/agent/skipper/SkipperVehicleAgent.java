@@ -1,12 +1,12 @@
-package lighthinking.agent.reaction;
+package lighthinking.agent.skipper;
 
 import lighthinking.agent.AgentManager;
 import lighthinking.agent.VehicleAgent;
 
 @SuppressWarnings("serial")
-public class ReactionVehicleAgent extends VehicleAgent {
+public class SkipperVehicleAgent extends VehicleAgent {
 
-	public ReactionVehicleAgent(String s, AgentManager mngr) {
+	public SkipperVehicleAgent(String s, AgentManager mngr) {
 		super(s, mngr);
 		this.type = Type.BASIC;
 	}
