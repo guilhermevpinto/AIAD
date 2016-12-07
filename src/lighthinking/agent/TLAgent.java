@@ -3,9 +3,6 @@ package lighthinking.agent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import com.sun.jmx.snmp.internal.SnmpAccessControlSubSystem;
 
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
@@ -21,13 +18,9 @@ public abstract class TLAgent extends Agent {
 	protected ArrayList<String> controlledLaneIds;
 	protected ArrayList<String> neighbourLights;
 	
-	protected List<Phase> phases;
 	protected ArrayList<ArrayList<Integer>> laneChanging;
 	
-	
 	//params
-	protected int index = -1;
-	protected String state = null;
 	protected int carsOnGreenLanes = -1;
 	protected int carsStopped = -1;
 	// new parameters added here must be added to "resetParams()"
@@ -48,27 +41,14 @@ public abstract class TLAgent extends Agent {
 		}
 		
 		sumoTrafficLightProgram = sumoTrafficLight.getProgram();
-		phases = sumoTrafficLightProgram.getPhases();
-		
-		index = sumoTrafficLight.getCurrentPhaseIndex();
 		
 		this.getLaneChanging();
 	}
 	
-	public int getIDCurrentPhase(){
-		String state = sumoTrafficLight.getState();
-		int i = 0;
-		for(Phase phase : phases){
-			if(phase.getState().equals(state))
-				break;
-			else i++;
-		}
-		return i;
-	}
-	
 	//Next after yellow light phase
 	public String getNextState(){
-		return phases.get((getPhaseIndex() + 2) % this.phases.size()).getState();
+		List<Phase> phases = sumoTrafficLightProgram.getPhases();
+		return phases.get((getPhaseIndex() + 2) % phases.size()).getState();
 	}
 	
 	public String getCurrentState(){
@@ -122,23 +102,17 @@ public abstract class TLAgent extends Agent {
 	}
 	
 	public int getPhaseIndex() {
-		if(index == -1) {
-			index = sumoTrafficLight.getCurrentPhaseIndex();
-			return index;
-		}
-		return index;
+		return TLProgram.indexOfPhase(sumoTrafficLightProgram, sumoTrafficLight.getState());
 	}
 	
 	private void resetParams() {
-		index = -1;
-		state = null;
 		carsOnGreenLanes = -1;
 		carsStopped = -1;
 	}
 	
 	//get the lanes changing to green at each state
 	private void getLaneChanging() {
-		
+		List<Phase> phases = sumoTrafficLightProgram.getPhases();
 		laneChanging = new ArrayList<ArrayList<Integer>>();
 		
 		for(int i = 0; i < phases.size();i++)
@@ -160,8 +134,8 @@ public abstract class TLAgent extends Agent {
 	
 	public void skipCurrentPhase() {
 		getPhaseIndex();
+		List<Phase> phases = sumoTrafficLightProgram.getPhases();
 		sumoTrafficLightProgram = TLProgram.programSkipPhase(sumoTrafficLightProgram, phases.get(getPhaseIndex()));
-		phases = sumoTrafficLightProgram.getPhases();
 		resetParams();
 		sumoTrafficLight.setProgram(sumoTrafficLightProgram);
 	}

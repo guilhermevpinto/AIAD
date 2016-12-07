@@ -136,7 +136,7 @@ public abstract class VehicleAgent extends Agent {
 			}
 			return waitingTime;
 		}
-		return -1;
+		return -1;	
 	}
 	
 	public static int getVehiclesOnLane(String laneID, Collection<VehicleAgent> vehicles) {
@@ -155,12 +155,8 @@ public abstract class VehicleAgent extends Agent {
 		int result = 0;
 
 		for(VehicleAgent v : vehicles) {
-			if(v.isAlive() && laneID.startsWith(v.getEdgeID())) {
-				System.out.println("Veich " + v.getID() + " speed " + v.getSpeed());
-			}
 			if(v.isAlive() && laneID.startsWith(v.getEdgeID()) && v.getSpeed() <= VELOCITY_THRESHOLD) {
 				++result;
-				System.out.println("ADDED");
 			}
 		}
 		
