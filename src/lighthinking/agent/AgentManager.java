@@ -7,8 +7,8 @@ import java.util.HashSet;
 import lighthinking.Config;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
-import lighthinking.agent.reaction.ReactionTLAgent;
-import lighthinking.agent.reaction.ReactionVehicleAgent;
+import lighthinking.agent.skipper.SkipperTLAgent;
+import lighthinking.agent.skipper.SkipperVehicleAgent;
 import trasmapi.sumo.SumoCom;
 import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoTrafficLight;
@@ -56,10 +56,10 @@ public class AgentManager {
 		switch (agentMode) {
 		case REACTION:
 			for (String id : trafficLightIds) {
-				addTLAgent(new ReactionTLAgent(id, this));
+				addTLAgent(new SkipperTLAgent(id, this));
 			}
 			for (String id : vehiclesIds) {
-				addVehicleAgent(new ReactionVehicleAgent(id, this));
+				addVehicleAgent(new SkipperVehicleAgent(id, this));
 			}
 
 			break;
@@ -137,7 +137,7 @@ public class AgentManager {
 			if (!vehicleAgents.containsKey(vehicle.id)) {
 				switch (agentMode) {
 				case REACTION:
-					addVehicleAgent(new ReactionVehicleAgent(vehicle.id, this));
+					addVehicleAgent(new SkipperVehicleAgent(vehicle.id, this));
 					break;
 				case BASIC:
 				default:
