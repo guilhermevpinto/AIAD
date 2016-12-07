@@ -5,7 +5,7 @@ import utils.Updateable;
 @SuppressWarnings("serial")
 public abstract class Agent extends jade.core.Agent implements Updateable {
 	
-	protected static int tick = 0;
+	public static int tick = 0;
 	
 	public static enum Type {
 		BASIC,	// DEFAULT
