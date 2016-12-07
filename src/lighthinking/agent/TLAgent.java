@@ -27,6 +27,7 @@ public abstract class TLAgent extends Agent {
 	protected int index = -1;
 	protected String state = null;
 	protected int carsOnGreenLanes = -1;
+	protected int carsStopped = -1;
 	// new parameters added here must be added to "resetParams()"
 	
 	public TLAgent(String id, AgentManager mngr) {
@@ -96,14 +97,24 @@ public abstract class TLAgent extends Agent {
 	}
 	
 	
-	public void getNumberOfStoppedCars(){
-//		String currentState = this.getCurrentState();			
-//		ArrayList<Integer> returnArray = new ArrayList<>();
-//		for(String laneID : controlledLaneIds)
-//		{
-//			returnArray.add(agentManager.getVehiclesStoppedPerLane(laneID));
-//		}
-//		return returnArray;
+	public int getNumberOfStoppedCars(){
+		if(carsStopped == -1) {
+			carsStopped = 0;
+			String state = getCurrentState();
+			
+			HashSet<String> uniqueYellowRedLanes = new HashSet<>();
+			for(int i = 0; i < controlledLaneIds.size(); ++i) {
+				char color = state.charAt(i);
+				if(color != 'g' && color != 'G') {
+					uniqueYellowRedLanes.add(controlledLaneIds.get(i));
+				}
+			}
+			for(String lane : uniqueYellowRedLanes) {
+				carsOnGreenLanes += VehicleAgent.getVehiclesStoppedOnLane(lane, agentManager.getVehicles());
+			}
+		}
+		
+		return carsStopped;
 	}
 	
 	@Override
@@ -123,6 +134,7 @@ public abstract class TLAgent extends Agent {
 		index = -1;
 		state = null;
 		carsOnGreenLanes = -1;
+		carsStopped = -1;
 	}
 	
 	//get the lanes changing to green at each state
@@ -151,6 +163,7 @@ public abstract class TLAgent extends Agent {
 		getPhaseIndex();
 		sumoTrafficLightProgram = TLProgram.programSkipPhase(sumoTrafficLightProgram, phases.get(getPhaseIndex()));
 		phases = sumoTrafficLightProgram.getPhases();
+		resetParams();
 		sumoTrafficLight.setProgram(sumoTrafficLightProgram);
 	}
 }

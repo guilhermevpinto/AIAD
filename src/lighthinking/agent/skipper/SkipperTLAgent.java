@@ -9,6 +9,7 @@ public class SkipperTLAgent extends TLAgent {
 	private static final int MAX_TICKS_WITHOUT_CARS = 7;
 
 	private int ticksWithoutCarsOnGreen = 0;
+	private String previousState = null;
 
 	public SkipperTLAgent(String id, AgentManager mngr) {
 		super(id, mngr);
@@ -19,6 +20,9 @@ public class SkipperTLAgent extends TLAgent {
 	public void update() {
 		super.update();
 		updateTicks();
+		if(previousState == null || !previousState.equals(getCurrentState())) {
+			ticksWithoutCarsOnGreen = 0;
+		}
 		
 		if (ticksWithoutCarsOnGreen >= MAX_TICKS_WITHOUT_CARS) {
 			ticksWithoutCarsOnGreen = 0;
@@ -27,6 +31,8 @@ public class SkipperTLAgent extends TLAgent {
 			}
 			this.skipCurrentPhase();
 		}
+		
+		previousState = getCurrentState();
 	}
 
 	private void updateTicks() {
