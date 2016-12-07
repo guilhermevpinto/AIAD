@@ -1,10 +1,7 @@
 package lighthinking.agent;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram;
@@ -74,9 +71,7 @@ public abstract class TLAgent extends Agent {
 	}
 	
 	public void getNumberOfStoppedCars(){
-		String currentState = this.getCurrentState();	
-		
-		
+//		String currentState = this.getCurrentState();			
 //		ArrayList<Integer> returnArray = new ArrayList<>();
 //		for(String laneID : controlledLaneIds)
 //		{
