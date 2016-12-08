@@ -9,6 +9,8 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.ContainerController;
 import lighthinking.agent.Agent;
+import lighthinking.agent.Agent.Type;
+import lighthinking.agent.learning.Genetics;
 import lighthinking.agent.AgentManager;
 import trasmapi.genAPI.TraSMAPI;
 import trasmapi.genAPI.exceptions.TimeoutException;
@@ -32,6 +34,19 @@ public class Lighthinking {
 	}
 
 	public static void start(Config config)
+			throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
+		if(config.agentType == Type.LEARNING) {
+			while(!Genetics.nextGeneration()) {
+				do {
+					launchSim(config, true, Genetics.MAX_SIM_TICKS);
+				} while (!Genetics.nextIndividualsOnGeneration());
+			}
+		} else {
+			launchSim(config, false, Integer.MAX_VALUE);
+		}
+	}
+
+	private static void launchSim(Config config, boolean reusable, int maxTicks)
 			throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
 		// ArrayList<TrafficLightAgentInfo> tfai =
 		// TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
@@ -74,21 +89,24 @@ public class Lighthinking {
 		// manager.setBehaviour();
 		AgentManager agentManager = new AgentManager(config, mainContainer);
 		// simulation loop
-		while (true) {
+		int tick = 0;
+		while (tick++ < maxTicks) {
 			if (!trasmapi_api.simulationStep(0))
 				break;
 			Thread.sleep(SIMULATION_TICK);
 			Agent.updateTicker();
 			agentManager.updateManager();
-			if(SumoCom.arrivedVehicles.size() == SumoCom.vehicles.size())
+			if (SumoCom.arrivedVehicles.size() == SumoCom.vehicles.size())
 				break;
 		}
-		
+
 		trasmapi_api.close();
-		sumo.close();
 		
+		if(!reusable) {
+			sumo.close();
+		}
+
 		Statistics.createStats();
-		
 	}
 
 }
