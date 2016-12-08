@@ -39,14 +39,17 @@ public class Lighthinking {
 			while(!Genetics.nextGeneration()) {
 				do {
 					launchSim(config, true, Genetics.MAX_SIM_TICKS);
+					Genetics.evalIndividuals();
 				} while (!Genetics.nextIndividualsOnGeneration());
+				Genetics.evalGeneration();
 			}
 		} else {
 			launchSim(config, false, Integer.MAX_VALUE);
 		}
 	}
 
-	private static void launchSim(Config config, boolean reusable, int maxTicks)
+	// returns true if ended by timeout (reached max ticks)
+	private static boolean launchSim(Config config, boolean reusable, int maxTicks)
 			throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
 		// ArrayList<TrafficLightAgentInfo> tfai =
 		// TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
@@ -89,15 +92,18 @@ public class Lighthinking {
 		// manager.setBehaviour();
 		AgentManager agentManager = new AgentManager(config, mainContainer);
 		// simulation loop
+		boolean timeout = true;
 		int tick = 0;
 		while (tick++ < maxTicks) {
+			timeout = false;
 			if (!trasmapi_api.simulationStep(0))
 				break;
-			Thread.sleep(SIMULATION_TICK);
+			//Thread.sleep(SIMULATION_TICK);
 			Agent.updateTicker();
 			agentManager.updateManager();
 			if (SumoCom.arrivedVehicles.size() == SumoCom.vehicles.size())
 				break;
+			timeout = true;
 		}
 
 		trasmapi_api.close();
@@ -107,6 +113,8 @@ public class Lighthinking {
 		}
 
 		Statistics.createStats();
+		
+		return timeout;
 	}
 
 }
