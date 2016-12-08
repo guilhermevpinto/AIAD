@@ -140,7 +140,4 @@ public abstract class TLAgent extends Agent {
 		resetParams();
 	}
 	
-	protected void setup() {
-		System.out.println("Book  is up!");
-	}
 }

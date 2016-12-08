@@ -66,16 +66,12 @@ public class AgentManager {
 			case SKIPPER:
 				for (String id : trafficLightIds) {
 					SkipperTLAgent agent = new SkipperTLAgent(id, this);
-					SkipperTLAgent args[] = new SkipperTLAgent[1];
-					args[0] = agent;
-					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					mainContainer.acceptNewAgent(agent.getID(), agent);
 					addTLAgent(agent);
 				}
 				for (String id : vehiclesIds) {
 					SkipperVehicleAgent agent = new SkipperVehicleAgent(id, this);
-					SkipperVehicleAgent args[] = new SkipperVehicleAgent[1];
-					args[0] = agent;
-					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					mainContainer.acceptNewAgent(agent.getID(), agent);
 					addVehicleAgent(agent);
 				}
 	
@@ -83,16 +79,12 @@ public class AgentManager {
 			case DOUBLE_SKIPPER:
 				for (String id : trafficLightIds) {
 					DoubleSkipperTLAgent agent = new DoubleSkipperTLAgent(id, this);
-					DoubleSkipperTLAgent args[] = new DoubleSkipperTLAgent[1];
-					args[0] = agent;
-					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					mainContainer.acceptNewAgent(agent.getID(), agent);
 					addTLAgent(agent);
 				}
 				for (String id : vehiclesIds) {
 					DoubleSkipperVehicleAgent agent = new DoubleSkipperVehicleAgent(id, this);
-					DoubleSkipperVehicleAgent args[] = new DoubleSkipperVehicleAgent[1];
-					args[0] = agent;
-					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					mainContainer.acceptNewAgent(agent.getID(), agent);
 					addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
 				}
 				break;
@@ -100,16 +92,12 @@ public class AgentManager {
 			default:
 				for (String id : trafficLightIds) {
 					DoubleSkipperTLAgent agent = new DoubleSkipperTLAgent(id, this);
-					DoubleSkipperTLAgent args[] = new DoubleSkipperTLAgent[1];
-					args[0] = agent;
-					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					mainContainer.acceptNewAgent(agent.getID(), agent);
 					addTLAgent(agent);
 				}
 				for (String id : vehiclesIds) {
 					DoubleSkipperVehicleAgent agent = new DoubleSkipperVehicleAgent(id, this);
-					DoubleSkipperVehicleAgent args[] = new DoubleSkipperVehicleAgent[1];
-					args[0] = agent;
-					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					mainContainer.acceptNewAgent(agent.getID(), agent);
 					addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
 				}
 				break;
