@@ -11,6 +11,8 @@ import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
 import lighthinking.agent.double_skipper.DoubleSkipperTLAgent;
 import lighthinking.agent.double_skipper.DoubleSkipperVehicleAgent;
+import lighthinking.agent.learning.LearningTLAgent;
+import lighthinking.agent.learning.LearningVehicleAgent;
 import lighthinking.agent.skipper.SkipperTLAgent;
 import lighthinking.agent.skipper.SkipperVehicleAgent;
 import trasmapi.sumo.SumoCom;
@@ -77,6 +79,15 @@ public class AgentManager {
 				addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
 			}
 
+			break;
+		case LEARNING:
+			for (String id : trafficLightIds) {
+				addTLAgent(new LearningTLAgent(id, this));
+			}
+			for (String id : vehiclesIds) {
+				addVehicleAgent(new LearningVehicleAgent(id, this));
+			}
+			
 			break;
 		case BASIC:
 		default:
@@ -156,6 +167,9 @@ public class AgentManager {
 					break;
 				case DOUBLE_SKIPPER:
 					addVehicleAgent(new DoubleSkipperVehicleAgent(vehicle.id, this));
+					break;
+				case LEARNING:
+					addVehicleAgent(new LearningVehicleAgent(vehicle.id, this));
 					break;
 				case BASIC:
 				default:

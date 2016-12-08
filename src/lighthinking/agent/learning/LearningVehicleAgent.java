@@ -6,7 +6,7 @@ import lighthinking.agent.VehicleAgent;
 @SuppressWarnings("serial")
 public class LearningVehicleAgent extends VehicleAgent {
 
-	protected LearningVehicleAgent(String s, AgentManager mngr) {
+	public LearningVehicleAgent(String s, AgentManager mngr) {
 		super(s, mngr);
 		type = Type.LEARNING;
 	}

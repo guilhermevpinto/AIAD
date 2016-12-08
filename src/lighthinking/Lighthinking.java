@@ -10,7 +10,6 @@ import jade.core.Runtime;
 import jade.wrapper.ContainerController;
 import lighthinking.agent.Agent;
 import lighthinking.agent.AgentManager;
-import lighthinking.agent.VehicleAgent;
 import trasmapi.genAPI.TraSMAPI;
 import trasmapi.genAPI.exceptions.TimeoutException;
 import trasmapi.genAPI.exceptions.UnimplementedMethod;
