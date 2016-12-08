@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import jade.wrapper.ContainerController;
+import jade.wrapper.StaleProxyException;
 import lighthinking.Config;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
@@ -58,36 +59,63 @@ public class AgentManager {
 		
 		ArrayList<String> trafficLightIds = SumoTrafficLight.getIdList();
 		ArrayList<String> vehiclesIds = SumoCom.getAllVehiclesIds();
-
-		switch (agentMode) {
-		case SKIPPER:
-			for (String id : trafficLightIds) {
-				addTLAgent(new SkipperTLAgent(id, this));
+		
+		try {
+		
+			switch (agentMode) {
+			case SKIPPER:
+				for (String id : trafficLightIds) {
+					SkipperTLAgent agent = new SkipperTLAgent(id, this);
+					SkipperTLAgent args[] = new SkipperTLAgent[1];
+					args[0] = agent;
+					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					addTLAgent(agent);
+				}
+				for (String id : vehiclesIds) {
+					SkipperVehicleAgent agent = new SkipperVehicleAgent(id, this);
+					SkipperVehicleAgent args[] = new SkipperVehicleAgent[1];
+					args[0] = agent;
+					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					addVehicleAgent(agent);
+				}
+	
+				break;
+			case DOUBLE_SKIPPER:
+				for (String id : trafficLightIds) {
+					DoubleSkipperTLAgent agent = new DoubleSkipperTLAgent(id, this);
+					DoubleSkipperTLAgent args[] = new DoubleSkipperTLAgent[1];
+					args[0] = agent;
+					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					addTLAgent(agent);
+				}
+				for (String id : vehiclesIds) {
+					DoubleSkipperVehicleAgent agent = new DoubleSkipperVehicleAgent(id, this);
+					DoubleSkipperVehicleAgent args[] = new DoubleSkipperVehicleAgent[1];
+					args[0] = agent;
+					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
+				}
+				break;
+			case BASIC:
+			default:
+				for (String id : trafficLightIds) {
+					DoubleSkipperTLAgent agent = new DoubleSkipperTLAgent(id, this);
+					DoubleSkipperTLAgent args[] = new DoubleSkipperTLAgent[1];
+					args[0] = agent;
+					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					addTLAgent(agent);
+				}
+				for (String id : vehiclesIds) {
+					DoubleSkipperVehicleAgent agent = new DoubleSkipperVehicleAgent(id, this);
+					DoubleSkipperVehicleAgent args[] = new DoubleSkipperVehicleAgent[1];
+					args[0] = agent;
+					mainContainer.createNewAgent(agent.getID(), "jade.core.Agent", args);
+					addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
+				}
+				break;
 			}
-			for (String id : vehiclesIds) {
-				addVehicleAgent(new SkipperVehicleAgent(id, this));
-			}
-
-			break;
-		case DOUBLE_SKIPPER:
-			for (String id : trafficLightIds) {
-				addTLAgent(new DoubleSkipperTLAgent(id, this));
-			}
-			for (String id : vehiclesIds) {
-				addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
-			}
-
-			break;
-		case BASIC:
-		default:
-			for (String id : trafficLightIds) {
-				addTLAgent(new BasicTLAgent(id, this));
-			}
-			for (String id : vehiclesIds) {
-				addVehicleAgent(new BasicVehicleAgent(id, this));
-			}
-
-			break;
+		} catch(StaleProxyException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -105,7 +133,8 @@ public class AgentManager {
 	}
 
 	public void addTLAgent(TLAgent agent) {
-		trafficLightAgents.put(agent.getID(), agent);
+			trafficLightAgents.put(agent.getID(), agent);
+		
 	}
 
 	public boolean removeTLAgent(String id) {

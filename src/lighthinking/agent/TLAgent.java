@@ -139,4 +139,8 @@ public abstract class TLAgent extends Agent {
 		progMngr.setProgram(TLProgram.programSkipPhase(progMngr.getProgram(), progMngr.getCurrentPhase()));
 		resetParams();
 	}
+	
+	protected void setup() {
+		System.out.println("Book  is up!");
+	}
 }
