@@ -80,7 +80,7 @@ public class LighthinkingGUI {
 
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				frame.dispose();
+				frame.setVisible(false);
 
 				Config conf = new Config();
 
@@ -90,7 +90,7 @@ public class LighthinkingGUI {
 
 				try {
 					Lighthinking.start(conf);
-					System.exit(0);
+					frame.setVisible(true);
 				} catch (IOException | TimeoutException | UnimplementedMethod | InterruptedException e) {
 					e.printStackTrace();
 				}

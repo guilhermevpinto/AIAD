@@ -85,6 +85,9 @@ public class Lighthinking {
 				break;
 		}
 		
+		trasmapi_api.close();
+		sumo.close();
+		
 		Statistics.createStats();
 		
 	}
