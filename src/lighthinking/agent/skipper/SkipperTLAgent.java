@@ -2,8 +2,6 @@ package lighthinking.agent.skipper;
 
 import lighthinking.agent.AgentManager;
 import lighthinking.agent.TLAgent;
-import lighthinking.agent.TLProgram;
-import trasmapi.sumo.SumoTrafficLightProgram;
 
 @SuppressWarnings("serial")
 public class SkipperTLAgent extends TLAgent {
@@ -12,11 +10,10 @@ public class SkipperTLAgent extends TLAgent {
 
 	private int ticksWithoutCarsOnGreen = 0;
 	private String previousState = null;
-	private SumoTrafficLightProgram firstState;
+	
 	public SkipperTLAgent(String id, AgentManager mngr) {
 		super(id, mngr);
 		this.type = Type.SKIPPER;
-		firstState = sumoTrafficLightProgram;
 	}
 
 	@Override
@@ -30,6 +27,9 @@ public class SkipperTLAgent extends TLAgent {
 		
 		if (ticksWithoutCarsOnGreen >= MAX_TICKS_WITHOUT_CARS) {
 			ticksWithoutCarsOnGreen = 0;
+			if(internalID.equals("E3")) {
+				System.out.println("SKIP");
+			}
 			if (agentManager.isDebug()) {
 				System.out.println("Traffic light " + internalID + " skipped a phase (no cars on green).");
 			}

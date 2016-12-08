@@ -13,7 +13,8 @@ public abstract class TLAgent extends Agent {
 	
 	protected AgentManager agentManager;
 	protected SumoTrafficLight sumoTrafficLight;
-	protected SumoTrafficLightProgram sumoTrafficLightProgram;
+	
+	protected ProgramManager progMngr;
 	
 	protected ArrayList<String> controlledLaneIds;
 	protected ArrayList<String> neighbourLights;
@@ -40,14 +41,14 @@ public abstract class TLAgent extends Agent {
 			neighbourLights.add(l.split("to")[0]);
 		}
 		
-		sumoTrafficLightProgram = sumoTrafficLight.getProgram();
+		progMngr = new ProgramManager(sumoTrafficLight);
 		
 		this.getLaneChanging();
 	}
 	
 	//Next after yellow light phase
 	public String getNextState(){
-		List<Phase> phases = sumoTrafficLightProgram.getPhases();
+		List<Phase> phases = progMngr.getPhases();
 		return phases.get((getPhaseIndex() + 2) % phases.size()).getState();
 	}
 	
@@ -99,10 +100,11 @@ public abstract class TLAgent extends Agent {
 	@Override
 	public void update() {
 		resetParams();
+		progMngr.updateAgent();
 	}
 	
 	public int getPhaseIndex() {
-		return TLProgram.indexOfPhase(sumoTrafficLightProgram, sumoTrafficLight.getState());
+		return TLProgram.indexOfPhase(progMngr.getProgram(), sumoTrafficLight.getState());
 	}
 	
 	private void resetParams() {
@@ -112,7 +114,7 @@ public abstract class TLAgent extends Agent {
 	
 	//get the lanes changing to green at each state
 	private void getLaneChanging() {
-		List<Phase> phases = sumoTrafficLightProgram.getPhases();
+		List<Phase> phases = progMngr.getPhases();
 		laneChanging = new ArrayList<ArrayList<Integer>>();
 		
 		for(int i = 0; i < phases.size();i++)
@@ -134,9 +136,7 @@ public abstract class TLAgent extends Agent {
 	
 	public void skipCurrentPhase() {
 		getPhaseIndex();
-		List<Phase> phases = sumoTrafficLightProgram.getPhases();
-		sumoTrafficLightProgram = TLProgram.programSkipPhase(sumoTrafficLightProgram, phases.get(getPhaseIndex()));
+		progMngr.setProgram(TLProgram.programSkipPhase(progMngr.getProgram(), progMngr.getCurrentPhase()));
 		resetParams();
-		sumoTrafficLight.setProgram(sumoTrafficLightProgram);
 	}
 }
