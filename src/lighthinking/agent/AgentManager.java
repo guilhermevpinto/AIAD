@@ -182,27 +182,35 @@ public class AgentManager {
 
 	// Add new vehicles and remove stopped vehicles
 	private void updateAgentObjects() {
-		for (SumoVehicle vehicle : SumoCom.vehicles) {
-			if (!vehicleAgents.containsKey(vehicle.id)) {
-				switch (agentMode) {
-				case SKIPPER:
-					addVehicleAgent(new SkipperVehicleAgent(vehicle.id, this));
-					break;
-				case DOUBLE_SKIPPER:
-					addVehicleAgent(new DoubleSkipperVehicleAgent(vehicle.id, this));
-					break;
-				case LEARNING:
-					addVehicleAgent(new LearningVehicleAgent(vehicle.id, this));
-					break;
-				case BASIC:
-				default:
-					addVehicleAgent(new BasicVehicleAgent(vehicle.id, this));
-					break;
+		try {
+			for (SumoVehicle vehicle : SumoCom.vehicles) {
+				if (!vehicleAgents.containsKey(vehicle.id)) {
+					switch (agentMode) {
+					case SKIPPER:
+						addVehicleAgent(new SkipperVehicleAgent(vehicle.id, this));
+						break;
+					case DOUBLE_SKIPPER:
+						addVehicleAgent(new DoubleSkipperVehicleAgent(vehicle.id, this));
+						break;
+					case COM:
+						ComVehicleAgent agent = new ComVehicleAgent(vehicle.id, this);
+						mainContainer.acceptNewAgent(agent.getID(), agent);
+						addVehicleAgent(agent);
+					case LEARNING:
+						addVehicleAgent(new LearningVehicleAgent(vehicle.id, this));
+						break;
+					case BASIC:
+					default:
+						addVehicleAgent(new BasicVehicleAgent(vehicle.id, this));
+						break;
+					}
 				}
 			}
+		} catch (StaleProxyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		for (String id : SumoCom.arrivedVehicles) {
-			
 			removeVehicleAgent(id);
 		}
 	}
