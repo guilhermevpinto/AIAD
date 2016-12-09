@@ -14,6 +14,7 @@ public class Genetics {
 	public static final int POPULATION_SIZE = 21; 	// number of individuals
 	public static final double CROSSOVER_PROB = 0.3;
 	public static final int ELITE_INDIVIDUALS = 4;
+	public static final int CHROMOSSOME_SIZE = MAX_SIM_TICKS / TICKS_PER_BIT;
 
 	public static int currGeneration = 0;
 	public static int currIndividual = 0;
@@ -31,7 +32,11 @@ public class Genetics {
 			}
 			currGeneration = 1;
 		} else {
-			// TODO apply crossover and mutation
+			for (int i = 0; i < POPULATION_SIZE; ++i) {
+				ArrayList<Chromossome> c = individualChromossomes.get(i);
+				individualChromossomes.put(i, evolveGeneration(c));
+			}
+			++currGeneration;
 		}
 
 		return false;
@@ -55,11 +60,10 @@ public class Genetics {
 	public static ArrayList<Chromossome> generateIndividualChromossomes() {
 		ArrayList<Chromossome> chromossomes = new ArrayList<>();
 
-		int chromossome_size = MAX_SIM_TICKS / TICKS_PER_BIT;
 		Random rand = new Random();
 		for (int i = 0; i < GENERATION_SIZE; ++i) {
 			String chromossome = "";
-			for (int j = 0; j < chromossome_size; ++j) {
+			for (int j = 0; j < CHROMOSSOME_SIZE; ++j) {
 				if (rand.nextBoolean()) {
 					chromossome += "1";
 				} else {
@@ -72,12 +76,14 @@ public class Genetics {
 		return chromossomes;
 	}
 
-	public static String[] crossoverChromossomes(String c1, String c2, int splitIndex) {
-		String new_c1 = c1.substring(0, splitIndex);
-		String new_c2 = c2.substring(0, splitIndex);
-		new_c1 += c2.substring(splitIndex);
-		new_c2 += c1.substring(splitIndex);
-		return new String[] { new_c1, new_c2 };
+	public static Chromossome[] crossoverChromossomes(Chromossome c1, Chromossome c2, int splitIndex) {
+		String s1 = c1.content;
+		String s2 = c2.content;
+		String new_c1 = s1.substring(0, splitIndex);
+		String new_c2 = s2.substring(0, splitIndex);
+		new_c1 += s2.substring(splitIndex);
+		new_c2 += s1.substring(splitIndex);
+		return new Chromossome[] { new Chromossome(new_c1), new Chromossome(new_c2) };
 	}
 	
 	public static ArrayList<Chromossome> evolveGeneration(ArrayList<Chromossome> oldGeneration) {
@@ -109,6 +115,35 @@ public class Genetics {
 			}
 		}
 	
-		return newGeneration;
+		ArrayList<Chromossome> crossedGeneration = crossoverGeneration(newGeneration);
+		Collections.shuffle(crossedGeneration);
+		return crossedGeneration;
+	}
+	
+	public static ArrayList<Chromossome> crossoverGeneration(ArrayList<Chromossome> generation) {
+		ArrayList<Chromossome> crossedGeneration = new ArrayList<>();
+		
+		Random rand = new Random();
+		int crossoverIndex = rand.nextInt(CHROMOSSOME_SIZE);
+		Chromossome firstCross = null;
+		for(Chromossome c : generation) {
+			if(rand.nextDouble() <= CROSSOVER_PROB) {
+				if(firstCross == null) {
+					firstCross = c;
+				} else {
+					Chromossome crossed[] = crossoverChromossomes(firstCross, c, crossoverIndex);
+					crossedGeneration.add(crossed[0]);
+					crossedGeneration.add(crossed[1]);
+					firstCross = null;
+				}
+			} else {
+				crossedGeneration.add(c);
+			}
+		}
+		if(firstCross != null) {
+			crossedGeneration.add(firstCross);
+		}
+		
+		return crossedGeneration;
 	}
 }
