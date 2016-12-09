@@ -213,8 +213,17 @@ public class AgentManager {
 			TLAgent tf = entry.getValue();
 			if(agentMode == Agent.Type.COM){
 				tf.action();
+				//doesn't execute update() because the received messages need to be read first
 			}
-			tf.update();
+			else tf.update();
+		}
+		//in case of COM mode, each TL has a set of messages to analyse
+		if(agentMode == Agent.Type.COM){
+			for (HashMap.Entry<String, TLAgent> entry : trafficLightAgents.entrySet()) {
+				TLAgent tf = entry.getValue();
+				tf.inboxHandler();
+				tf.update();
+			}
 		}
 	}
 	

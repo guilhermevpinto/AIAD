@@ -41,7 +41,7 @@ public abstract class TLAgent extends Agent {
 			mngr.addLane(l);
 			neighbourLights.add(l.split("to")[0]);
 		}
-		
+
 		progMngr = new ProgramManager(sumoTrafficLight);
 		
 		this.getLaneChanging();
@@ -145,14 +145,19 @@ public abstract class TLAgent extends Agent {
 		ArrayList<String> sent = new ArrayList<String> ();
 		for(String id : neighbourLights){
 			if(!sent.contains(id)){
-				System.out.println(this.getID() + " is sending message to " + id);
 				sendMessage(id, "msg");
 				sent.add(id);
-				
-
-				receiveMessage();
 			}
-			
+		}
+	}
+	
+	public void inboxHandler() {
+		ArrayList<String> received = new ArrayList<String> ();
+		for(String id : neighbourLights){
+			if(!received.contains(id)){
+				receiveMessage();
+				received.add(id);
+			}
 		}
 	}
 	
@@ -160,12 +165,13 @@ public abstract class TLAgent extends Agent {
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		msg.addReceiver(new AID(target, AID.ISLOCALNAME));
 		msg.setContent(content);
+		System.out.println(this.getID() + " is sending message to " + target);
 		send(msg);
 	}
 	
 	protected void receiveMessage(){
 		ACLMessage msg = receive();
 		if(msg != null)
-		System.out.println(msg.getContent());
+			System.out.println(msg.getContent());
 	}
 }
