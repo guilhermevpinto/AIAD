@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import trasmapi.sumo.SumoTrafficLight;
-import trasmapi.sumo.SumoTrafficLightProgram;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
 @SuppressWarnings("serial")
