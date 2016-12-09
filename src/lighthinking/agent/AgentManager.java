@@ -10,6 +10,8 @@ import jade.wrapper.StaleProxyException;
 import lighthinking.Config;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
+import lighthinking.agent.com.ComTLAgent;
+import lighthinking.agent.com.ComVehicleAgent;
 import lighthinking.agent.double_skipper.DoubleSkipperTLAgent;
 import lighthinking.agent.double_skipper.DoubleSkipperVehicleAgent;
 import lighthinking.agent.skipper.SkipperTLAgent;
@@ -65,39 +67,39 @@ public class AgentManager {
 			switch (agentMode) {
 			case SKIPPER:
 				for (String id : trafficLightIds) {
-					SkipperTLAgent agent = new SkipperTLAgent(id, this);
-					mainContainer.acceptNewAgent(agent.getID(), agent);
-					addTLAgent(agent);
+					addTLAgent(new SkipperTLAgent(id, this));
 				}
 				for (String id : vehiclesIds) {
-					SkipperVehicleAgent agent = new SkipperVehicleAgent(id, this);
-					mainContainer.acceptNewAgent(agent.getID(), agent);
-					addVehicleAgent(agent);
+					addVehicleAgent(new SkipperVehicleAgent(id, this));
 				}
 	
 				break;
 			case DOUBLE_SKIPPER:
 				for (String id : trafficLightIds) {
-					DoubleSkipperTLAgent agent = new DoubleSkipperTLAgent(id, this);
+					addTLAgent(new DoubleSkipperTLAgent(id, this));
+				}
+				for (String id : vehiclesIds) {
+					addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
+				}
+				break;
+			case COM:
+				for (String id : trafficLightIds) {
+					ComTLAgent agent = new ComTLAgent(id, this);
 					mainContainer.acceptNewAgent(agent.getID(), agent);
 					addTLAgent(agent);
 				}
 				for (String id : vehiclesIds) {
-					DoubleSkipperVehicleAgent agent = new DoubleSkipperVehicleAgent(id, this);
+					ComVehicleAgent agent = new ComVehicleAgent(id, this);
 					mainContainer.acceptNewAgent(agent.getID(), agent);
-					addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
+					addVehicleAgent(agent);
 				}
 				break;
 			case BASIC:
 			default:
 				for (String id : trafficLightIds) {
-					DoubleSkipperTLAgent agent = new DoubleSkipperTLAgent(id, this);
-					mainContainer.acceptNewAgent(agent.getID(), agent);
-					addTLAgent(agent);
+					addTLAgent(new BasicTLAgent(id, this));
 				}
 				for (String id : vehiclesIds) {
-					DoubleSkipperVehicleAgent agent = new DoubleSkipperVehicleAgent(id, this);
-					mainContainer.acceptNewAgent(agent.getID(), agent);
 					addVehicleAgent(new DoubleSkipperVehicleAgent(id, this));
 				}
 				break;
