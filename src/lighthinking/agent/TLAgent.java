@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import jade.core.AID;
+import jade.lang.acl.ACLMessage;
 import trasmapi.sumo.SumoTrafficLight;
 import trasmapi.sumo.SumoTrafficLightProgram.Phase;
 
@@ -138,5 +140,28 @@ public abstract class TLAgent extends Agent {
 		progMngr.setProgram(TLProgram.programSkipPhase(progMngr.getProgram(), progMngr.getCurrentPhase()));
 		resetParams();
 	}
+		
+	public void action() {
+		ArrayList<String> sent = new ArrayList<String> ();
+		for(String id : neighbourLights){
+			if(!sent.contains(id)){
+				sendMessage(id, "");
+				sent.add(id);
+			}
+			
+			receiveMessage();
+		}
+	}
 	
+	protected void sendMessage(String target, String content){
+		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
+		msg.addReceiver(new AID(target, AID.ISLOCALNAME));
+		msg.setContent(content);
+		send(msg);
+	}
+	
+	protected void receiveMessage(){
+		ACLMessage msg = receive();
+		System.out.println(msg.getContent());
+	}
 }

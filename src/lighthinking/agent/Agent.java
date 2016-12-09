@@ -32,7 +32,4 @@ public abstract class Agent extends jade.core.Agent implements Updateable {
 		++tick;
 	}
 
-	public void setup() {
-		System.out.println("Ready");
-	}
 }
