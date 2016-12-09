@@ -170,6 +170,7 @@ public class AgentManager {
 		// Add new vehicles and remove stopped vehicles
 		updateAgentObjects();
 		updateAgents();
+		
 		//updateVehicleStoppedInLanes();
 	}
 
@@ -210,6 +211,9 @@ public class AgentManager {
 		}
 		for (HashMap.Entry<String, TLAgent> entry : trafficLightAgents.entrySet()) {
 			TLAgent tf = entry.getValue();
+			if(agentMode == Agent.Type.COM){
+				tf.action();
+			}
 			tf.update();
 		}
 	}

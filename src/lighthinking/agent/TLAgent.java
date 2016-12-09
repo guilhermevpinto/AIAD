@@ -145,11 +145,14 @@ public abstract class TLAgent extends Agent {
 		ArrayList<String> sent = new ArrayList<String> ();
 		for(String id : neighbourLights){
 			if(!sent.contains(id)){
-				sendMessage(id, "");
+				System.out.println(this.getID() + " is sending message to " + id);
+				sendMessage(id, "msg");
 				sent.add(id);
+				
+
+				receiveMessage();
 			}
 			
-			receiveMessage();
 		}
 	}
 	
@@ -162,6 +165,7 @@ public abstract class TLAgent extends Agent {
 	
 	protected void receiveMessage(){
 		ACLMessage msg = receive();
+		if(msg != null)
 		System.out.println(msg.getContent());
 	}
 }
