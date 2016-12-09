@@ -138,8 +138,7 @@ public class AgentManager {
 	}
 
 	public void addTLAgent(TLAgent agent) {
-			trafficLightAgents.put(agent.getID(), agent);
-		
+		trafficLightAgents.put(agent.getID(), agent);
 	}
 
 	public boolean removeTLAgent(String id) {

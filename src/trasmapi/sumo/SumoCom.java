@@ -550,8 +550,6 @@ public class SumoCom {
 			return;
 		}
 
-		System.out.println("numIds : " + routesIDs.size());
-
 		RequestMessage reqMsg = new RequestMessage();
 
 		for(String s: routesIDs){

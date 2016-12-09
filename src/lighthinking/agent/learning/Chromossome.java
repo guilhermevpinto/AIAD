@@ -33,4 +33,12 @@ public class Chromossome {
     		System.out.println(c.content + " " + c.value);
     	}
     }
+    
+    public static void printScores(String agentID, ArrayList<Chromossome> pop) {
+    	String content = agentID + "  =>  ";
+    	for(Chromossome c : pop) {
+    		content += c.value + ", ";
+    	}
+    	System.out.println(content);
+    }
 }

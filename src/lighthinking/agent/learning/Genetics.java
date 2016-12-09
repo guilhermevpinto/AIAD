@@ -5,38 +5,53 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 
+import lighthinking.Statistics;
+
 public class Genetics {
 
 	public static final int MAX_GENERATIONS = 5; 	// first generation is number 1
-	public static final int MAX_SIM_TICKS = 300;
+	public static final int MAX_SIM_TICKS = 30;
 	public static final int TICKS_PER_BIT = 5; 		// each bit represents a state  change every TICKS_PER_BIT  ticks
-	public static final int GENERATION_SIZE = 20; 	// chromossomes per individual
+	public static final int GENERATION_SIZE = 5; 	// chromossomes per individual
 	public static final int POPULATION_SIZE = 21; 	// number of individuals
 	public static final double CROSSOVER_PROB = 0.3;
-	public static final int ELITE_INDIVIDUALS = 4;
+	public static final int ELITE_INDIVIDUALS = 2;
 	public static final int CHROMOSSOME_SIZE = MAX_SIM_TICKS / TICKS_PER_BIT;
+	public static final double PENALTY = 0.5;
 
 	public static int currGeneration = 0;
 	public static int currIndividual = 0;
 
-	public static HashMap<Integer, ArrayList<Chromossome>> individualChromossomes;
+	public static HashMap<String, ArrayList<Chromossome>> individualChromossomes;
+	public static String[] ids = new String[] {
+		"A1", "A2", "A3", "B0", "B1", "B2", "B3", "B4", "C0", "C1", "C2", "C3", "C4", "D0", "D1", "D2", "D3", "D4", "E1", "E2", "E3"
+	};
 
 	// returns true if reached last generation
 	public static boolean nextGeneration() {
+		Statistics.resetStats();
 		if (currGeneration == MAX_GENERATIONS) {
 			return true;
 		} else if (currGeneration == 0) {
 			individualChromossomes = new HashMap<>();
 			for (int i = 0; i < POPULATION_SIZE; ++i) {
-				individualChromossomes.put(i, generateIndividualChromossomes());
+				individualChromossomes.put(ids[i], generateIndividualChromossomes());
 			}
 			currGeneration = 1;
+			currIndividual = 0;
 		} else {
 			for (int i = 0; i < POPULATION_SIZE; ++i) {
-				ArrayList<Chromossome> c = individualChromossomes.get(i);
-				individualChromossomes.put(i, evolveGeneration(c));
+				String id = ids[i];
+				ArrayList<Chromossome> c = individualChromossomes.get(id);
+				individualChromossomes.put(ids[i], evolveGeneration(c));
 			}
 			++currGeneration;
+			currIndividual = 0;
+		}
+		
+		for(String id : ids) {
+			Chromossome.printGeneration(individualChromossomes.get(id));
+			System.out.println("");
 		}
 
 		return false;
@@ -44,13 +59,30 @@ public class Genetics {
 
 	// returns true if reached last individual
 	public static boolean nextIndividualsOnGeneration() {
-		return true;
+		Statistics.resetStats();
+		++currIndividual;
+		for(String id : ids) {
+			Chromossome.printScores(id, individualChromossomes.get(id));
+		}
+		System.out.println("");
+		if(currIndividual >= GENERATION_SIZE) {
+			return true;
+		}
+		return false;
 	}
 
 	// called when individual set ended
 	// gives penalty if "wasTimedOut" is true
 	public static void evalIndividuals(boolean wasTimedOut) {
-
+		double perf = Statistics.getOverallPerformance();
+		if(wasTimedOut) {
+			System.out.println("Penalty to generation " + currGeneration + "/" + currIndividual);
+			perf *= PENALTY;
+		}
+		System.out.println("Perf for generation " + perf);
+		for(int i = 0; i < POPULATION_SIZE; ++i) {
+			individualChromossomes.get(ids[i]).get(currIndividual).value = perf;
+		}
 	}
 
 	public static ArrayList<Chromossome> generateIndividualChromossomes() {
@@ -59,7 +91,7 @@ public class Genetics {
 		Random rand = new Random();
 		for (int i = 0; i < GENERATION_SIZE; ++i) {
 			String chromossome = "";
-			for (int j = 0; j < CHROMOSSOME_SIZE; ++j) {
+			for (int j = 0; j <= CHROMOSSOME_SIZE; ++j) {
 				if (rand.nextBoolean()) {
 					chromossome += "1";
 				} else {
@@ -105,14 +137,14 @@ public class Genetics {
 			double selected = rand.nextDouble();
 			for(Chromossome c : oldGeneration) {
 				if(c.value >= selected) {
-					newGeneration.add(c);
+					newGeneration.add(c.cleanCopy());
 					break;
 				}
 			}
 		}
 	
 		ArrayList<Chromossome> crossedGeneration = crossoverGeneration(newGeneration);
-		Collections.shuffle(crossedGeneration);
+		//Collections.shuffle(crossedGeneration);
 		return crossedGeneration;
 	}
 	
@@ -137,13 +169,21 @@ public class Genetics {
 			}
 		}
 		if(firstCross != null) {
-			crossedGeneration.add(firstCross);
+			crossedGeneration.add(firstCross.cleanCopy());
 		}
 		
 		return crossedGeneration;
 	}
 	
-	public static String getChromossomeContentForIndividual(int id) {
-		return individualChromossomes.get(id).get(currIndividual).content;
+	public static Chromossome getChromossomeForIndividual(String id) {
+		return individualChromossomes.get(id).get(currIndividual);
+	}
+	
+	public static String getChromossomeContentForIndividual(String id) {
+		return getChromossomeForIndividual(id).content;
+	}
+	
+	public static boolean shouldIndividualSwitch(String individualID, int tick) {
+		return getChromossomeContentForIndividual(individualID).charAt(tick / TICKS_PER_BIT) == '1';
 	}
 }

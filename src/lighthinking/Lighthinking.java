@@ -24,7 +24,7 @@ public class Lighthinking {
 	private static final int SUMO_PORT = 8820;
 	private static final String SUMO_CFG = "res\\Lighthinking\\test\\sumo.cfg";
 
-	private static final int SIMULATION_TICK = 100;
+	private static final int SIMULATION_DELAY = 100;
 
 	private static ProfileImpl profile;
 	private static ContainerController mainContainer;
@@ -38,23 +38,23 @@ public class Lighthinking {
 		if(config.agentType == Type.LEARNING) {
 			while(!Genetics.nextGeneration()) {
 				do {
-					boolean timedOut = launchSim(config, true, Genetics.MAX_SIM_TICKS);
+					boolean timedOut = launchSim(config, true, Genetics.MAX_SIM_TICKS, 0);
 					Genetics.evalIndividuals(timedOut);
 				} while (!Genetics.nextIndividualsOnGeneration());
 			}
 		} else {
-			launchSim(config, false, Integer.MAX_VALUE);
+			launchSim(config, false, Integer.MAX_VALUE, SIMULATION_DELAY);
 		}
 	}
 
 	// returns true if ended by timeout (reached max ticks)
-	private static boolean launchSim(Config config, boolean reusable, int maxTicks)
+	private static boolean launchSim(Config config, boolean reusable, int maxTicks, int simDelay)
 			throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
 		// ArrayList<TrafficLightAgentInfo> tfai =
 		// TFAgentInfoParser.parseTFAgentInfo(TRAFFIC_LIGHT_INFO_XML);
 
 		// Use the JADE GUI if enabled
-		if (config.jadeGUI) {
+		if (config.jadeGUI) {	
 			profile = new BootProfileImpl(new String[] { "-gui" });
 		} else {
 			profile = new ProfileImpl();
@@ -97,7 +97,7 @@ public class Lighthinking {
 			timeout = false;
 			if (!trasmapi_api.simulationStep(0))
 				break;
-			//Thread.sleep(SIMULATION_TICK);
+			Thread.sleep(simDelay);
 			Agent.updateTicker();
 			agentManager.updateManager();
 			if (SumoCom.arrivedVehicles.size() == SumoCom.vehicles.size())
