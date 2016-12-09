@@ -1,8 +1,12 @@
 package lighthinking;
 
+import lighthinking.agent.Agent;
 import lighthinking.agent.VehicleAgent;
 
 public class Statistics {
+	
+	public static final int MAX_AVERAGE_ALIVE = 400;
+	public static final int MIN_SCORE = 10;
 	
 	public static void createStats(){
 		
@@ -26,5 +30,23 @@ public class Statistics {
 		System.out.println("Max Time a Car is Stopped: " + maxTimeStopped);
 		System.out.println("Min Time a Car is Stopped: " + minTimeStopped);
 		
+	}
+	
+	public static double getOverallPerformance() {
+		int totalNumberOfTicksAlive = VehicleAgent.totalTicksAlive;
+		int totalNumberOfVehicles = VehicleAgent.vehiclesended;
+		if(totalNumberOfVehicles != 0) {
+			return MAX_AVERAGE_ALIVE - (totalNumberOfTicksAlive/totalNumberOfVehicles);
+		}
+		return MIN_SCORE;
+	}
+	
+	public static void resetStats() {
+		Agent.tick = 0;
+		VehicleAgent.totalTicksStopped = 0;
+		VehicleAgent.totalTicksAlive = 0;
+		VehicleAgent.vehiclesended = 0;
+		VehicleAgent.maxTime = 0;
+		VehicleAgent.minTime = Integer.MAX_VALUE;
 	}
 }
