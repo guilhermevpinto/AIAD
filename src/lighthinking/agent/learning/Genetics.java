@@ -48,12 +48,8 @@ public class Genetics {
 	}
 
 	// called when individual set ended
-	public static void evalIndividuals() {
-
-	}
-
-	// called when generation ended
-	public static void evalGeneration() {
+	// gives penalty if "wasTimedOut" is true
+	public static void evalIndividuals(boolean wasTimedOut) {
 
 	}
 
@@ -145,5 +141,9 @@ public class Genetics {
 		}
 		
 		return crossedGeneration;
+	}
+	
+	public static String getChromossomeContentForIndividual(int id) {
+		return individualChromossomes.get(id).get(currIndividual).content;
 	}
 }

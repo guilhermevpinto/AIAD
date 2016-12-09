@@ -38,10 +38,9 @@ public class Lighthinking {
 		if(config.agentType == Type.LEARNING) {
 			while(!Genetics.nextGeneration()) {
 				do {
-					launchSim(config, true, Genetics.MAX_SIM_TICKS);
-					Genetics.evalIndividuals();
+					boolean timedOut = launchSim(config, true, Genetics.MAX_SIM_TICKS);
+					Genetics.evalIndividuals(timedOut);
 				} while (!Genetics.nextIndividualsOnGeneration());
-				Genetics.evalGeneration();
 			}
 		} else {
 			launchSim(config, false, Integer.MAX_VALUE);
