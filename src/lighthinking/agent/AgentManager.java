@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import jade.wrapper.ContainerController;
+import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 import lighthinking.Config;
+import lighthinking.agent.Agent.Type;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
 import lighthinking.agent.com.ComTLAgent;
@@ -51,10 +53,16 @@ public class AgentManager {
 		vehiclesStoppedPerLane = new HashMap<String, Integer>();
 		laneIDs = new HashSet<String>();
 
-		init();
+		
+		try {
+			init();
+		} catch (ControllerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	private void init() {
+	private void init() throws ControllerException{
 //		laneIDs = new HashSet<String>(SumoCom.getAllEdgesIds());
 //		for (String id : laneIDs) {
 //			actualAddLane(id);
@@ -88,6 +96,7 @@ public class AgentManager {
 				for (String id : trafficLightIds) {
 					ComTLAgent agent = new ComTLAgent(id, this);
 					mainContainer.acceptNewAgent(agent.getID(), agent);
+					mainContainer.getAgent(id).start();
 					addTLAgent(agent);
 				}
 				for (String id : vehiclesIds) {
@@ -210,20 +219,9 @@ public class AgentManager {
 			vehicle.update();
 		}
 		for (HashMap.Entry<String, TLAgent> entry : trafficLightAgents.entrySet()) {
-			TLAgent tf = entry.getValue();
-			if(agentMode == Agent.Type.COM){
-				tf.action();
-				//doesn't execute update() because the received messages need to be read first
-			}
-			else tf.update();
-		}
-		//in case of COM mode, each TL has a set of messages to analyse
-		if(agentMode == Agent.Type.COM){
-			for (HashMap.Entry<String, TLAgent> entry : trafficLightAgents.entrySet()) {
-				TLAgent tf = entry.getValue();
-				tf.inboxHandler();
-				tf.update();
-			}
+			TLAgent tl = entry.getValue();
+			tl.update();
+				
 		}
 	}
 	
@@ -243,5 +241,11 @@ public class AgentManager {
 	public Collection<VehicleAgent> getVehicles() {
 		return vehicleAgents.values();
 	}
+
+	public HashMap<String, TLAgent> getTrafficLightAgents() {
+		return trafficLightAgents;
+	}
+	
+	
 
 }

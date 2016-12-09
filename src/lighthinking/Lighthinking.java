@@ -86,11 +86,7 @@ public class Lighthinking {
 		trasmapi_api.connect();
 
 		trasmapi_api.start();
-
-		// AgentsManager manager = new AgentsManager(sumo, mainContainer, tfai);
-		// manager.startupAgents(mainContainer);
-
-		// manager.setBehaviour();
+		
 		AgentManager agentManager = new AgentManager(config, mainContainer);
 		// simulation loop
 		boolean timeout = true;
