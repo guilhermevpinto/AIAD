@@ -1,5 +1,8 @@
 package lighthinking.agent.learning;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +12,7 @@ import lighthinking.Statistics;
 
 public class Genetics {
 
-	public static final int MAX_GENERATIONS = 5; 	// first generation is number 1
+	public static final int MAX_GENERATIONS = 2; 	// first generation is number 1
 	public static final int MAX_SIM_TICKS = 30;
 	public static final int TICKS_PER_BIT = 5; 		// each bit represents a state  change every TICKS_PER_BIT  ticks
 	public static final int GENERATION_SIZE = 5; 	// chromossomes per individual
@@ -21,11 +24,34 @@ public class Genetics {
 
 	public static int currGeneration = 0;
 	public static int currIndividual = 0;
+	
+	private static PrintWriter writer;// = new PrintWriter("the-file-name.txt", "UTF-8");
 
 	public static HashMap<String, ArrayList<Chromossome>> individualChromossomes;
 	public static String[] ids = new String[] {
 		"A1", "A2", "A3", "B0", "B1", "B2", "B3", "B4", "C0", "C1", "C2", "C3", "C4", "D0", "D1", "D2", "D3", "D4", "E1", "E2", "E3"
 	};
+	
+	public static void startLog() {
+		try {
+			writer = new PrintWriter("res/genetics/log.txt", "UTF-8");
+		} catch (FileNotFoundException | UnsupportedEncodingException e) {
+			System.err.println("Unable to start log");
+			e.printStackTrace();
+		}
+	}
+	
+	public static void tryLog(String s) {
+		if(writer != null) {
+			writer.println(s);
+		}
+	}
+	
+	public static void endLog() {
+		if(writer != null) {
+			writer.close();
+		}
+	}
 
 	// returns true if reached last generation
 	public static boolean nextGeneration() {
@@ -48,11 +74,6 @@ public class Genetics {
 			++currGeneration;
 			currIndividual = 0;
 		}
-		
-		for(String id : ids) {
-			Chromossome.printGeneration(individualChromossomes.get(id));
-			System.out.println("");
-		}
 
 		return false;
 	}
@@ -61,11 +82,8 @@ public class Genetics {
 	public static boolean nextIndividualsOnGeneration() {
 		Statistics.resetStats();
 		++currIndividual;
-		for(String id : ids) {
-			Chromossome.printScores(id, individualChromossomes.get(id));
-		}
-		System.out.println("");
 		if(currIndividual >= GENERATION_SIZE) {
+			tryLog(printGenerationFull());
 			return true;
 		}
 		return false;
@@ -144,7 +162,7 @@ public class Genetics {
 		}
 	
 		ArrayList<Chromossome> crossedGeneration = crossoverGeneration(newGeneration);
-		//Collections.shuffle(crossedGeneration);
+		Collections.shuffle(crossedGeneration);
 		return crossedGeneration;
 	}
 	
@@ -185,5 +203,30 @@ public class Genetics {
 	
 	public static boolean shouldIndividualSwitch(String individualID, int tick) {
 		return getChromossomeContentForIndividual(individualID).charAt(tick / TICKS_PER_BIT) == '1';
+	}
+	
+	public static String printGenerationFull() {
+		String content = "Result of generation " + currGeneration + '\n';
+		
+		double bestValue = 0;
+		double sumValues = 0;
+		double numValues = 0;
+		
+		for(String id : ids) {
+			content += "Agent " + id + '\n';
+			ArrayList<Chromossome> chromossomes = individualChromossomes.get(id);
+			for(Chromossome c : chromossomes) {
+				sumValues += c.value;
+				++numValues;
+				if(c.value > bestValue) {
+					bestValue = c.value;
+				}
+				content += "" + c.content + "  =>  " + c.value + '\n';
+			}
+			content += '\n';
+		}
+		content += "AGV( " + sumValues/numValues + ")  BEST( " + bestValue + ")" + '\n';
+		
+		return content;
 	}
 }

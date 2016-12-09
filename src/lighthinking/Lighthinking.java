@@ -36,12 +36,14 @@ public class Lighthinking {
 	public static void start(Config config)
 			throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
 		if(config.agentType == Type.LEARNING) {
+			Genetics.startLog();
 			while(!Genetics.nextGeneration()) {
 				do {
 					boolean timedOut = launchSim(config, true, Genetics.MAX_SIM_TICKS, 0);
 					Genetics.evalIndividuals(timedOut);
 				} while (!Genetics.nextIndividualsOnGeneration());
 			}
+			Genetics.endLog();
 		} else {
 			launchSim(config, false, Integer.MAX_VALUE, SIMULATION_DELAY);
 		}
