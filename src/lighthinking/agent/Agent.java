@@ -12,7 +12,10 @@ public abstract class Agent extends jade.core.Agent implements Updateable {
 		SKIPPER,
 		DOUBLE_SKIPPER,
 		COM,
-		LEARNING
+		LEARNING,
+		LEARNING_RESULTS,
+		LEARNING_LOCAL,
+		LEARNING_LOCAL_RESULTS
 	}
 	
 	protected Type type;

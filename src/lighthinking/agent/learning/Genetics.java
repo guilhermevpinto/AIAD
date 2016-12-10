@@ -9,16 +9,20 @@ import java.util.HashMap;
 import java.util.Random;
 
 import lighthinking.Statistics;
+import lighthinking.agent.AgentManager;
+import lighthinking.agent.TLAgent;
 
 public class Genetics {
+	
+	public static boolean LOCAL_EVAL_ONLY = false;
 
-	public static final int MAX_GENERATIONS = 2; 	// first generation is number 1
-	public static final int MAX_SIM_TICKS = 30;
+	public static final int MAX_GENERATIONS = 30; 	// first generation is number 1
+	public static final int MAX_SIM_TICKS = 470;
 	public static final int TICKS_PER_BIT = 5; 		// each bit represents a state  change every TICKS_PER_BIT  ticks
-	public static final int GENERATION_SIZE = 5; 	// chromossomes per individual
+	public static final int GENERATION_SIZE = 30; 	// chromossomes per individual
 	public static final int POPULATION_SIZE = 21; 	// number of individuals
-	public static final double CROSSOVER_PROB = 0.3;
-	public static final int ELITE_INDIVIDUALS = 2;
+	public static final double CROSSOVER_PROB = 0.2;
+	public static final int ELITE_INDIVIDUALS = 5;
 	public static final int CHROMOSSOME_SIZE = MAX_SIM_TICKS / TICKS_PER_BIT;
 	public static final double PENALTY = 0.5;
 
@@ -56,6 +60,11 @@ public class Genetics {
 	// returns true if reached last generation
 	public static boolean nextGeneration() {
 		Statistics.resetStats();
+		for(String id : ids) {
+			if(AgentManager.trafficLightAgents != null) {
+				AgentManager.trafficLightAgents.get(id).resetLocalStopped();
+			}
+		}
 		if (currGeneration == MAX_GENERATIONS) {
 			return true;
 		} else if (currGeneration == 0) {
@@ -81,6 +90,11 @@ public class Genetics {
 	// returns true if reached last individual
 	public static boolean nextIndividualsOnGeneration() {
 		Statistics.resetStats();
+		for(String id : ids) {
+			if(AgentManager.trafficLightAgents != null) {
+				AgentManager.trafficLightAgents.get(id).resetLocalStopped();
+			}
+		}
 		++currIndividual;
 		if(currIndividual >= GENERATION_SIZE) {
 			tryLog(printGenerationFull());
@@ -92,14 +106,25 @@ public class Genetics {
 	// called when individual set ended
 	// gives penalty if "wasTimedOut" is true
 	public static void evalIndividuals(boolean wasTimedOut) {
-		double perf = Statistics.getOverallPerformance();
-		if(wasTimedOut) {
-			System.out.println("Penalty to generation " + currGeneration + "/" + currIndividual);
-			perf *= PENALTY;
-		}
-		System.out.println("Perf for generation " + perf);
-		for(int i = 0; i < POPULATION_SIZE; ++i) {
-			individualChromossomes.get(ids[i]).get(currIndividual).value = perf;
+		if(LOCAL_EVAL_ONLY) {
+			for(String id : ids) {
+				double perf = (double) (1.0/AgentManager.trafficLightAgents.get(id).getLocalStopped());
+				if(wasTimedOut) {
+					System.out.println("Penalty to generation " + currGeneration + "/" + currIndividual);
+					perf *= PENALTY;
+				}
+				individualChromossomes.get(id).get(currIndividual).value = perf;
+			}
+		} else {
+			double perf = Statistics.getOverallPerformance();
+			if(wasTimedOut) {
+				System.out.println("Penalty to generation " + currGeneration + "/" + currIndividual);
+				perf *= PENALTY;
+			}
+			System.out.println("Perf for generation " + perf);
+			for(int i = 0; i < POPULATION_SIZE; ++i) {
+				individualChromossomes.get(ids[i]).get(currIndividual).value = perf;
+			}
 		}
 	}
 
@@ -134,6 +159,7 @@ public class Genetics {
 	
 	public static ArrayList<Chromossome> evolveGeneration(ArrayList<Chromossome> oldGeneration) {
 		ArrayList<Chromossome> newGeneration = new ArrayList<>();
+		ArrayList<Chromossome> mutable = new ArrayList<>();
 		
 		Collections.sort(oldGeneration, Chromossome.comparator);
 		
@@ -155,15 +181,16 @@ public class Genetics {
 			double selected = rand.nextDouble();
 			for(Chromossome c : oldGeneration) {
 				if(c.value >= selected) {
-					newGeneration.add(c.cleanCopy());
+					mutable.add(c.cleanCopy());
 					break;
 				}
 			}
 		}
 	
-		ArrayList<Chromossome> crossedGeneration = crossoverGeneration(newGeneration);
-		Collections.shuffle(crossedGeneration);
-		return crossedGeneration;
+		ArrayList<Chromossome> crossedGeneration = crossoverGeneration(mutable);
+		newGeneration.addAll(crossedGeneration);
+		Collections.shuffle(newGeneration);
+		return newGeneration;
 	}
 	
 	public static ArrayList<Chromossome> crossoverGeneration(ArrayList<Chromossome> generation) {
@@ -201,8 +228,22 @@ public class Genetics {
 		return getChromossomeForIndividual(id).content;
 	}
 	
+	public static boolean shouldProgramSwitch(String chromossome, int tick) {
+		if(tick % TICKS_PER_BIT == 0) {
+			try {
+				return chromossome.charAt(tick / TICKS_PER_BIT) == '1';	
+			} catch (Exception e) {
+				return false;
+			}
+		}
+		return false;
+	}
+	
 	public static boolean shouldIndividualSwitch(String individualID, int tick) {
-		return getChromossomeContentForIndividual(individualID).charAt(tick / TICKS_PER_BIT) == '1';
+		if(tick % TICKS_PER_BIT == 0) {
+			return getChromossomeContentForIndividual(individualID).charAt(tick / TICKS_PER_BIT) == '1';	
+		}
+		return false;
 	}
 	
 	public static String printGenerationFull() {
