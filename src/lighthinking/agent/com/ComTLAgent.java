@@ -8,6 +8,8 @@ import jade.lang.acl.ACLMessage;
 import lighthinking.agent.Agent;
 import lighthinking.agent.AgentManager;
 import lighthinking.agent.TLAgent;
+import trasmapi.sumo.SumoLane;
+import trasmapi.sumo.SumoVehicle;
 
 @SuppressWarnings("serial")
 public class ComTLAgent extends TLAgent {
@@ -22,10 +24,23 @@ public class ComTLAgent extends TLAgent {
 	}
 	
 	public void update(){
-		
-		if(this.progMngr.ticksToChangeState() == 0)
+
+		if(this.progMngr.ticksToChangeState() == 1)
 		{
+			ArrayList<Integer> indexes = this.laneChanging.get(this.getPhaseIndex());
 			
+			HashSet<String> redlanes = this.getRedLaneIds(indexes);
+			
+			ArrayList<String> carsID = new ArrayList<>();
+			
+			for(String lanes : redlanes){
+				SumoLane sumolane = new SumoLane(lanes);
+				SumoVehicle[] cars = sumolane.vehiclesList();
+				for(SumoVehicle car : cars)
+					carsID.add(car.id);
+			}
+			if(internalID.equals("C2"))
+				System.out.println("oi" + carsID);
 		}
 		
 		action();

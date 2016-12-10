@@ -451,4 +451,6 @@ public class Vehicle implements Comparable<Vehicle> {
 	public void setEdgeTravelTime(String edgeId2) throws UnimplementedMethod {
 		throw new UnimplementedMethod();
 	}
+	
+	
 }
