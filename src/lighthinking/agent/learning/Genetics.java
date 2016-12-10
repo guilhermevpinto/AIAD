@@ -203,8 +203,18 @@ public class Genetics {
 		return getChromossomeForIndividual(id).content;
 	}
 	
+	public static boolean shouldProgramSwitch(String chromossome, int tick) {
+		if(tick % TICKS_PER_BIT == 0) {
+			return chromossome.charAt(tick / TICKS_PER_BIT) == '1';	
+		}
+		return false;
+	}
+	
 	public static boolean shouldIndividualSwitch(String individualID, int tick) {
-		return getChromossomeContentForIndividual(individualID).charAt(tick / TICKS_PER_BIT) == '1';
+		if(tick % TICKS_PER_BIT == 0) {
+			return getChromossomeContentForIndividual(individualID).charAt(tick / TICKS_PER_BIT) == '1';	
+		}
+		return false;
 	}
 	
 	public static String printGenerationFull() {

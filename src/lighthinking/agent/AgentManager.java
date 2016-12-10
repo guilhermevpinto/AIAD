@@ -9,13 +9,13 @@ import jade.wrapper.ContainerController;
 import jade.wrapper.ControllerException;
 import jade.wrapper.StaleProxyException;
 import lighthinking.Config;
-import lighthinking.agent.Agent.Type;
 import lighthinking.agent.basic.BasicTLAgent;
 import lighthinking.agent.basic.BasicVehicleAgent;
 import lighthinking.agent.com.ComTLAgent;
 import lighthinking.agent.com.ComVehicleAgent;
 import lighthinking.agent.double_skipper.DoubleSkipperTLAgent;
 import lighthinking.agent.double_skipper.DoubleSkipperVehicleAgent;
+import lighthinking.agent.learning.LearningResTLAgent;
 import lighthinking.agent.learning.LearningTLAgent;
 import lighthinking.agent.learning.LearningVehicleAgent;
 import lighthinking.agent.skipper.SkipperTLAgent;
@@ -112,6 +112,15 @@ public class AgentManager {
 				}
 				
 				break;
+			case LEARNING_RESULTS:
+				for (String id : trafficLightIds) {
+					addTLAgent(new LearningResTLAgent(id, this));
+				}
+				for (String id : vehiclesIds) {
+					addVehicleAgent(new LearningVehicleAgent(id, this));
+				}
+				
+				break;
 			case BASIC:
 			default:
 				for (String id : trafficLightIds) {
@@ -198,6 +207,7 @@ public class AgentManager {
 				case COM:
 					addVehicleAgent(new ComVehicleAgent(vehicle.id, this));
 				case LEARNING:
+				case LEARNING_RESULTS:
 					addVehicleAgent(new LearningVehicleAgent(vehicle.id, this));
 					break;
 				case BASIC:
