@@ -3,8 +3,8 @@ package trasmapi.sumo;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
-import test.Agents.DriverAgent;
 import trasmapi.genAPI.Polygon;
 import trasmapi.sumo.protocol.Command;
 import trasmapi.sumo.protocol.Constants;
@@ -37,7 +37,8 @@ public class SumoPolygon extends Polygon {
 		id = ""+ classId++;
 		color = colorP;
 		
-		sensingRadius = 125 + DriverAgent.rand.nextInt(50);
+		Random rand = new Random();
+		sensingRadius = 125 + rand.nextInt(50);
 
 		shape.add(new Pair<Double,Double>(x,y+drawRadius));
 		shape.add(new Pair<Double,Double>(x-drawRadius*Math.cos(Math.PI/6.0),y+drawRadius*Math.sin(Math.PI/6.0)));

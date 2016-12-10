@@ -31,26 +31,26 @@ public class GeneticsResults {
 
 	public static HashMap<String, String> learningLocalResults = new HashMap<>();
 	static {
-		learningResults.put("A1", "");
-		learningResults.put("A2", "");
-		learningResults.put("A3", "");
-		learningResults.put("B0", "");
-		learningResults.put("B1", "");
-		learningResults.put("B2", "");
-		learningResults.put("B3", "");
-		learningResults.put("B4", "");
-		learningResults.put("C0", "");
-		learningResults.put("C1", "");
-		learningResults.put("C2", "");
-		learningResults.put("C3", "");
-		learningResults.put("C4", "");
-		learningResults.put("D0", "");
-		learningResults.put("D1", "");
-		learningResults.put("D2", "");
-		learningResults.put("D3", "");
-		learningResults.put("D4", "");
-		learningResults.put("E1", "");
-		learningResults.put("E2", "");
-		learningResults.put("E3", "");
+		learningLocalResults.put("A1", "");
+		learningLocalResults.put("A2", "");
+		learningLocalResults.put("A3", "");
+		learningLocalResults.put("B0", "");
+		learningLocalResults.put("B1", "");
+		learningLocalResults.put("B2", "");
+		learningLocalResults.put("B3", "");
+		learningLocalResults.put("B4", "");
+		learningLocalResults.put("C0", "");
+		learningLocalResults.put("C1", "");
+		learningLocalResults.put("C2", "");
+		learningLocalResults.put("C3", "");
+		learningLocalResults.put("C4", "");
+		learningLocalResults.put("D0", "");
+		learningLocalResults.put("D1", "");
+		learningLocalResults.put("D2", "");
+		learningLocalResults.put("D3", "");
+		learningLocalResults.put("D4", "");
+		learningLocalResults.put("E1", "");
+		learningLocalResults.put("E2", "");
+		learningLocalResults.put("E3", "");
 	}
 }
