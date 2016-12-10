@@ -22,6 +22,8 @@ public abstract class TLAgent extends Agent {
 	
 	protected ArrayList<ArrayList<Integer>> laneChanging;
 	
+	protected int localStopped;
+	
 	//params
 	protected int carsOnGreenLanes = -1;
 	protected int carsStopped = -1;
@@ -31,6 +33,7 @@ public abstract class TLAgent extends Agent {
 		super();
 		internalID = id;
 		agentManager = mngr;
+		localStopped = 0;
 		
 		sumoTrafficLight = new SumoTrafficLight(internalID);
 		
@@ -142,5 +145,15 @@ public abstract class TLAgent extends Agent {
 		progMngr.setProgram(TLProgram.programSkipPhase(progMngr.getProgram(), progMngr.getCurrentPhase()));
 		resetParams();
 	}
+	
+	public void updateLocalStopped(){
+		localStopped++;
+	}
+
+	public int getLocalStopped() {
+		return localStopped;
+	}
+	
+	
 	
 }

@@ -30,7 +30,7 @@ public class AgentManager {
 	private Config config;
 	private Agent.Type agentMode;
 
-	private HashMap<String, TLAgent> trafficLightAgents;
+	public static HashMap<String, TLAgent> trafficLightAgents;
 	private HashMap<String, VehicleAgent> vehicleAgents;
 	private static HashSet<String> laneIDs; // to speed up some calculations
 	private HashMap<String, SumoLane> lanes;
@@ -220,8 +220,7 @@ public class AgentManager {
 		}
 		for (HashMap.Entry<String, TLAgent> entry : trafficLightAgents.entrySet()) {
 			TLAgent tl = entry.getValue();
-			tl.update();
-				
+			tl.update();	
 		}
 	}
 	

@@ -60,8 +60,17 @@ public abstract class VehicleAgent extends Agent {
 				ticksAlive++;
 				double currentSpeed = this.getSpeed();
 				
-				if(currentSpeed < 0.2)
+				if(currentSpeed < 0.2){
 					ticksStopped++;
+					try{
+					String lane = sumoVehicle.getLaneID().split("to")[1].split("_")[0];
+					if(this.agentManager.getTrafficLightAgents().containsKey(lane))
+						this.agentManager.getTrafficLightAgents().get(sumoVehicle.getLaneID().split("to")[1].split("_")[0]).updateLocalStopped();
+					}catch(Exception e)
+					{
+						//does not count, it means the car is in curve on the edges
+					}
+					}
 			}
 			resetParams();
 		}
@@ -127,7 +136,7 @@ public abstract class VehicleAgent extends Agent {
 	public String getEdgeID() {
 		if(alive) {
 			if(edgeID == null) {
-				edgeID = sumoVehicle.getEdgeId();
+				edgeID = sumoVehicle.getLaneID();
 			}
 			return edgeID;
 		}
