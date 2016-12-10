@@ -12,13 +12,13 @@ import lighthinking.Statistics;
 
 public class Genetics {
 
-	public static final int MAX_GENERATIONS = 2; 	// first generation is number 1
-	public static final int MAX_SIM_TICKS = 30;
+	public static final int MAX_GENERATIONS = 30; 	// first generation is number 1
+	public static final int MAX_SIM_TICKS = 470;
 	public static final int TICKS_PER_BIT = 5; 		// each bit represents a state  change every TICKS_PER_BIT  ticks
-	public static final int GENERATION_SIZE = 5; 	// chromossomes per individual
+	public static final int GENERATION_SIZE = 30; 	// chromossomes per individual
 	public static final int POPULATION_SIZE = 21; 	// number of individuals
-	public static final double CROSSOVER_PROB = 0.3;
-	public static final int ELITE_INDIVIDUALS = 2;
+	public static final double CROSSOVER_PROB = 0.2;
+	public static final int ELITE_INDIVIDUALS = 5;
 	public static final int CHROMOSSOME_SIZE = MAX_SIM_TICKS / TICKS_PER_BIT;
 	public static final double PENALTY = 0.5;
 
@@ -134,6 +134,7 @@ public class Genetics {
 	
 	public static ArrayList<Chromossome> evolveGeneration(ArrayList<Chromossome> oldGeneration) {
 		ArrayList<Chromossome> newGeneration = new ArrayList<>();
+		ArrayList<Chromossome> mutable = new ArrayList<>();
 		
 		Collections.sort(oldGeneration, Chromossome.comparator);
 		
@@ -155,15 +156,16 @@ public class Genetics {
 			double selected = rand.nextDouble();
 			for(Chromossome c : oldGeneration) {
 				if(c.value >= selected) {
-					newGeneration.add(c.cleanCopy());
+					mutable.add(c.cleanCopy());
 					break;
 				}
 			}
 		}
 	
-		ArrayList<Chromossome> crossedGeneration = crossoverGeneration(newGeneration);
-		Collections.shuffle(crossedGeneration);
-		return crossedGeneration;
+		ArrayList<Chromossome> crossedGeneration = crossoverGeneration(mutable);
+		newGeneration.addAll(crossedGeneration);
+		Collections.shuffle(newGeneration);
+		return newGeneration;
 	}
 	
 	public static ArrayList<Chromossome> crossoverGeneration(ArrayList<Chromossome> generation) {
