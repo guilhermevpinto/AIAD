@@ -15,6 +15,8 @@ import lighthinking.agent.com.ComTLAgent;
 import lighthinking.agent.com.ComVehicleAgent;
 import lighthinking.agent.double_skipper.DoubleSkipperTLAgent;
 import lighthinking.agent.double_skipper.DoubleSkipperVehicleAgent;
+import lighthinking.agent.learning.LearningLocalResTLAgent;
+import lighthinking.agent.learning.LearningLocalTLAgent;
 import lighthinking.agent.learning.LearningResTLAgent;
 import lighthinking.agent.learning.LearningTLAgent;
 import lighthinking.agent.learning.LearningVehicleAgent;
@@ -121,6 +123,24 @@ public class AgentManager {
 				}
 				
 				break;
+			case LEARNING_LOCAL:
+				for (String id : trafficLightIds) {
+					addTLAgent(new LearningLocalTLAgent(id, this));
+				}
+				for (String id : vehiclesIds) {
+					addVehicleAgent(new LearningVehicleAgent(id, this));
+				}
+				
+				break;
+			case LEARNING_LOCAL_RESULTS:
+				for (String id : trafficLightIds) {
+					addTLAgent(new LearningLocalResTLAgent(id, this));
+				}
+				for (String id : vehiclesIds) {
+					addVehicleAgent(new LearningVehicleAgent(id, this));
+				}
+				
+				break;
 			case BASIC:
 			default:
 				for (String id : trafficLightIds) {
@@ -208,6 +228,8 @@ public class AgentManager {
 					addVehicleAgent(new ComVehicleAgent(vehicle.id, this));
 				case LEARNING:
 				case LEARNING_RESULTS:
+				case LEARNING_LOCAL:
+				case LEARNING_LOCAL_RESULTS:
 					addVehicleAgent(new LearningVehicleAgent(vehicle.id, this));
 					break;
 				case BASIC:
