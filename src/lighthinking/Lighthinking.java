@@ -35,7 +35,10 @@ public class Lighthinking {
 
 	public static void start(Config config)
 			throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
-		if(config.agentType == Type.LEARNING) {
+		if(config.agentType == Type.LEARNING_LOCAL) {
+			Genetics.LOCAL_EVAL_ONLY = true;
+		}
+		if(config.agentType == Type.LEARNING || config.agentType == Type.LEARNING_LOCAL) {
 			Genetics.startLog();
 			while(!Genetics.nextGeneration()) {
 				do {

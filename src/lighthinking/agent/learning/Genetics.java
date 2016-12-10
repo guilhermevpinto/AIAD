@@ -11,6 +11,8 @@ import java.util.Random;
 import lighthinking.Statistics;
 
 public class Genetics {
+	
+	public static boolean LOCAL_EVAL_ONLY = false;
 
 	public static final int MAX_GENERATIONS = 30; 	// first generation is number 1
 	public static final int MAX_SIM_TICKS = 470;
@@ -92,14 +94,18 @@ public class Genetics {
 	// called when individual set ended
 	// gives penalty if "wasTimedOut" is true
 	public static void evalIndividuals(boolean wasTimedOut) {
-		double perf = Statistics.getOverallPerformance();
-		if(wasTimedOut) {
-			System.out.println("Penalty to generation " + currGeneration + "/" + currIndividual);
-			perf *= PENALTY;
-		}
-		System.out.println("Perf for generation " + perf);
-		for(int i = 0; i < POPULATION_SIZE; ++i) {
-			individualChromossomes.get(ids[i]).get(currIndividual).value = perf;
+		if(LOCAL_EVAL_ONLY) {
+			// TODO
+		} else {
+			double perf = Statistics.getOverallPerformance();
+			if(wasTimedOut) {
+				System.out.println("Penalty to generation " + currGeneration + "/" + currIndividual);
+				perf *= PENALTY;
+			}
+			System.out.println("Perf for generation " + perf);
+			for(int i = 0; i < POPULATION_SIZE; ++i) {
+				individualChromossomes.get(ids[i]).get(currIndividual).value = perf;
+			}
 		}
 	}
 
