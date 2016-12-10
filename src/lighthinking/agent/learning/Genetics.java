@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import lighthinking.Statistics;
+import lighthinking.agent.AgentManager;
 
 public class Genetics {
 	
@@ -58,6 +59,9 @@ public class Genetics {
 	// returns true if reached last generation
 	public static boolean nextGeneration() {
 		Statistics.resetStats();
+		for(String id : ids) {
+			AgentManager.trafficLightAgents.get(id).resetLocalStopped();
+		}
 		if (currGeneration == MAX_GENERATIONS) {
 			return true;
 		} else if (currGeneration == 0) {
@@ -83,6 +87,9 @@ public class Genetics {
 	// returns true if reached last individual
 	public static boolean nextIndividualsOnGeneration() {
 		Statistics.resetStats();
+		for(String id : ids) {
+			AgentManager.trafficLightAgents.get(id).resetLocalStopped();
+		}
 		++currIndividual;
 		if(currIndividual >= GENERATION_SIZE) {
 			tryLog(printGenerationFull());
@@ -95,7 +102,14 @@ public class Genetics {
 	// gives penalty if "wasTimedOut" is true
 	public static void evalIndividuals(boolean wasTimedOut) {
 		if(LOCAL_EVAL_ONLY) {
-			// TODO
+			for(String id : ids) {
+				double perf = AgentManager.trafficLightAgents.get(id).getLocalStopped();
+				if(wasTimedOut) {
+					System.out.println("Penalty to generation " + currGeneration + "/" + currIndividual);
+					perf *= PENALTY;
+				}
+				individualChromossomes.get(id).get(currIndividual).value = perf;
+			}
 		} else {
 			double perf = Statistics.getOverallPerformance();
 			if(wasTimedOut) {

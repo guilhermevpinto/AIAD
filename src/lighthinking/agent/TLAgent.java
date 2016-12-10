@@ -149,6 +149,10 @@ public abstract class TLAgent extends Agent {
 	public void updateLocalStopped(){
 		localStopped++;
 	}
+	
+	public void resetLocalStopped(){
+		localStopped = 0;
+	}
 
 	public int getLocalStopped() {
 		return localStopped;
