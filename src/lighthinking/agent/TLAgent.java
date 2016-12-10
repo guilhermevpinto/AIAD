@@ -22,6 +22,8 @@ public abstract class TLAgent extends Agent {
 	
 	protected ArrayList<ArrayList<Integer>> laneChanging;
 	
+	protected int localStopped;
+	
 	//params
 	protected int carsOnGreenLanes = -1;
 	protected int carsStopped = -1;
@@ -31,6 +33,7 @@ public abstract class TLAgent extends Agent {
 		super();
 		internalID = id;
 		agentManager = mngr;
+		localStopped = 0;
 		
 		sumoTrafficLight = new SumoTrafficLight(internalID);
 		
@@ -38,8 +41,10 @@ public abstract class TLAgent extends Agent {
 		
 		neighbourLights = new ArrayList<String>();
 		for (String l : controlledLaneIds) {
-			mngr.addLane(l);
-			neighbourLights.add(l.split("to")[0]);
+				mngr.addLane(l);
+				String neighbour = l.split("to")[0];
+				if(this.agentManager.getTrafficLightAgents().containsKey(neighbour))
+					neighbourLights.add(neighbour);
 		}
 
 		progMngr = new ProgramManager(sumoTrafficLight);
@@ -98,7 +103,7 @@ public abstract class TLAgent extends Agent {
 		return carsStopped;
 	}
 	
-	@Override
+	//trying no override
 	public void update() {
 		resetParams();
 		progMngr.updateAgent();
@@ -140,38 +145,15 @@ public abstract class TLAgent extends Agent {
 		progMngr.setProgram(TLProgram.programSkipPhase(progMngr.getProgram(), progMngr.getCurrentPhase()));
 		resetParams();
 	}
-		
-	public void action() {
-		ArrayList<String> sent = new ArrayList<String> ();
-		for(String id : neighbourLights){
-			if(!sent.contains(id)){
-				sendMessage(id, "msg");
-				sent.add(id);
-			}
-		}
+	
+	public void updateLocalStopped(){
+		localStopped++;
+	}
+
+	public int getLocalStopped() {
+		return localStopped;
 	}
 	
-	public void inboxHandler() {
-		ArrayList<String> received = new ArrayList<String> ();
-		for(String id : neighbourLights){
-			if(!received.contains(id)){
-				receiveMessage();
-				received.add(id);
-			}
-		}
-	}
 	
-	protected void sendMessage(String target, String content){
-		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
-		msg.addReceiver(new AID(target, AID.ISLOCALNAME));
-		msg.setContent(content);
-		System.out.println(this.getID() + " is sending message to " + target);
-		send(msg);
-	}
 	
-	protected void receiveMessage(){
-		ACLMessage msg = receive();
-		if(msg != null)
-			System.out.println(msg.getContent());
-	}
 }

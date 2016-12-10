@@ -1,6 +1,10 @@
 package lighthinking;
 
+import java.util.HashMap;
+
 import lighthinking.agent.Agent;
+import lighthinking.agent.AgentManager;
+import lighthinking.agent.TLAgent;
 import lighthinking.agent.VehicleAgent;
 
 public class Statistics {
@@ -29,6 +33,13 @@ public class Statistics {
 		}
 		System.out.println("Max Time a Car is Stopped: " + maxTimeStopped);
 		System.out.println("Min Time a Car is Stopped: " + minTimeStopped);
+		
+		System.out.println("Stats per Semaphore :");
+		
+		for (HashMap.Entry<String, TLAgent> entry : AgentManager.trafficLightAgents.entrySet()) {
+			TLAgent tl = entry.getValue();
+			System.out.println("Local Stopped Time: " + tl.getLocalStopped());	
+		}
 		
 	}
 	

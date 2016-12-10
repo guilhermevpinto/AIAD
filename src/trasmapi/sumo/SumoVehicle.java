@@ -724,10 +724,10 @@ public class SumoVehicle extends Vehicle {
 		}
 	}
 
-	public String getEdgeId(){
+	public String getLaneID(){
 
 		Command cmd = new Command(Constants.CMD_GET_VEHICLE_VARIABLE);
-		Content cnt = new Content(Constants.VAR_ROAD_ID,id);
+		Content cnt = new Content(Constants.VAR_LANE_ID,id);
 		
 		cmd.setContent(cnt);
 		
@@ -741,7 +741,7 @@ public class SumoVehicle extends Vehicle {
 			
 			ResponseMessage rspMsg = SumoCom.query(reqMsg);
 			Content content = rspMsg.validate( (byte)  Constants.CMD_GET_VEHICLE_VARIABLE, (byte)  Constants.RESPONSE_GET_VEHICLE_VARIABLE,
-					 (byte)  Constants.VAR_ROAD_ID, (byte)  Constants.TYPE_STRING);
+					 (byte)  Constants.VAR_LANE_ID, (byte)  Constants.TYPE_STRING);
 			
 			edgeId = content.getString();
 			
