@@ -36,6 +36,7 @@ public class AgentManager {
 	private HashMap<String, SumoLane> lanes;
 	private static HashMap<String, Integer> vehiclesStoppedPerLane;
 	private ContainerController mainContainer;
+	private ArrayList<String> arrivedVehicles;
 
 
 	public AgentManager() {
@@ -52,6 +53,7 @@ public class AgentManager {
 		lanes = new HashMap<String, SumoLane>();
 		vehiclesStoppedPerLane = new HashMap<String, Integer>();
 		laneIDs = new HashSet<String>();
+		arrivedVehicles = new ArrayList<>();
 
 		
 		try {
@@ -100,7 +102,10 @@ public class AgentManager {
 					addTLAgent(agent);
 				}
 				for (String id : vehiclesIds) {
-					addVehicleAgent(new ComVehicleAgent(id, this));
+					ComVehicleAgent agent = new ComVehicleAgent(id, this);
+					mainContainer.acceptNewAgent(agent.getID(), agent);
+					mainContainer.getAgent(id).start();
+					addVehicleAgent(agent);
 				}
 				break;
 			case LEARNING:
@@ -135,6 +140,7 @@ public class AgentManager {
 		VehicleAgent agent = vehicleAgents.get(id);
 		if(agent != null) {
 			agent.finish();
+			arrivedVehicles.add(id);
 			return vehicleAgents.remove(id) != null;
 		}
 		return false;
@@ -177,17 +183,26 @@ public class AgentManager {
 	 */
 	public synchronized void updateManager() {
 		// Add new vehicles and remove stopped vehicles
-		updateAgentObjects();
+		try {
+			updateAgentObjects();
+		} catch (ControllerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		updateAgents();
 		
 		//updateVehicleStoppedInLanes();
 	}
 
 	// Add new vehicles and remove stopped vehicles
-	private void updateAgentObjects() {
+	private void updateAgentObjects() throws ControllerException {
 
+		for (String id : SumoCom.arrivedVehicles) {
+			removeVehicleAgent(id);
+		}
+		
 		for (SumoVehicle vehicle : SumoCom.vehicles) {
-			if (!vehicleAgents.containsKey(vehicle.id)) {
+			if (!vehicleAgents.containsKey(vehicle.id) && !this.arrivedVehicles.contains(vehicle.id)) {
 				switch (agentMode) {
 				case SKIPPER:
 					addVehicleAgent(new SkipperVehicleAgent(vehicle.id, this));
@@ -196,7 +211,11 @@ public class AgentManager {
 					addVehicleAgent(new DoubleSkipperVehicleAgent(vehicle.id, this));
 					break;
 				case COM:
-					addVehicleAgent(new ComVehicleAgent(vehicle.id, this));
+					ComVehicleAgent agent = new ComVehicleAgent(vehicle.id, this);
+					mainContainer.acceptNewAgent(agent.getID(), agent);
+					mainContainer.getAgent(vehicle.id).start();
+					addVehicleAgent(agent);
+					break;
 				case LEARNING:
 					addVehicleAgent(new LearningVehicleAgent(vehicle.id, this));
 					break;
@@ -206,9 +225,6 @@ public class AgentManager {
 					break;
 				}
 			}
-		}
-		for (String id : SumoCom.arrivedVehicles) {
-			removeVehicleAgent(id);
 		}
 	}
 
@@ -243,6 +259,10 @@ public class AgentManager {
 
 	public HashMap<String, TLAgent> getTrafficLightAgents() {
 		return trafficLightAgents;
+	}
+
+	public ArrayList<String> getArrivedVehicles() {
+		return arrivedVehicles;
 	}
 	
 	

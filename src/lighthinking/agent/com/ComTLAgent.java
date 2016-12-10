@@ -22,6 +22,12 @@ public class ComTLAgent extends TLAgent {
 	}
 	
 	public void update(){
+		
+		if(this.progMngr.ticksToChangeState() == 0)
+		{
+			
+		}
+		
 		action();
 		
 		inboxHandler();
@@ -40,7 +46,7 @@ public class ComTLAgent extends TLAgent {
 		ACLMessage msg = receive();
 		while(msg != null)
 		{
-			System.out.println("Message from " + msg.getSender().getName().split("@")[0] + " = " + msg.getContent());
+			//System.out.println("Message from " + msg.getSender().getName().split("@")[0] + " = " + msg.getContent());
 			msg = receive();
 		}
 	}
@@ -49,7 +55,7 @@ public class ComTLAgent extends TLAgent {
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		msg.addReceiver(new AID(target, AID.ISLOCALNAME));
 		msg.setContent(content);
-		System.out.println(this.getID() + " is sending message to " + target);
+		//System.out.println(this.getID() + " is sending message to " + target);
 		send(msg);
 	}
 

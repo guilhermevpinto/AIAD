@@ -44,7 +44,6 @@ public abstract class VehicleAgent extends Agent {
 		ticksAlive = 0;
 	}
 	
-	@Override
 	public void update() {
 		if(!end){
 			if(!alive) {

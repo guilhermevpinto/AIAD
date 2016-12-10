@@ -24,6 +24,9 @@ public abstract class TLAgent extends Agent {
 	
 	protected int localStopped;
 	
+	int[] hardCode4 = {4,3,2,1,1,4,3,2,2,1,4,3,3,2,1,4};	
+	int[] hardCode3 = {3,2,1,1,3,2,2,1,3};
+	
 	//params
 	protected int carsOnGreenLanes = -1;
 	protected int carsStopped = -1;
