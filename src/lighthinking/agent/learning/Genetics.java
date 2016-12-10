@@ -10,6 +10,7 @@ import java.util.Random;
 
 import lighthinking.Statistics;
 import lighthinking.agent.AgentManager;
+import lighthinking.agent.TLAgent;
 
 public class Genetics {
 	
@@ -60,7 +61,9 @@ public class Genetics {
 	public static boolean nextGeneration() {
 		Statistics.resetStats();
 		for(String id : ids) {
-			AgentManager.trafficLightAgents.get(id).resetLocalStopped();
+			if(AgentManager.trafficLightAgents != null) {
+				AgentManager.trafficLightAgents.get(id).resetLocalStopped();
+			}
 		}
 		if (currGeneration == MAX_GENERATIONS) {
 			return true;
@@ -88,7 +91,9 @@ public class Genetics {
 	public static boolean nextIndividualsOnGeneration() {
 		Statistics.resetStats();
 		for(String id : ids) {
-			AgentManager.trafficLightAgents.get(id).resetLocalStopped();
+			if(AgentManager.trafficLightAgents != null) {
+				AgentManager.trafficLightAgents.get(id).resetLocalStopped();
+			}
 		}
 		++currIndividual;
 		if(currIndividual >= GENERATION_SIZE) {
@@ -103,7 +108,7 @@ public class Genetics {
 	public static void evalIndividuals(boolean wasTimedOut) {
 		if(LOCAL_EVAL_ONLY) {
 			for(String id : ids) {
-				double perf = AgentManager.trafficLightAgents.get(id).getLocalStopped();
+				double perf = (double) (1.0/AgentManager.trafficLightAgents.get(id).getLocalStopped());
 				if(wasTimedOut) {
 					System.out.println("Penalty to generation " + currGeneration + "/" + currIndividual);
 					perf *= PENALTY;
@@ -225,7 +230,11 @@ public class Genetics {
 	
 	public static boolean shouldProgramSwitch(String chromossome, int tick) {
 		if(tick % TICKS_PER_BIT == 0) {
-			return chromossome.charAt(tick / TICKS_PER_BIT) == '1';	
+			try {
+				return chromossome.charAt(tick / TICKS_PER_BIT) == '1';	
+			} catch (Exception e) {
+				return false;
+			}
 		}
 		return false;
 	}
