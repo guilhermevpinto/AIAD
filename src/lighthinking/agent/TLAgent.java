@@ -24,6 +24,9 @@ public abstract class TLAgent extends Agent {
 	
 	protected int localStopped;
 	
+	int[] hardCode4 = {4,3,2,1,1,4,3,2,2,1,4,3,3,2,1,4};	
+	int[] hardCode3 = {3,2,1,1,3,2,2,1,3};
+	
 	//params
 	protected int carsOnGreenLanes = -1;
 	protected int carsStopped = -1;
@@ -101,6 +104,30 @@ public abstract class TLAgent extends Agent {
 		}
 		
 		return carsStopped;
+	}
+	
+	public HashSet<String> getRedLaneIds(){
+		HashSet<String> uniqueRedLanes = new HashSet<>();
+		String state = getCurrentState();
+		for(int i = 0; i < controlledLaneIds.size(); ++i) {
+			char color = state.charAt(i);
+			if(color == 'r' || color == 'R') {
+				uniqueRedLanes.add(controlledLaneIds.get(i));
+			}
+		}
+		return uniqueRedLanes;
+	}
+	
+	public HashSet<String> getRedLaneIds(ArrayList<Integer> lanes){
+		HashSet<String> uniqueRedLanes = new HashSet<>();
+		String state = getCurrentState();
+		for(int i = 0; i < controlledLaneIds.size(); ++i) {
+			char color = state.charAt(i);
+			if((color == 'r' || color == 'R') && lanes.indexOf(i) != -1) {
+				uniqueRedLanes.add(controlledLaneIds.get(i));
+			}
+		}
+		return uniqueRedLanes;
 	}
 	
 	//trying no override

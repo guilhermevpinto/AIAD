@@ -463,6 +463,35 @@ public class SumoVehicle extends Vehicle {
 
 		return routeId;
 	}
+	
+public int getLaneIndex() {
+		
+		Command cmd = new Command(Constants.CMD_GET_VEHICLE_VARIABLE);
+		Content cnt = new Content(Constants.VAR_LANE_INDEX,id);
+		
+		cmd.setContent(cnt);
+
+		RequestMessage reqMsg = new RequestMessage();
+		reqMsg.addCommand(cmd);
+		
+
+		try {
+			
+			ResponseMessage rspMsg = SumoCom.query(reqMsg);
+			Content content = rspMsg.validate( (byte)  Constants.CMD_GET_VEHICLE_VARIABLE, (byte)  Constants.RESPONSE_GET_VEHICLE_VARIABLE,
+					 (byte)  Constants.VAR_LANE_INDEX, (byte)  Constants.TYPE_INTEGER);
+			
+			laneIndex = content.getInteger();
+
+			return laneIndex;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (WrongCommand e) {
+			e.printStackTrace();
+		}
+
+		return laneIndex;
+	}
 
 	public double getEdgeEffort(String edgeId, int time){
 
