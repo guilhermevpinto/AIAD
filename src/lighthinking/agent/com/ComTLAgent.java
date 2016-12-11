@@ -1,6 +1,7 @@
 package lighthinking.agent.com;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import jade.core.AID;
@@ -8,6 +9,7 @@ import jade.lang.acl.ACLMessage;
 import lighthinking.agent.Agent;
 import lighthinking.agent.AgentManager;
 import lighthinking.agent.TLAgent;
+import lighthinking.agent.VehicleAgent;
 import trasmapi.sumo.Pair;
 import trasmapi.sumo.SumoLane;
 import trasmapi.sumo.SumoVehicle;
@@ -18,12 +20,12 @@ public class ComTLAgent extends TLAgent {
 	/**
 	 * <CarID,Lane>
 	 */
-	ArrayList<Pair<String,String>> carsIncoming;
+	HashMap<String,String> carsIncoming;
 
 	public ComTLAgent(String id, AgentManager mngr) {
 		super(id, mngr);
 		this.type = Type.COM;
-		this.carsIncoming = new ArrayList<>();
+		this.carsIncoming = new HashMap<>();
 	}
 	
 	public void setup() {
@@ -52,20 +54,42 @@ public class ComTLAgent extends TLAgent {
 				for(Pair car : carsID)
 				{
 					SumoVehicle sumocar = (SumoVehicle) car.first();
-					sendMessage(sumocar.id,"");
-					carsIncoming.remove(car);
+					sendMessage(sumocar.id,this.internalID);
+					carsIncoming.remove(sumocar.id);
 				}
 			}
 		}
 		else
 		{
-			HashSet<String> redlanes = this.getRedLaneIds();
-			for(String laneID : redlanes){
-				SumoLane sumolane = new SumoLane(laneID);
-				SumoVehicle[] cars = sumolane.vehiclesList();
-				for(SumoVehicle car : cars)
-					if(!carsIncoming.contains(new Pair(car,laneID)))
-						carsIncoming.add(new Pair(car,laneID));
+			
+			//protocol for 10 ticks
+			if(this.progMngr.ticksAfterChange() > 10)
+			{
+				//System.out.println("carsIncoming" + ":" + this.internalID + ":" + carsIncoming.size());
+				ArrayList<Integer> indexes = laneChanging.get((this.getPhaseIndex() + 1) % this.progMngr.getPhases().size());
+				int carsInGreen = this.getCarsOnGreenLanes();
+				int carsInRed = 0;
+				for(Integer index : indexes)
+				{
+					SumoLane lane = new SumoLane(this.controlledLaneIds.get(index));
+					//carsInRed += lane.getNumVehiclesStopped(0.2);
+					
+					for (HashMap.Entry<String, String> entry : carsIncoming.entrySet()) {
+						String laneID = entry.getValue();
+						System.out.println("LaneID" + laneID);
+						if(laneID.equals(this.controlledLaneIds.get(index)))
+							carsInRed++;	
+					}
+				}
+				
+				if(carsInRed*2 > carsInGreen){
+					this.skipCurrentPhase();
+					if(this.internalID.equals("B2"))
+						System.out.println("SKIP");
+				}
+				else 
+					if(this.internalID.equals("B2"))
+						System.out.println("NO SKIP :" + carsInRed*2 + "/" + carsInGreen);
 			}
 		}
 		
@@ -75,27 +99,27 @@ public class ComTLAgent extends TLAgent {
 	}
 	
 	public void inboxHandler() {
-		ACLMessage msg = receive();
+		ACLMessage msg = this.receive();
 		while(msg != null)
 		{
-			
 			//if message from semaphore
-			if(this.agentManager.trafficLightAgents.containsKey(msg.getSender().getName().split("@")[0])){
-				System.out.println("Sender:" + msg.getSender().getName().split("@")[0] + "/Receiver:" + this.internalID + "/content:" + msg.getContent());
-				String carID = msg.getContent();
-				String lane = msg.getSender().getName().split("@")[0] + "to" + this.internalID;
-				carsIncoming.add(new Pair(carID,lane));
+			if(msg.getContent().split("/")[0].equals("sem")){
+				String carID = msg.getContent().split("/")[2];
+				String lane = msg.getContent().split("/")[1] + "to" + this.internalID;
+				carsIncoming.put(carID,lane); 
+				if(this.internalID.equals("B2"))
+					System.out.println("put a car:" + carID +"/" + carsIncoming.size());
 			}
-			else{
+			else if (msg.getContent().split("/")[0].equals("car")){
 			//if message from car
-				System.out.println("AID:" + this.getAID());
-				System.out.println("PERF:" + msg.getPerformative());
-				System.out.println("Content:" + msg.getContent());
-				System.out.println("Cont Sender:" + msg.getSender().getName().split("@")[0]);
-				if(this.agentManager.getTrafficLightAgents().containsKey(msg.getSender().getName().split("@")[0]))
-					this.sendMessage(msg.getContent(), msg.getSender().getName().split("@")[0]);
+				this.sendMessage(msg.getContent().split("/")[1], "sem/"+this.internalID + "/" + msg.getContent().split("/")[1]);
+				if(this.internalID.equals("B2"))
+					System.out.println("Send Message to: " + msg.getContent().split("/")[1] +  " with: " + this.internalID + "/" + msg.getContent().split("/")[2]);
+				
 			}
-			msg = receive();
+			else 
+				System.out.println("peido");
+			msg = this.receive();
 		}
 	}
 	
@@ -103,7 +127,6 @@ public class ComTLAgent extends TLAgent {
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		msg.addReceiver(new AID(target, AID.ISLOCALNAME));
 		msg.setContent(content);
-		//System.out.println(this.getID() + " is sending message to " + target);
 		send(msg);
 	}
 

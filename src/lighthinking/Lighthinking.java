@@ -24,7 +24,7 @@ public class Lighthinking {
 	private static final int SUMO_PORT = 8820;
 	private static final String SUMO_CFG = "res\\Lighthinking\\test\\sumo.cfg";
 
-	private static final int SIMULATION_DELAY = 100;
+	private static final int SIMULATION_DELAY = 0;
 
 	private static ProfileImpl profile;
 	private static ContainerController mainContainer;
