@@ -27,9 +27,6 @@ public class SkipperTLAgent extends TLAgent {
 		
 		if (ticksWithoutCarsOnGreen >= MAX_TICKS_WITHOUT_CARS) {
 			ticksWithoutCarsOnGreen = 0;
-			if(internalID.equals("E3")) {
-				System.out.println("SKIP");
-			}
 			if (agentManager.isDebug()) {
 				System.out.println("Traffic light " + internalID + " skipped a phase (no cars on green).");
 			}

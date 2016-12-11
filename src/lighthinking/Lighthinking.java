@@ -1,6 +1,7 @@
 package lighthinking;
 
 import java.io.IOException;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class Lighthinking {
 
 	private static final String SUMO_ADDRESS = "localhost";
 	private static final int SUMO_PORT = 8820;
-	private static final String SUMO_CFG = "res\\Lighthinking\\test\\sumo.cfg";
+	private static String SUMO_CFG;
 
 	private static final int SIMULATION_DELAY = 0;
 
@@ -35,6 +36,7 @@ public class Lighthinking {
 
 	public static void start(Config config)
 			throws IOException, UnimplementedMethod, TimeoutException, InterruptedException {
+		SUMO_CFG = "res\\Lighthinking\\" +config.agentMap + "\\sumo.cfg";
 		if(config.agentType == Type.LEARNING_LOCAL) {
 			Genetics.LOCAL_EVAL_ONLY = true;
 		}
@@ -49,6 +51,7 @@ public class Lighthinking {
 			Genetics.endLog();
 		} else {
 			launchSim(config, false, Integer.MAX_VALUE, SIMULATION_DELAY);
+			Statistics.resetStats();
 		}
 	}
 
@@ -109,8 +112,13 @@ public class Lighthinking {
 		trasmapi_api.close();
 		
 		if(!reusable) {
+			try{
 			sumo.close();
-		}
+			}catch(SocketException e)
+			{
+			}
+				System.out.println("Close Sumo.");
+			}
 
 		Statistics.createStats();
 		

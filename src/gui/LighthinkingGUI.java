@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import lighthinking.Config;
 import lighthinking.Lighthinking;
 import lighthinking.agent.Agent;
+import lighthinking.agent.Agent.Map;
 import lighthinking.agent.Agent.Type;
 import trasmapi.genAPI.exceptions.TimeoutException;
 import trasmapi.genAPI.exceptions.UnimplementedMethod;
@@ -65,17 +66,27 @@ public class LighthinkingGUI {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setBounds(34, 53, 148, 14);
 		frame.getContentPane().add(lblNewLabel);
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		JComboBox<Type> comboBox2 = new JComboBox(Agent.Map.values());
+		comboBox2.setBounds(183, 81, 162, 20);
+		frame.getContentPane().add(comboBox2);
+		
+		JLabel lblNewLabel2 = new JLabel("Choose Map:");
+		lblNewLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel2.setBounds(34, 84, 148, 14);
+		frame.getContentPane().add(lblNewLabel2);
 
 		JButton btnStart = new JButton("START");
 		btnStart.setBounds(212, 379, 105, 41);
 		frame.getContentPane().add(btnStart);
 
 		JCheckBox chckbxUseJadeGui = new JCheckBox("Use JADE gui");
-		chckbxUseJadeGui.setBounds(212, 90, 225, 23);
+		chckbxUseJadeGui.setBounds(212, 127, 225, 23);
 		frame.getContentPane().add(chckbxUseJadeGui);
 		
 		JCheckBox chckbxDebug = new JCheckBox("Debug");
-		chckbxDebug.setBounds(212, 116, 177, 23);
+		chckbxDebug.setBounds(212, 150, 207, 23);
 		frame.getContentPane().add(chckbxDebug);
 
 		btnStart.addActionListener(new ActionListener() {
@@ -86,6 +97,7 @@ public class LighthinkingGUI {
 
 				conf.jadeGUI = chckbxUseJadeGui.isSelected();
 				conf.agentType = (Type) comboBox.getSelectedItem();
+				conf.agentMap = (Map) comboBox2.getSelectedItem();
 				conf.debug = chckbxDebug.isSelected();
 
 				try {

@@ -146,7 +146,7 @@ public class SumoCom {
 		try {
 			reqMsg.sendRequestMessage(out);
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 
 		out.flush();

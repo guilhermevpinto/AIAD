@@ -18,6 +18,11 @@ public abstract class Agent extends jade.core.Agent implements Updateable {
 		LEARNING_LOCAL_RESULTS
 	}
 	
+	public static enum Map {
+		MAP1,	// DEFAULT
+		MAP2
+	}
+	
 	protected Type type;
 	protected String internalID;
 	
