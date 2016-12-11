@@ -3,6 +3,7 @@ package lighthinking.agent.com;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import jade.core.AID;
 import jade.lang.acl.ACLMessage;
@@ -63,10 +64,12 @@ public class ComTLAgent extends TLAgent {
 		{
 			
 			//protocol for 10 ticks
-			if(this.progMngr.ticksAfterChange() > 10)
+			if(this.progMngr.ticksAfterChange() > 20)
 			{
 				//System.out.println("carsIncoming" + ":" + this.internalID + ":" + carsIncoming.size());
-				ArrayList<Integer> indexes = laneChanging.get((this.getPhaseIndex() + 1) % this.progMngr.getPhases().size());
+				Set<Integer> indexes = new HashSet<>(laneChanging.get((this.getPhaseIndex() + 1) % this.progMngr.getPhases().size()));
+				Set<Integer> indexes2 = new HashSet<>(laneChanging.get((this.getPhaseIndex() + 3) % this.progMngr.getPhases().size()));
+				indexes.addAll(indexes2);
 				int carsInGreen = this.getCarsOnGreenLanes();
 				int carsInRed = 0;
 				for(Integer index : indexes)
@@ -76,20 +79,18 @@ public class ComTLAgent extends TLAgent {
 					
 					for (HashMap.Entry<String, String> entry : carsIncoming.entrySet()) {
 						String laneID = entry.getValue();
-						System.out.println("LaneID" + laneID);
-						if(laneID.equals(this.controlledLaneIds.get(index)))
+//						System.out.println("LANES: " + laneID+"/" + this.controlledLaneIds.get(index).split("_")[0]);
+						if(laneID.equals(this.controlledLaneIds.get(index).split("_")[0]))
 							carsInRed++;	
 					}
 				}
 				
-				if(carsInRed*2 > carsInGreen){
+				if(carsInRed > carsInGreen){
 					this.skipCurrentPhase();
-					if(this.internalID.equals("B2"))
-						System.out.println("SKIP");
+					System.out.println("SKIP " + this.internalID);
 				}
-				else 
-					if(this.internalID.equals("B2"))
-						System.out.println("NO SKIP :" + carsInRed*2 + "/" + carsInGreen);
+//				else 
+//						System.out.println("NO SKIP :" + carsInRed*2 + "/" + carsInGreen);
 			}
 		}
 		
@@ -107,18 +108,18 @@ public class ComTLAgent extends TLAgent {
 				String carID = msg.getContent().split("/")[2];
 				String lane = msg.getContent().split("/")[1] + "to" + this.internalID;
 				carsIncoming.put(carID,lane); 
-				if(this.internalID.equals("B2"))
-					System.out.println("put a car:" + carID +"/" + carsIncoming.size());
+//				if(this.internalID.equals("B2"))
+//					System.out.println("put a car:" + carID +"/lane :" + lane + " /" + carsIncoming.size());
 			}
 			else if (msg.getContent().split("/")[0].equals("car")){
 			//if message from car
-				this.sendMessage(msg.getContent().split("/")[1], "sem/"+this.internalID + "/" + msg.getContent().split("/")[1]);
-				if(this.internalID.equals("B2"))
-					System.out.println("Send Message to: " + msg.getContent().split("/")[1] +  " with: " + this.internalID + "/" + msg.getContent().split("/")[2]);
+				this.sendMessage(msg.getContent().split("/")[1], "sem/"+this.internalID + "/" + msg.getContent().split("/")[2]);
+//				if(this.internalID.equals("B2"))
+//					System.out.println("Send Message to: " + msg.getContent().split("/")[1] +  " with: " + this.internalID + "/" + msg.getContent().split("/")[2]);
 				
 			}
-			else 
-				System.out.println("peido");
+//			else 
+//				System.out.println("peido");
 			msg = this.receive();
 		}
 	}

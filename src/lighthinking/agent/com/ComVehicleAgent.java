@@ -31,7 +31,7 @@ public class ComVehicleAgent extends VehicleAgent {
 			if(msg != null){
 				String sender = msg.getSender().getName();
 				String content = msg.getContent();
-				System.out.println("Message Received from: TL" + content);
+				//System.out.println("Message Received from: TL" + content);
 				for(String lane : route){
 					if(lane.split("to")[0].equals(sender.split("@")[0]))
 						content = lane.split("to")[1];
@@ -40,7 +40,7 @@ public class ComVehicleAgent extends VehicleAgent {
 				ACLMessage answer = new ACLMessage(ACLMessage.INFORM);
 				answer.addReceiver(new AID(sender.split("@")[0], AID.ISLOCALNAME));
 				answer.setContent("car/" + content + "/" + this.internalID);
-				System.out.println("Send car" + this.internalID + " to " + sender.split("@")[0]);
+//				System.out.println("Send car" + this.internalID + " to " + sender.split("@")[0]);
 				send(answer);
 			}
 		}
