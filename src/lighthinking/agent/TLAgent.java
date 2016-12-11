@@ -73,7 +73,7 @@ public abstract class TLAgent extends Agent {
 			HashSet<String> uniqueGreenLanes = new HashSet<>();
 			for(int i = 0; i < controlledLaneIds.size(); ++i) {
 				char color = state.charAt(i);
-				if(color == 'g' || color == 'G') {
+				if(color == 'g' || color == 'G' || color == 'y') {
 					uniqueGreenLanes.add(controlledLaneIds.get(i));
 				}
 			}

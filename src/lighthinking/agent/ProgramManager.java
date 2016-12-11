@@ -108,6 +108,19 @@ public class ProgramManager {
 		return 0;
 	}
 	
+	public int ticksAfterChange(){
+		int tickOnProgram = tick % totalProgramDuration;
+		int totalDuration = 0;
+		for(int i = 0; i < phases.size(); ++i) {
+			Phase p = phases.get(i);
+			totalDuration += (p.getDuration() / 1000);
+			if(totalDuration > (tick % totalProgramDuration)) {
+				return tickOnProgram - (totalDuration - (p.getDuration() / 1000));
+			}
+		}
+		return 0;
+	}
+	
 	public List<Phase> getPhases() {
 		return phases;
 	}
