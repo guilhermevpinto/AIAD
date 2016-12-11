@@ -23,22 +23,27 @@ public class ComVehicleAgent extends VehicleAgent {
 	}
 	
 	public void update(){
-		ACLMessage msg;
-		msg = receive();
-		if(msg != null){
-			String sender = msg.getSender().getName();
-			String content = null;
-			for(String lane : route)
-				if(lane.split("to")[0] == sender)
-					content = lane.split("to")[1];
-			//TODO retirar
-			if(content == null)
-				System.out.println("RIP");
-			
-			ACLMessage answer = new ACLMessage(ACLMessage.INFORM);
-			msg.addReceiver(new AID(sender, AID.ISLOCALNAME));
-			msg.setContent(content);
-		}
 		super.update();
+		
+		if(alive){
+			ACLMessage msg;
+			msg = receive();
+			if(msg != null){
+				String sender = msg.getSender().getName();
+				String content = null;
+				for(String lane : route){
+					if(lane.split("to")[0].equals(sender.split("@")[0]))
+						content = lane.split("to")[1];
+				}
+				//TODO retirar print
+				if(content == null)
+					System.out.println("RIP");
+				
+				ACLMessage answer = new ACLMessage(ACLMessage.INFORM);
+				msg.addReceiver(new AID(sender.split("@")[0], AID.ISLOCALNAME));
+				msg.setContent(content + " to " + sender.split("@")[0] + "from" + this.getAID().getName());
+				send(msg);
+			}
+		}
 	}
 }
