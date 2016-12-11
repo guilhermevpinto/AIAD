@@ -38,7 +38,7 @@ public class Statistics {
 		
 		for (HashMap.Entry<String, TLAgent> entry : AgentManager.trafficLightAgents.entrySet()) {
 			TLAgent tl = entry.getValue();
-			System.out.println("Local Stopped Time: " + tl.getLocalStopped());	
+			System.out.println("Local Stopped Time in " + entry.getKey() + ": " + tl.getLocalStopped());	
 		}
 		
 	}
