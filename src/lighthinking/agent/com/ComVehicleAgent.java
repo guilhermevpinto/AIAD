@@ -35,13 +35,10 @@ public class ComVehicleAgent extends VehicleAgent {
 					if(lane.split("to")[0].equals(sender.split("@")[0]))
 						content = lane.split("to")[1];
 				}
-				//TODO retirar print
-				if(content == null)
-					System.out.println("RIP");
 				
 				ACLMessage answer = new ACLMessage(ACLMessage.INFORM);
 				msg.addReceiver(new AID(sender.split("@")[0], AID.ISLOCALNAME));
-				msg.setContent(content + " to " + sender.split("@")[0] + "from" + this.getAID().getName());
+				msg.setContent(content + "/" + this.internalID);
 				send(msg);
 			}
 		}

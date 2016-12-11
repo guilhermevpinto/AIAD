@@ -78,22 +78,16 @@ public class ComTLAgent extends TLAgent {
 		ACLMessage msg = receive();
 		while(msg != null)
 		{
-			
 			//if message from semaphore
-			if(this.agentManager.trafficLightAgents.containsKey(msg.getSender().getName().split("@")[0])){
-				System.out.println("Sender:" + msg.getSender().getName().split("@")[0] + "/Receiver:" + this.internalID + "/content:" + msg.getContent());
-				String carID = msg.getContent();
-				String lane = msg.getSender().getName().split("@")[0] + "to" + this.internalID;
+			if(!this.agentManager.getTrafficLightAgents().containsKey(msg.getContent().split("/")[0])){
+				String carID = msg.getContent().split("/")[1];
+				String lane = msg.getContent().split("/")[0] + "to" + this.internalID;
 				carsIncoming.add(new Pair(carID,lane));
 			}
 			else{
 			//if message from car
-				System.out.println("AID:" + this.getAID());
-				System.out.println("PERF:" + msg.getPerformative());
-				System.out.println("Content:" + msg.getContent());
-				System.out.println("Cont Sender:" + msg.getSender().getName().split("@")[0]);
-				if(this.agentManager.getTrafficLightAgents().containsKey(msg.getSender().getName().split("@")[0]))
-					this.sendMessage(msg.getContent(), msg.getSender().getName().split("@")[0]);
+				if(this.agentManager.getTrafficLightAgents().containsKey(msg.getContent().split("/")[0]))
+					this.sendMessage(msg.getContent().split("/")[0], this.internalID + "/" + msg.getContent().split("/")[1]);
 			}
 			msg = receive();
 		}
@@ -103,7 +97,6 @@ public class ComTLAgent extends TLAgent {
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		msg.addReceiver(new AID(target, AID.ISLOCALNAME));
 		msg.setContent(content);
-		//System.out.println(this.getID() + " is sending message to " + target);
 		send(msg);
 	}
 
